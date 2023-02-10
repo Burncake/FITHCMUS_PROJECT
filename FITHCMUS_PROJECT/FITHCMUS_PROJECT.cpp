@@ -2,19 +2,27 @@
 #include <SFML/Graphics.hpp>
 using namespace sf;
 #define size 79.277564
+Sprite sCircle[50], sCross[50];
 
 int main()
 {
     RenderWindow window(VideoMode(800, 800), "Caro by Le Thanh Minh Tri");
-    Texture board, circle;
+    Texture board, circle, cross, gCircle;
     board.loadFromFile("images/caro_board.png");
-    circle.loadFromFile("images/green_circle.png");
-    Sprite sBoard(board);
-    Sprite sCircle(circle);
-    double posx = 3, posy = 3;
-    int x = 0, y = 0;
-    sCircle.setPosition(posx, posy);
-    bool isMove = false;
+    circle.loadFromFile("images/circle.png");
+    cross.loadFromFile("images/cross.png");
+    gCircle.loadFromFile("images/green_circle.png");
+    Sprite sBoard(board), GC(gCircle);
+    for (int i = 0; i < 50; i++) {
+        sCircle[i].setTexture(circle);
+        sCircle[i].setPosition(-100, -100);
+        sCross[i].setTexture(cross);
+        sCross[i].setPosition(-100, -100);
+    }
+    float posx = 3, posy = 3;
+    int x = 0, y = 0, a = 0, b = 0;
+    GC.setPosition(posx, posy);
+    bool isMove = false, isSet = false, turn = true;
 
     while (window.isOpen())
     {
@@ -45,17 +53,34 @@ int main()
                     if (x > 9) x = 0;
                 }
             }
-            if (event.type == Event::KeyReleased)
+
+            if (event.type == Event::KeyReleased) {
                 if ((event.key.code == Keyboard::W) || (event.key.code == Keyboard::A) || (event.key.code == Keyboard::S) || (event.key.code == Keyboard::D))
                     isMove = false;
+                if (event.key.code == Keyboard::Enter) {
+                    if (turn) {
+                        sCircle[a++].setPosition(posx + x * size, posy + y * size);
+                        turn = false;
+                    }
+                    else {
+                        sCross[b++].setPosition(posx + x * size, posy + y * size);
+                        turn = true;
+                    }
+                }
+            }
         }
 
         if (isMove) {
-            sCircle.setPosition(posx + x * size, posy + y * size);
+            GC.setPosition(posx + x * size, posy + y * size);
         }
-        window.clear(Color::White);
+
+        window.clear();
         window.draw(sBoard);
-        window.draw(sCircle);
+        window.draw(GC);
+        for (int i = 0; i < 50; i++) {
+            window.draw(sCircle[i]);
+            window.draw(sCross[i]);
+        }
         window.display();
     }
 
