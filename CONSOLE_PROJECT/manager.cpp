@@ -1,10 +1,54 @@
 #include "manager.h"
 
-void drawBoard()
+void fixConsoleWindow()
 {
-    const int endRow = 41, endColumn = 21;
+    HWND consoleWindow = GetConsoleWindow();
+    LONG style = GetWindowLong(consoleWindow, GWL_STYLE);
+    style = style & ~(WS_MAXIMIZEBOX) & ~(WS_THICKFRAME);
+    SetWindowLong(consoleWindow, GWL_STYLE, style);
+}
+
+void gotoXY(int x, int y)
+{
+    COORD coord;
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+
+void move(int& x, int& y)
+{
+    gotoXY(6 + x * 4, 3 + y * 2);
+    cout << "^";
+    char c;
+    c = _getch();
+    switch (c) {
+    case 'w':
+        y--;
+        if (y < 0) y = 11;
+        break;
+    case 'a':
+        x--;
+        if (x < 0) x = 11;
+        break;
+    case 's':
+        y++;
+        if (y > 11) y = 0;
+        break;
+    case 'd':
+        x++;
+        if (x > 11) x = 0;
+        break;
+    }
+}
+
+void drawBoard(int& x, int& y)
+{
+    const int endRow = 49, endColumn = 25;
     for (int i = 1; i <= endColumn; i++) {
         for (int j = 1; j <= endRow; j++) {
+            gotoXY(j + 3, i + 1);
             switch (j) {
             case 1:
                 // Left column //
@@ -33,20 +77,5 @@ void drawBoard()
         }            
         cout << endl;
     }
-}
-
-void manager::fixConsoleWindow()
-{
-    HWND consoleWindow = GetConsoleWindow();
-    LONG style = GetWindowLong(consoleWindow, GWL_STYLE);
-    style = style & ~(WS_MAXIMIZEBOX) & ~(WS_THICKFRAME);
-    SetWindowLong(consoleWindow, GWL_STYLE, style);
-}
-
-void manager::gotoXY(int x, int y)
-{
-    COORD coord;
-    coord.X = x;
-    coord.Y = y;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+    move(x, y);
 }
