@@ -16,11 +16,13 @@ void gotoXY(int x, int y)
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-
-void move(int& x, int& y)
+void move(int board[][12], int& x, int& y, bool& XTurn)
 {
-    gotoXY(6 + x * 4, 3 + y * 2);
-    cout << "^";
+    gotoXY(6 + 4 * x, 3 + 2 * y);
+    if (!board[y][x]) {
+        if (XTurn) cout << char(42);
+        else cout << char(248);
+    }
     char c;
     c = _getch();
     switch (c) {
@@ -40,10 +42,13 @@ void move(int& x, int& y)
         x++;
         if (x > 11) x = 0;
         break;
+    case '\r':
+        processBoard(board, x, y, XTurn);
+        break;
     }
 }
 
-void drawBoard(int& x, int& y)
+void drawBoard()
 {
     const int endRow = 49, endColumn = 25;
     for (int i = 1; i <= endColumn; i++) {
@@ -77,5 +82,29 @@ void drawBoard(int& x, int& y)
         }            
         cout << endl;
     }
-    move(x, y);
+}
+
+void drawCharacter(int board[][12]) {
+    for (int i = 0; i < 12; i++) {
+        for (int j = 0; j < 12; j++) {
+            gotoXY(6 + 4 * j, 3 + 2 * i);
+            if (board[i][j] == 1)
+                cout << "X";
+            if (board[i][j] == 2)
+                cout << "O";
+        }
+    }
+}
+
+void processBoard(int board[][12], int x, int y, bool& XTurn) {
+    if (board[y][x]) return;
+    if (XTurn) {
+        board[y][x] = 1;
+        XTurn = false;
+    }
+    else {
+        board[y][x] = 2;
+        XTurn = true;
+    }
+
 }
