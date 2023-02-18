@@ -90,3 +90,23 @@ void processBoard(int board[][size], int x, int y, bool& XTurn) {
         XTurn = true;
     }
 }
+
+bool win(int board[][size], int x, int y)
+{
+    int countR = 0, countD = 0, countUR = 0, countDR = 0;
+    for (int i = -4; i < 5; i++) {
+        if (!board[y][x]) break;
+        if ((x + i < 0) || (x + i > size - 1)) continue;
+        if (board[y][x] == board[y][x + i]) countR++;
+        else countR = 0;
+        if ((y + i < 0) || (y + i > size - 1)) continue;
+        if (board[y][x] == board[y + i][x]) countD++;
+        else countD = 0;
+        if (board[y][x] == board[y + i][x + i]) countDR++;
+        else countDR = 0;
+        if (board[y][x] == board[y - i][x + i]) countUR++;
+        else countUR = 0;
+        if ((countR == 5) || (countD == 5) || (countDR == 5) || (countUR == 5)) return true;
+    }
+    return false;
+}
