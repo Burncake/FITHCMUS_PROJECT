@@ -32,8 +32,9 @@ void drawBoard()
                 else            cout << " ";
             }
         cout << endl;
-    }
+        }
 }
+
 void move(int board[][size], int& x, int& y, bool& XTurn)
 {
     gotoXY(6 + 4 * x, 3 + 2 * y);
@@ -67,6 +68,7 @@ void move(int board[][size], int& x, int& y, bool& XTurn)
         break;
     }
 }
+
 void drawCharacter(int board[][size]) {
     for (int i = 0; i < size; i++)
         for (int j = 0; j < size; j++) {
@@ -76,6 +78,7 @@ void drawCharacter(int board[][size]) {
             if (board[i][j] == 2) coutStrColored("O", DarkRed);
         }
 }
+
 void processBoard(int board[][size], int x, int y, bool& XTurn) {
     if (board[y][x]) return;
     if (XTurn) {
@@ -86,5 +89,4 @@ void processBoard(int board[][size], int x, int y, bool& XTurn) {
         board[y][x] = 2;
         XTurn = true;
     }
-
 }
