@@ -35,7 +35,7 @@ void drawBoard()
         }
 }
 
-void move(int board[][size], int& x, int& y, bool& XTurn)
+void move(int board[][size], int& x, int& y, bool& XTurn,int &count)
 {
     gotoXY(6 + 4 * x, 3 + 2 * y);
     if (board[y][x] == 0) {
@@ -64,7 +64,7 @@ void move(int board[][size], int& x, int& y, bool& XTurn)
         if (x > size - 1) x = 0;
         break;
     case '\r':
-        processBoard(board, x, y, XTurn);
+       processBoard(board, x, y, XTurn,count);
         break;
     }
 }
@@ -79,16 +79,20 @@ void drawCharacter(int board[][size]) {
         }
 }
 
-void processBoard(int board[][size], int x, int y, bool& XTurn) {
-    if (board[y][x]) return;
+void processBoard(int board[][size], int x, int y, bool& XTurn,int &count) {
+    
+    if (board[y][x]) return  ;
     if (XTurn) {
         board[y][x] = 1;
         XTurn = false;
+        count++;
     }
     else {
         board[y][x] = 2;
         XTurn = true;
+        count++;
     }
+    
 }
 
 bool win(int board[][size], int x, int y)
@@ -115,4 +119,7 @@ bool win(int board[][size], int x, int y)
         if ((countR == 5) || (countD == 5) || (countDR == 5) || (countUR == 5)) return true;
     }
     return false;
+}
+bool checkFullBoard(int &count) {
+    return (count == size * size);
 }
