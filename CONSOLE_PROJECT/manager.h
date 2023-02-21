@@ -4,7 +4,7 @@
 #include <conio.h>
 using namespace std;
 
-// Colors.
+// Colors
 #define DEFAULTCOLOR	240
 #define PointerColor	246
 
@@ -24,7 +24,7 @@ using namespace std;
 #define Pink			253
 #define Yellow			254
 #define White			255
-// From 0->15 black background, 240->255 white background.
+// From 0->15 black background, 240->255 white background
 
 void fixConsoleWindow();
 void gotoXY(int x, int y);
