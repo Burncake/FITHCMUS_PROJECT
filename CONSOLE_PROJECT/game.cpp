@@ -116,3 +116,10 @@ bool win(int board[][size], int x, int y)
     }
     return false;
 }
+
+bool draw(int board[][size]) {
+    for (int i = 0; i < size; i++)
+        for (int j = 0; j < size; j++)
+            if (board[i][j] == 0) return false;
+    return true;
+}
