@@ -3,11 +3,11 @@
 int main()
 {
     int board[size][size]{};
-    int x = 0, y = 0, count = 0;
+    int x = 0, y = 0;
     bool XTurn = true;
     system("color F0");
     drawBoard();
-    while (!win(board, x, y)&&!draw(board)) {
+    while (!win(board, x, y) && !draw(board)) {
         drawCharacter(board);
         move(board, x, y, XTurn);
     }
