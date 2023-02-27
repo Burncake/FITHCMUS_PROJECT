@@ -11,3 +11,4 @@ bool win(int board[][size], int x, int y);
 bool draw(int board[][size]);
 void moveSound();
 void selectSound();
+void bgSound();

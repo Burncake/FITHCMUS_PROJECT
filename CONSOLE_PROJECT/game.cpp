@@ -43,8 +43,9 @@ void move(int board[][size], int& x, int& y, bool& XTurn)
 		if (XTurn)  coutChrColored(char(42), PointerColor);
 		else        coutChrColored(char(248), PointerColor);
 	}
-	if (board[y][x] == 1) coutStrColored("X", DarkRed);
-	if (board[y][x] == 2) coutStrColored("O", DarkBlue);
+	if (board[y][x] == 1) coutStrColored("X", 178);
+	if (board[y][x] == 2) coutStrColored("O", 181);
+
 	char c;
 	c = _getch();
 	switch (c) {
@@ -77,17 +78,23 @@ void move(int board[][size], int& x, int& y, bool& XTurn)
 		gotoXY(6 + 4 * tx, 3 + 2 * ty);
 		cout << " ";
 	}
+	if (board[ty][tx] == 1) {
+		gotoXY(6 + 4 * tx, 3 + 2 * ty);
+		coutStrColored("X", DarkRed);
+	}
+	if (board[ty][tx] == 2) {
+		gotoXY(6 + 4 * tx, 3 + 2 * ty);
+		coutStrColored("O", DarkBlue);
+	}
 }
 
 void processBoard(int board[][size], int x, int y, bool& XTurn) {
 	if (board[y][x]) return;
 	if (XTurn) {
-
 		board[y][x] = 1;
 		XTurn = false;
 	}
 	else {
-
 		board[y][x] = 2;
 		XTurn = true;
 	}
@@ -130,4 +137,7 @@ void moveSound() {
 }
 void selectSound() {
 	PlaySound(TEXT("select.wav"), NULL, SND_FILENAME | SND_ASYNC);
+}
+void bgSound() {
+	PlaySound(TEXT("backgroundmusic.wav"), NULL, SND_FILENAME | SND_ASYNC);
 }

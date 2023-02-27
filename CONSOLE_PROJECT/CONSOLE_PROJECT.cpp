@@ -2,6 +2,10 @@
 
 int main()
 {
+	/*for (int i = 0; i < 257; i++) {
+		cout << i << endl;
+		coutStrColored("none", i);
+	}*/
 	int board[size][size]{};
 	int x = 0, y = 0;
 	bool XTurn = true;
