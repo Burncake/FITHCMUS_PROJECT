@@ -33,6 +33,7 @@ void drawBoard()
 			}
 			cout << endl;
 		}
+
 }
 
 void move(int board[][size], int& x, int& y, bool& XTurn)
@@ -126,11 +127,8 @@ bool win(int board[][size], int x, int y)
 	return false;
 }
 
-bool draw(int board[][size]) {
-	for (int i = 0; i < size; i++)
-		for (int j = 0; j < size; j++)
-			if (board[i][j] == 0) return false;
-	return true;
+bool draw(int& xCount, int& oCount) {
+	return(xCount + oCount == size * size);
 }
 void moveSound() {
 	PlaySound(TEXT("move.wav"), NULL, SND_FILENAME | SND_ASYNC);
@@ -140,4 +138,58 @@ void selectSound() {
 }
 void bgSound() {
 	PlaySound(TEXT("backgroundmusic.wav"), NULL, SND_FILENAME | SND_ASYNC);
+}
+void drawDirection(bool &XTurn) {
+	int xC = 0, oC = 0;
+	
+	for (int i = 1; i <= dSizeC; ++i) {
+		for (int j = 1; j <= dSizeR; ++j) {
+			gotoXY(i + setC, j + setR);
+
+			switch (i) {
+			case 1:
+				// Left column //
+				if (j == 1)                 coutChrColored(220, 251);
+				else if (j == dSizeR)     coutChrColored(223, 251);
+				else                         coutChrColored(219, 251);
+				break;
+			case dSizeC:
+				// Left column //
+				if (j == 1)                 coutChrColored(220, 251);
+				else if (j == dSizeR)     coutChrColored(223, 251);
+				else                         coutChrColored(219, 251);
+				break;
+			default:
+				if (i <= 10 || i >= 41) {
+					if (j == 1)  coutChrColored(220, 251);
+					if(j==dSizeR) coutChrColored(223, 251);
+				}
+			}
+		}
+	}
+	for (int i = 1; i <= 11; ++i) {
+		gotoXY(25 + setC, i + setR);
+		coutChrColored(186, 245);
+	}
+	gotoXY(21 + setC, 4 + setR); coutStrColored("S C O R E ", 245);
+	gotoXY(21 + setC, 8 + setR); coutStrColored(" M O V E ", 245);
+	
+}
+void countTurn(int board[][size],int &xCount, int &oCount,int x,int y,bool &XTurn) {
+
+	if (board[y][x] == 1&&(!XTurn)) {
+		xCount++;
+		if (xCount - oCount == 2) xCount--;
+	}
+	if (board[y][x] == 2&&XTurn) {
+		oCount++;
+		if (oCount - xCount == 1) oCount--;
+	}
+	
+}
+void printfTurn(int &xCount, int &oCount) {
+	gotoXY(setC + 7, setR + 8);
+	coutStrColored(to_string(xCount), 245);
+	gotoXY(setC + 43, setR + 8);
+	coutStrColored(to_string(oCount), 245);
 }
