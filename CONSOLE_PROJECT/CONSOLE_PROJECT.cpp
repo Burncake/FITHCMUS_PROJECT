@@ -6,21 +6,20 @@ int main()
 	fixConsoleWindow();
 	int board[size][size]{};
 	int x = 0, y = 0;
-	int cX = 0, cO = 0;
-	bool XTurn = true;
+	int turnCountX = 0, turnCountO = 0;
+	bool xTurn = true;
 	system("color F0");
 	drawBoard();
-	drawDirection(XTurn);
-	while (!win(board, x, y) && !draw(cX,cO)) {
+	drawDirection(xTurn);
+	while (!win(board, x, y) && !draw(turnCountX,turnCountO)) {
 		
-		printfTurn(cX, cO);
-		move(board, x, y, XTurn);
-		countTurn(board, cX, cO, x, y, XTurn);
+		printfTurn(turnCountX, turnCountO);
+		move(board, x, y, xTurn, turnCountX, turnCountO);
 	}
 	system("cls");
 	system("color 0F");
 	if (win(board, x, y)) {
-		if (XTurn)  cout << "O won!\n";
+		if (xTurn)  cout << "O won!\n";
 		else        cout << "X won!\n";
 	}
 	else cout << "Draw!\n";
