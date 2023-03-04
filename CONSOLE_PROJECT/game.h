@@ -6,7 +6,9 @@
 #include <fstream>
 #define size 12
 #define dSizeC 50
-#define dSizeR 11
+#define dSizeR 8
+#define iSizeC 50
+#define iSizeR 6
 static int setC = 60, setR = 15;
 void drawBoard();
 void move(int board[][size], int& x, int& y, bool& XTurn);
@@ -26,3 +28,4 @@ void clLogoO();
 void logoX();
 void logoO();
 void processTurn(bool& XTurn);
+void drawInstruct();

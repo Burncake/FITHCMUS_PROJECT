@@ -146,9 +146,10 @@ void drawDirection(bool& XTurn) {
 	int xC = 0, oC = 0;
 	logoX();
 	logoO();
+	drawInstruct();
 	for (int i = 1; i <= dSizeC; ++i) {
 		for (int j = 1; j <= dSizeR; ++j) {
-			gotoXY(i + setC, j + setR);
+			gotoXY(i + setC, j + setR + 3);
 
 			switch (i) {
 			case 1:
@@ -171,14 +172,16 @@ void drawDirection(bool& XTurn) {
 			}
 		}
 	}
-	for (int i = 1; i <= 11; ++i) {
-		gotoXY(25 + setC, i + setR);
-		coutChrColored(186, 245);
-		gotoXY(setC + 25, setR - setR + i);
+	for (int i = 1; i <= dSizeR; ++i) {
+		gotoXY(25 + setC, i + setR + 3);
 		coutChrColored(186, 245);
 	}
-	gotoXY(21 + setC, 4 + setR); coutStrColored("S C O R E ", 245);
-	gotoXY(21 + setC, 8 + setR); coutStrColored(" M O V E ", 245);
+	for (int i = 1; i <= dSizeR+3; ++i) {
+		gotoXY(setC + 25, setR - setR + i );
+		coutChrColored(186, 245);
+	}
+	gotoXY(21 + setC, 6 + setR); coutStrColored("S C O R E ", 245);
+	gotoXY(21 + setC, 9 + setR); coutStrColored(" M O V E ", 245);
 
 }
 void countTurn(int board[][size], int& xCount, int& oCount, int x, int y, bool& XTurn) {
@@ -258,5 +261,42 @@ void processTurn(bool& XTurn) {
 	else {
 		logoX();
 		clLogoO();
+	}
+}
+void drawInstruct() {
+	gotoXY(setC + 3, setR + -1);
+	coutStrColored("Press \"ESC\"   - Exit", 240);
+	gotoXY(setC + 3, setR );
+	coutStrColored("Press \"S\"     - Save",240);
+	gotoXY(setC + 3, setR +1);
+	coutStrColored("Press \"L\"     - Load",240);
+	gotoXY(setC + 3, setR +2);
+	coutStrColored("Press \"ENTER\" - Select",240);
+	gotoXY(setC + 28, setR -1);
+	coutStrColored("Press \"W\" - Move up",240);
+	gotoXY(setC + 28, setR );
+	coutStrColored("Press \"A\" - Move down",240);
+	gotoXY(setC + 28, setR +1);
+	coutStrColored("Press \"S\" - Move left",240);
+	gotoXY(setC + 28, setR +2);
+	coutStrColored("Press \"D\" - Move right",240);
+	for (int i = 1; i <= iSizeC; ++i) {
+		for (int j = 1; j <= iSizeR; ++j) {
+			gotoXY(setC + i, setR + j-3);
+			switch (i) {
+			case 1:
+				if (j == 1) coutChrColored(201, 240);
+				else if (j == iSizeR) coutChrColored(200, 240);
+				else coutChrColored(186, 240);
+				break;
+			case iSizeC:
+				if (j == 1) coutChrColored(187, 240);
+				else if (j == iSizeR) coutChrColored(188, 240);
+				else coutChrColored(186, 240);
+				break;
+			default:
+				if (j == 1||j==iSizeR) coutChrColored(205, 240);
+			}
+		}
 	}
 }
