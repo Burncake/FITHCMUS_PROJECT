@@ -2,6 +2,7 @@
 
 void drawBoard()
 {
+
 	const int endRow = 4 * size + 1, endColumn = 2 * size + 1;
 	for (int i = 1; i <= endColumn; i++)
 		for (int j = 1; j <= endRow; j++) {
@@ -38,6 +39,7 @@ void drawBoard()
 
 void move(int board[][size], int& x, int& y, bool& XTurn)
 {
+	processTurn(XTurn);
 	int tx = x, ty = y;
 	gotoXY(6 + 4 * x, 3 + 2 * y);
 	if (board[y][x] == 0) {
@@ -90,6 +92,7 @@ void move(int board[][size], int& x, int& y, bool& XTurn)
 }
 
 void processBoard(int board[][size], int x, int y, bool& XTurn) {
+
 	if (board[y][x]) return;
 	if (XTurn) {
 		board[y][x] = 1;
@@ -137,11 +140,12 @@ void selectSound() {
 	PlaySound(TEXT("select.wav"), NULL, SND_FILENAME | SND_ASYNC);
 }
 void bgSound() {
-	PlaySound(TEXT("backgroundmusic.wav"), NULL, SND_FILENAME | SND_ASYNC);
+	PlaySound(TEXT("backgroundmusic.wav"), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 }
-void drawDirection(bool &XTurn) {
+void drawDirection(bool& XTurn) {
 	int xC = 0, oC = 0;
-	
+	logoX();
+	logoO();
 	for (int i = 1; i <= dSizeC; ++i) {
 		for (int j = 1; j <= dSizeR; ++j) {
 			gotoXY(i + setC, j + setR);
@@ -162,7 +166,7 @@ void drawDirection(bool &XTurn) {
 			default:
 				if (i <= 10 || i >= 41) {
 					if (j == 1)  coutChrColored(220, 251);
-					if(j==dSizeR) coutChrColored(223, 251);
+					if (j == dSizeR) coutChrColored(223, 251);
 				}
 			}
 		}
@@ -170,26 +174,89 @@ void drawDirection(bool &XTurn) {
 	for (int i = 1; i <= 11; ++i) {
 		gotoXY(25 + setC, i + setR);
 		coutChrColored(186, 245);
+		gotoXY(setC + 25, setR - setR + i);
+		coutChrColored(186, 245);
 	}
 	gotoXY(21 + setC, 4 + setR); coutStrColored("S C O R E ", 245);
 	gotoXY(21 + setC, 8 + setR); coutStrColored(" M O V E ", 245);
-	
-}
-void countTurn(int board[][size],int &xCount, int &oCount,int x,int y,bool &XTurn) {
 
-	if (board[y][x] == 1&&(!XTurn)) {
+}
+void countTurn(int board[][size], int& xCount, int& oCount, int x, int y, bool& XTurn) {
+
+	if (board[y][x] == 1 && (!XTurn)) {
 		xCount++;
 		if (xCount - oCount == 2) xCount--;
 	}
-	if (board[y][x] == 2&&XTurn) {
+	if (board[y][x] == 2 && XTurn) {
 		oCount++;
 		if (oCount - xCount == 1) oCount--;
 	}
-	
+
 }
-void printfTurn(int &xCount, int &oCount) {
+void printfTurn(int& xCount, int& oCount) {
 	gotoXY(setC + 7, setR + 8);
 	coutStrColored(to_string(xCount), 245);
 	gotoXY(setC + 43, setR + 8);
 	coutStrColored(to_string(oCount), 245);
+}
+//void xoTurn() {
+//	goto
+//}
+void clLogoX() {
+	int i = setC, j = setR - setR;
+	ifstream xLogo("logoX.txt");
+	if (!xLogo) return;
+	string line;
+	while (getline(xLogo, line)) {
+		gotoXY(i, j);
+		coutStrColored(line, DarkRed);
+		++j;
+	}
+	xLogo.close();
+}
+void clLogoO() {
+	int i = setC + 31, j = setR - setR;
+	ifstream oLogo("logoO.txt");
+	if (!oLogo) return;
+	string line;
+	while (getline(oLogo, line)) {
+		gotoXY(i, j);
+		coutStrColored(line, DarkBlue);
+		++j;
+	}
+	oLogo.close();
+}
+void logoX() {
+	int i = setC, j = setR - setR;
+	ifstream xLogo("logoX.txt");
+	if (!xLogo) return;
+	string line;
+	while (getline(xLogo, line)) {
+		gotoXY(i, j);
+		coutStrColored(line, Grey);
+		++j;
+	}
+	xLogo.close();
+}
+void logoO() {
+	int i = setC + 31, j = setR - setR;
+	ifstream oLogo("logoO.txt");
+	if (!oLogo) return;
+	string line;
+	while (getline(oLogo, line)) {
+		gotoXY(i, j);
+		coutStrColored(line, Grey);
+		++j;
+	}
+	oLogo.close();
+}
+void processTurn(bool& XTurn) {
+	if (XTurn) {
+		logoO();
+		clLogoX();
+	}
+	else {
+		logoX();
+		clLogoO();
+	}
 }

@@ -2,6 +2,8 @@
 #include "manager.h"
 #include <string>
 #include <MMsystem.h>
+#include <thread>
+#include <fstream>
 #define size 12
 #define dSizeC 50
 #define dSizeR 11
@@ -19,3 +21,8 @@ void bgSound();
 void drawDirection(bool &XTurn);
 void countTurn(int board[][size], int& xCount, int& oCount, int x, int y, bool& XTurn);
 void printfTurn(int &xCount, int &oCount);
+void clLogoX();
+void clLogoO();
+void logoX();
+void logoO();
+void processTurn(bool& XTurn);
