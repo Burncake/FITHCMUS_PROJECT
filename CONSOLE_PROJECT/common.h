@@ -54,3 +54,4 @@ public:
 };
 void coutColored(string str, int color);
 void coutColored(char chr, int color);
+int getInput();

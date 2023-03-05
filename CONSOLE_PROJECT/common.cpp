@@ -91,3 +91,17 @@ void coutColored(char chr, int color)
     cout << chr;
     common::setColor(DEFAULTCOLOR);
 }
+
+int getInput()
+{
+    char c = _getch();
+    if (c == 'w' || c == 72)    return 1; // up
+    if (c == 'a' || c == 75)    return 2; // left
+    if (c == 's' || c == 80)    return 3; // down
+    if (c == 'd' || c == 77)    return 4; // right
+    if (c == '\r' || c == ' ')  return 5; // select
+    if (c == 27)                return 6; // esc
+    if (c == 'o')               return 7; // save
+    if (c == 'i')               return 8; // load
+                                return 0; // default              
+}

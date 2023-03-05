@@ -47,30 +47,29 @@ void move(int board[][size], int& x, int& y, bool& XTurn, int& xCount, int& oCou
 	if (board[y][x] == 1) coutColored("X", 178);
 	if (board[y][x] == 2) coutColored("O", 181);
 
-	char c;
-	c = _getch();
-	switch (c) {
-	case 'w':
+	int i = getInput();
+	switch (i) {
+	case 1:
 		common::playSound(Move);
 		y--;
 		if (y < 0) y = size - 1;
 		break;
-	case 'a':
+	case 2:
 		common::playSound(Move);
 		x--;
 		if (x < 0) x = size - 1;
 		break;
-	case 's':
+	case 3:
 		common::playSound(Move);
 		y++;
 		if (y > size - 1) y = 0;
 		break;
-	case 'd':
+	case 4:
 		common::playSound(Move);
 		x++;
 		if (x > size - 1) x = 0;
 		break;
-	case '\r':
+	case 5:
 		common::playSound(Select);
 		processBoard(board, x, y, XTurn, xCount, oCount);
 		break;
@@ -240,9 +239,9 @@ void drawInstruct() {
 	common::gotoXY(setC + 3, setR + -1);
 	coutColored("Press \"ESC\"   - Exit", 240);
 	common::gotoXY(setC + 3, setR );
-	coutColored("Press \"L\"     - Save",240);
+	coutColored("Press \"O\"     - Save",240);
 	common::gotoXY(setC + 3, setR +1);
-	coutColored("Press \"T\"     - Load",240);
+	coutColored("Press \"I\"     - Load",240);
 	common::gotoXY(setC + 3, setR +2);
 	coutColored("Press \"ENTER\" - Select",240);
 	common::gotoXY(setC + 28, setR -1);
