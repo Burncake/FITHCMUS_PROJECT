@@ -8,3 +8,7 @@ https://stackoverflow.com/questions/4053837/colorizing-text-in-the-console-with-
 https://stackoverflow.com/questions/3471520/how-to-remove-scrollbars-in-console-windows-c
 4. Disabling user mouse select:
 https://www.appsloveworld.com/cplus/100/376/how-to-disable-user-selection-in-windows-console
+5. Centering and resizing the window:
+https://cplusplus.com/forum/beginner/127593/
+6. Hide/show blinking console cursor:
+https://stackoverflow.com/questions/18028808/remove-blinking-underscore-on-console-cmd-prompt
