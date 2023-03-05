@@ -1,5 +1,5 @@
 #pragma once
-#include "manager.h"
+#include "common.h"
 #include <string>
 #include <MMsystem.h>
 #include <thread>
@@ -16,9 +16,6 @@ void move(int board[][size], int& x, int& y, bool& XTurn, int& xCount, int& oCou
 void processBoard(int board[][size], int x, int y, bool& XTurn, int& xCount, int& oCount);
 bool win(int board[][size], int x, int y);
 bool draw(int& xCount, int& oCount);
-void moveSound();
-void selectSound();
-void bgSound();
 void drawDirection(bool &XTurn);
 void printfTurn(int &xCount, int &oCount);
 void clLogoX();
