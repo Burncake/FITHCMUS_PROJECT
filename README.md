@@ -12,3 +12,5 @@ https://www.appsloveworld.com/cplus/100/376/how-to-disable-user-selection-in-win
 https://cplusplus.com/forum/beginner/127593/
 6. Hide/show blinking console cursor:
 https://stackoverflow.com/questions/18028808/remove-blinking-underscore-on-console-cmd-prompt
+7. Some commands using <windows.h>:
+https://codelearn.io/sharing/windowsh-va-ham-dinh-dang-console-p1
