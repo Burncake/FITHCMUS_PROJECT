@@ -14,3 +14,4 @@ https://cplusplus.com/forum/beginner/127593/
 https://stackoverflow.com/questions/18028808/remove-blinking-underscore-on-console-cmd-prompt
 7. Some commands using <windows.h>:
 https://codelearn.io/sharing/windowsh-va-ham-dinh-dang-console-p1
+https://codelearn.io/sharing/windowsh-ham-dinh-dang-noi-dung-console
