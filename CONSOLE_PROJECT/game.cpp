@@ -141,49 +141,46 @@ void drawDirection(bool& XTurn) {
 	int xC = 0, oC = 0;
 	clLogoX();
 	logoO();
+	drawFrame();
 	drawInstruct();
 	for (int i = 1; i <= dSizeC; ++i) {
 		for (int j = 1; j <= dSizeR; ++j) {
-			common::gotoXY(i + setC, j + setR + 3);
+			common::gotoXY(i + setC, j + setR );
 
 			switch (i) {
 			case 1:
 				// Left column //
-				if (j == 1)                 coutColored(220, 251);
-				else if (j == dSizeR)     coutColored(223, 251);
-				else                         coutColored(219, 251);
+				if (j == 1)                 coutColored(201, Black);
+				else if (j == dSizeR)     coutColored(200, Black);
+				else                         coutColored(186, Black);
 				break;
 			case dSizeC:
 				// Left column //
-				if (j == 1)                 coutColored(220, 251);
-				else if (j == dSizeR)     coutColored(223, 251);
-				else                         coutColored(219, 251);
+				if (j == 1)                 coutColored(187, Black);
+				else if (j == dSizeR)     coutColored(188, Black);
+				else                         coutColored(186, Black);
 				break;
 			default:
 				if (i <= 10 || i >= 41) {
-					if (j == 1)  coutColored(220, 251);
-					if (j == dSizeR) coutColored(223, 251);
+					if (j == 1|| j == dSizeR)  coutColored(205, Black);
 				}
 			}
 		}
 	}
-	for (int i = 1; i <= dSizeR; ++i) {
-		common::gotoXY(25 + setC, i + setR + 3);
-		coutColored(186, 245);
+	for (int i = 1; i <=23; ++i) {
+		common::gotoXY(25 + setC, i );
+		coutColored(186, Black);
 	}
-	for (int i = 1; i <= dSizeR+3; ++i) {
-		common::gotoXY(setC + 25, setR - setR + i );
-		coutColored(186, 245);
-	}
-	common::gotoXY(21 + setC, 6 + setR); coutColored("S C O R E ", 245);
-	common::gotoXY(21 + setC, 9 + setR); coutColored(" M O V E ", 245);
+	
+	common::gotoXY(21 + setC, 3 + setR); coutColored("S C O R E ", Black);
+	common::gotoXY(21 + setC, 6 + setR); coutColored(" M O V E ", Black);
 
 }
 void printfTurn(int& xCount, int& oCount) {
-	common::gotoXY(setC + 7, setR + 8);
-	coutColored(to_string(xCount), 245);
-	common::gotoXY(setC + 43, setR + 8);
-	coutColored(to_string(oCount), 245);
+	common::gotoXY(setC + 7, setR+6);
+	coutColored(to_string(xCount), Red);
+	common::gotoXY(setC + 43, setR+6);
+	coutColored(to_string(oCount), Blue);
 }
 
 void clLogoX() {
@@ -236,25 +233,12 @@ void logoO() {
 }
 
 void drawInstruct() {
-	common::gotoXY(setC + 3, setR + -1);
-	coutColored("Press \"ESC\"   - Exit", 240);
-	common::gotoXY(setC + 3, setR );
-	coutColored("Press \"O\"     - Save",240);
-	common::gotoXY(setC + 3, setR +1);
-	coutColored("Press \"I\"     - Load",240);
-	common::gotoXY(setC + 3, setR +2);
-	coutColored("Press \"ENTER\" - Select",240);
-	common::gotoXY(setC + 28, setR -1);
-	coutColored("Press \"W\" - Move up",240);
-	common::gotoXY(setC + 28, setR );
-	coutColored("Press \"S\" - Move down",240);
-	common::gotoXY(setC + 28, setR +1);
-	coutColored("Press \"A\" - Move left",240);
-	common::gotoXY(setC + 28, setR +2);
-	coutColored("Press \"D\" - Move right",240);
+	common::gotoXY(setC + 3, setR + 10);
+	coutColored("FILL IN", 240);
+	
 	for (int i = 1; i <= iSizeC; ++i) {
 		for (int j = 1; j <= iSizeR; ++j) {
-			common::gotoXY(setC + i, setR + j-3);
+			common::gotoXY(setC + i, setR + j + 8);
 			switch (i) {
 			case 1:
 				if (j == 1) coutColored(201, 240);
@@ -267,7 +251,28 @@ void drawInstruct() {
 				else coutColored(186, 240);
 				break;
 			default:
-				if (j == 1||j==iSizeR) coutColored(205, 240);
+				if (j == 1 || j == iSizeR) coutColored(205, 240);
+			}
+		}
+	}
+}
+void drawFrame() {
+	for (int i = 1; i <= fSizeC; ++i) {
+		for (int j = 1; j <= fSizeR; ++j) {
+			common::gotoXY(setC + i-3,j+1);
+			switch (i) {
+			case 1:
+				if (j == 1) coutColored(201, Red);
+				else if (j == fSizeR) coutColored(200, Red);
+				else coutColored(186, Red);
+				break;
+			case fSizeC:
+				if (j == 1) coutColored(187, Red);
+				else if (j == fSizeR) coutColored(188, Red);
+				else coutColored(186, Red);
+				break;
+			default:
+				if (j == 1 || j == fSizeR) coutColored(205, Red);
 			}
 		}
 	}

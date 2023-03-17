@@ -8,7 +8,9 @@
 #define dSizeC 50
 #define dSizeR 8
 #define iSizeC 50
-#define iSizeR 6
+#define iSizeR 3
+#define fSizeC 24
+#define fSizeR 13
 static int setC = 60, setR = 15;
 void drawBoard();
 void move(int board[][size], int& x, int& y, bool& XTurn, int& xCount, int& oCount);
@@ -23,3 +25,5 @@ void clLogoO();
 void logoX();
 void logoO();
 void drawInstruct();
+
+void drawFrame();
