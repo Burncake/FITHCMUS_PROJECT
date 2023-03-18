@@ -10,16 +10,25 @@
 #define iSizeC 50
 #define iSizeR 6
 static int setC = 60, setR = 15;
-void drawBoard();
-void move(int board[][size], int& x, int& y, bool& XTurn, int& xCount, int& oCount);
-//void drawCharacter(int board[][size]);
-void processBoard(int board[][size], int x, int y, bool& XTurn, int& xCount, int& oCount);
-bool win(int board[][size], int x, int y);
-bool draw(int& xCount, int& oCount);
-void drawDirection(bool &XTurn);
-void printfTurn(int &xCount, int &oCount);
-void clLogoX();
-void clLogoO();
-void logoX();
-void logoO();
-void drawInstruct();
+
+class game {
+public:
+	string x_player{}, o_player{};
+	int x_score = 0, o_score = 0, x_count = 0, o_count = 0, x = 0, y = 0;
+	int board[size][size]{};
+	bool x_turn = true;
+
+	static void game_pvp();
+	static void drawBoard();
+	static void clLogoX();
+	static void clLogoO();
+	static void logoX();
+	static void logoO();
+	static void drawInstruct();
+	static void drawInformation();
+	void drawTurn();
+	void move();
+	void processBoard();
+	bool win();
+	bool draw();
+};
