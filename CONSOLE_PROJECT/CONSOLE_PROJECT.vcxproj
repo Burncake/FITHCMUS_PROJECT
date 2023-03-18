@@ -133,10 +133,12 @@
     <ClCompile Include="CONSOLE_PROJECT.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="common.cpp" />
+    <ClCompile Include="menu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />
     <ClInclude Include="common.h" />
+    <ClInclude Include="menu.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="logoO.txt" />

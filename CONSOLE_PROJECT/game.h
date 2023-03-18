@@ -8,7 +8,9 @@
 #define dSizeC 50
 #define dSizeR 8
 #define iSizeC 50
-#define iSizeR 6
+#define iSizeR 3
+#define fSizeC 24
+#define fSizeR 13
 static int setC = 60, setR = 15;
 
 class game {
@@ -25,6 +27,7 @@ public:
 	static void logoX();
 	static void logoO();
 	static void drawInstruct();
+	static void drawFrame();
 	static void drawInformation();
 	void drawTurn();
 	void move();
