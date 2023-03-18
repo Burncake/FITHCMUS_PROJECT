@@ -27,11 +27,13 @@ public:
 	static void logoX();
 	static void logoO();
 	static void drawInstruct();
-	static void drawFrame();
 	static void drawInformation();
-	void drawTurn();
+	void showTurn();
 	void move();
 	void processBoard();
 	bool win();
 	bool draw();
+	void score();
+	void showScore();
+	void winEffect();
 };

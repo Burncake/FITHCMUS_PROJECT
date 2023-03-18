@@ -3,21 +3,17 @@
 void game::game_pvp()
 {
 	common::setUpConsole();
-	system("color F0");
+	system("color f0");
 	drawBoard();
 	drawInformation();
 	game g;
 	common::playSound(Start);
 	while (!g.win() && !g.draw()) {
-		g.drawTurn();
+		g.showTurn();
 		g.move();
 	}
 	system("cls");
-	if (g.win()) {
-		if (g.x_turn)	cout << "O won!\n";
-		else			cout << "X won!\n";
-	}
-	else cout << "Draw!\n";
+	g.winEffect();
 }
 
 void game::drawBoard()
@@ -63,7 +59,7 @@ void game::clLogoX() {
 	string line;
 	while (getline(xLogo, line)) {
 		common::gotoXY(i, j);
-		coutColored(line, DarkRed);
+		coutColored(line, Red);
 		++j;
 	}
 	xLogo.close();
@@ -75,7 +71,7 @@ void game::clLogoO() {
 	string line;
 	while (getline(oLogo, line)) {
 		common::gotoXY(i, j);
-		coutColored(line, DarkBlue);
+		coutColored(line, Blue);
 		++j;
 	}
 	oLogo.close();
@@ -129,32 +125,11 @@ void game::drawInstruct() {
 		}
 	}
 }
-void game::drawFrame() {
-	for (int i = 1; i <= fSizeC; ++i) {
-		for (int j = 1; j <= fSizeR; ++j) {
-			common::gotoXY(setC + i - 3, j + 1);
-			switch (i) {
-			case 1:
-				if (j == 1) coutColored(201, Red);
-				else if (j == fSizeR) coutColored(200, Red);
-				else coutColored(186, Red);
-				break;
-			case fSizeC:
-				if (j == 1) coutColored(187, Red);
-				else if (j == fSizeR) coutColored(188, Red);
-				else coutColored(186, Red);
-				break;
-			default:
-				if (j == 1 || j == fSizeR) coutColored(205, Red);
-			}
-		}
-	}
-}
+
 void game::drawInformation() {
 	int xC = 0, oC = 0;
 	clLogoX();
 	logoO();
-	drawFrame();
 	drawInstruct();
 	for (int i = 1; i <= dSizeC; ++i) {
 		for (int j = 1; j <= dSizeR; ++j) {
@@ -189,7 +164,7 @@ void game::drawInformation() {
 
 }
 
-void game::drawTurn() {
+void game::showTurn() {
 	common::gotoXY(setC + 7, setR + 6);
 	coutColored(to_string(x_count), Red);
 	common::gotoXY(setC + 43, setR + 6);
@@ -296,3 +271,33 @@ bool game::win()
 bool game::draw() {
 	return (x_count + o_count == size * size);
 }
+
+void game::score() {
+	if (win()) {
+		if (x_turn)	o_score++;
+		else		x_score++;
+	}
+}
+void game::showScore() {
+	common::gotoXY(setC + 7, setR + 3);
+	coutColored(to_string(x_score), Red);
+	common::gotoXY(setC + 43, setR + 3);
+	coutColored(to_string(o_score), Blue);
+}
+
+void game::winEffect(){
+	if (win()) {
+		if (x_turn) {
+			o_score++;
+			cout << "O won!\n";
+		}
+		else {
+			x_score++;
+			cout << "X won!\n";
+		}
+	}
+	else cout << "Draw!\n";
+	showScore();
+}
+
+
