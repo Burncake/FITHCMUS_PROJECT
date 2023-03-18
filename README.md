@@ -1,8 +1,8 @@
 # FITHCMUS_PROJECT
 Reference:
-1. Changing background color (system("command")): 
+1. Changing background color: 
 https://stackoverflow.com/questions/6460932/change-entire-console-background-color-win32-c
-2. Changing text color (SetConsoleTextAttribute()): 
+2. Changing text color: 
 https://stackoverflow.com/questions/4053837/colorizing-text-in-the-console-with-c
 3. Disabling scrolling bar: 
 https://stackoverflow.com/questions/3471520/how-to-remove-scrollbars-in-console-windows-c
