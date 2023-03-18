@@ -15,3 +15,5 @@ https://stackoverflow.com/questions/18028808/remove-blinking-underscore-on-conso
 7. Some commands using <windows.h>:
 https://codelearn.io/sharing/windowsh-va-ham-dinh-dang-console-p1
 https://codelearn.io/sharing/windowsh-ham-dinh-dang-noi-dung-console
+8. Class functions (methods):
+https://www.w3schools.com/cpp/cpp_class_methods.asp
