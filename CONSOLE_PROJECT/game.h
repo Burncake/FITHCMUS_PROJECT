@@ -11,6 +11,7 @@
 #define iSizeR 3
 #define fSizeC 24
 #define fSizeR 13
+#define loc "resources/"
 static int setC = 60, setR = 15;
 
 class game {
@@ -22,6 +23,7 @@ public:
 
 	static void game_pvp();
 	static void drawBoard();
+	static void draw_txt(string name, int x, int y, int color);
 	static void clLogoX();
 	static void clLogoO();
 	static void logoX();
@@ -36,4 +38,7 @@ public:
 	void score();
 	void showScore();
 	void endEffect();
+	void x_win_effect();
+	void o_win_effect();
+	void draw_effect();
 };

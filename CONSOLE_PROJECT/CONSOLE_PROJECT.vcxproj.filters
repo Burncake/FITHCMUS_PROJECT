@@ -40,10 +40,22 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <Text Include="resources\draw.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
     <Text Include="logoO.txt">
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="logoX.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="resources\x_win.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="resources\amogus.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="resources\o_win.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

@@ -3,7 +3,7 @@
 void game::game_pvp()
 {
 	common::setUpConsole();
-	system("color f0");
+	system("color F0");
 	drawBoard();
 	drawInformation();
 	game g;
@@ -50,6 +50,18 @@ void game::drawBoard()
 			cout << endl;
 		}
 
+}
+
+void game::draw_txt(string name, int x, int y, int color)
+{
+	ifstream pic(loc + name + ".txt");
+	if (!pic) return;
+	string line;
+	while (getline(pic, line)) {
+		common::gotoXY(x, y++);
+		coutColored(line, color);
+	}
+	pic.close();
 }
 
 void game::clLogoX() {
@@ -286,16 +298,123 @@ void game::showScore() {
 }
 
 void game::endEffect(){
+	system("cls");
 	if (win()) {
 		if (x_turn) {
-			cout << "O won!\n";
+			o_win_effect();
 		}
 		else {
-			cout << "X won!\n";
+			x_win_effect();
 		}
 	}
-	else cout << "Draw!\n";
-	showScore();
+	else draw_effect();
+}
+
+void game::x_win_effect()
+{
+	for (int color = 241; color < 256; color++) {
+		for (int i = 0; i <= 10; i++) {
+			for (int j = 0; j < 6; j++) {
+				if (i >= 3 && i <= 7)
+					if (j >= 1 && j <= 3) continue;
+				common::gotoXY(i * 10 + 9, j * 5 + 2);
+				if (color % 2)
+					if (j % 2)
+						if (i % 2) coutColored("X", DarkRed);
+						else cout << " ";
+					else 
+						if (i % 2 == 0) coutColored("X", DarkRed);
+						else cout << " ";
+				else
+					if (j % 2)
+						if (i % 2) cout << " ";
+						else coutColored("X", DarkRed);
+					else
+						if (i % 2 == 0) cout << " ";
+						else coutColored("X", DarkRed);
+			}
+		}
+		if (color == DarkWhite || color == Yellow || color == DarkYellow || color == Cyan || color == White) continue;
+		draw_txt("x_win", fSizeC + 10, dSizeR - 4, color);
+		Sleep(400);
+	}
+}
+
+void game::o_win_effect()
+{
+	for (int color = 241; color < 256; color++) {
+		for (int i = 0; i <= 10; i++) {
+			for (int j = 0; j < 6; j++) {
+				if (i >= 3 && i <= 7)
+					if (j >= 1 && j <= 3) continue;
+				common::gotoXY(i * 10 + 9, j * 5 + 2);
+				if (color % 2)
+					if (j % 2)
+						if (i % 2) coutColored("O", DarkBlue);
+						else cout << " ";
+					else
+						if (i % 2 == 0) coutColored("O", DarkBlue);
+						else cout << " ";
+				else
+					if (j % 2)
+						if (i % 2) cout << " ";
+						else coutColored("O", DarkBlue);
+					else
+						if (i % 2 == 0) cout << " ";
+						else coutColored("O", DarkBlue);
+			}
+		}
+		if (color == DarkWhite || color == Yellow || color == DarkYellow || color == Cyan || color == White) continue;
+		draw_txt("o_win", fSizeC + 10, dSizeR - 4, color);
+		Sleep(400);
+	}
+}
+
+void game::draw_effect()
+{
+	for (int color = 241; color < 256; color++) {
+		for (int i = 0; i <= 10; i++)
+			for (int j = 0; j < 6; j++) {
+				if (i >= 2 && i <= 8)
+					if (j >= 1 && j <= 3) continue;
+				common::gotoXY(i * 10 + 9, j * 5 + 2);
+				if (color < 255) {
+					if (color % 2) {
+						if (j % 2) {
+							if (i % 2) coutColored("X", DarkRed);
+							else cout << " ";
+						}
+						else {
+							if (i % 2 == 0) coutColored("X", DarkRed);
+							else cout << " ";
+						}
+					}
+					else {
+						if (j % 2) {
+							if (i % 2) cout << " ";
+							else coutColored("O", DarkBlue);
+						}
+						else {
+							if (i % 2 == 0) cout << " ";
+							else coutColored("O", DarkBlue);
+						}
+					}
+				}
+				else {
+					if (j % 2) {
+						if (i % 2) coutColored("X", DarkRed);
+						else coutColored("O", DarkBlue);
+					}
+					else {
+						if (i % 2 == 0) coutColored("X", DarkRed);
+						else coutColored("O", DarkBlue);
+					}
+				}
+			}
+		if (color == DarkWhite || color == Yellow || color == DarkYellow || color == Cyan || color == White) continue;
+		draw_txt("draw", fSizeC + 7, dSizeR - 3, color);
+		Sleep(400);
+	}
 }
 
 
