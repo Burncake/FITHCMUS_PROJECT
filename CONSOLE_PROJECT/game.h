@@ -35,5 +35,5 @@ public:
 	bool draw();
 	void score();
 	void showScore();
-	void winEffect();
+	void endEffect();
 };

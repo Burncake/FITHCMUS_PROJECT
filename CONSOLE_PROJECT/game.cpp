@@ -13,7 +13,7 @@ void game::game_pvp()
 		g.move();
 	}
 	system("cls");
-	g.winEffect();
+	g.endEffect();
 }
 
 void game::drawBoard()
@@ -285,14 +285,12 @@ void game::showScore() {
 	coutColored(to_string(o_score), Blue);
 }
 
-void game::winEffect(){
+void game::endEffect(){
 	if (win()) {
 		if (x_turn) {
-			o_score++;
 			cout << "O won!\n";
 		}
 		else {
-			x_score++;
 			cout << "X won!\n";
 		}
 	}
