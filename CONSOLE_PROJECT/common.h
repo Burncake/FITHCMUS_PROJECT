@@ -35,6 +35,9 @@ using namespace std;
 #define	Lose			5
 #define Draw			6
 
+// Resources folder
+#define loc "resources/"
+
 class common {
 private:
 	static HWND consoleWindow;		// Handling console window

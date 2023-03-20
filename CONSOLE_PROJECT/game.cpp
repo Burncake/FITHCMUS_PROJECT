@@ -448,13 +448,13 @@ void game::resetData() {
 }
 
 void game::getContinuePlay(int& key) {
-	system("cls");
-	cout << "Do you want to continue playing?";
-	cout << "Press Y to play,ESC to quit";
+	common::gotoXY(55, 24);
+	cout << "Continue?";
+	common::gotoXY(31, 25);
+	cout << "Press Y to continue, or any key else to get back to menu.";
 	FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
 	key = getInput();
 	//if (i == 6) exit(0);
-
 }
 
 

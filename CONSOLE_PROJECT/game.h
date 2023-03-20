@@ -11,7 +11,9 @@
 #define iSizeR 3
 #define fSizeC 24
 #define fSizeR 13
-#define loc "resources/"
+#define consoleR 119
+#define consoleD 29
+
 static int setC = 60, setR = 15;
 
 class game {
