@@ -103,5 +103,7 @@ int getInput()
     if (c == 27)                return 6; // esc
     if (c == 'o')               return 7; // save
     if (c == 'i')               return 8; // load
+    if (c == 'y')                 return 9;//continue playing
+    if (c == 'n')                  return 10;
                                 return 0; // default              
 }

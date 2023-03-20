@@ -2,18 +2,38 @@
 
 void game::game_pvp()
 {
-	common::setUpConsole();
-	system("color F0");
-	drawBoard();
-	drawInformation();
 	game g;
-	common::playSound(Start);
-	while (!g.win() && !g.draw()) {
-		g.showTurn();
-		g.move();
+	int key = -1;
+	do {
+		system("cls");
+		common::setUpConsole();
+		system("color F0");
+		drawBoard();
+		drawInformation();
+		common::playSound(Start);
+		g.showScore();
+		while (!g.win() && !g.draw()) {
+			g.showTurn();
+			g.move();
+		}
+		g.score();
+		g.showScore();
+		system("cls");
+		g.endEffect();
+		g.getContinuePlay(key);
+		if (key == 9) g.resetData();
+	} while (key == 9);
+	if (key == 10) {
+		system("cls");
+		common::setUpConsole();
+		system("color F0");
+		drawBoard();
+		drawInformation();
+		common::playSound(Start);
+		g.showScore();
+		key = getInput();
+		if (key == 9) g.game_pvp();
 	}
-	system("cls");
-	g.endEffect();
 }
 
 void game::drawBoard()
@@ -297,7 +317,7 @@ void game::showScore() {
 	coutColored(to_string(o_score), Blue);
 }
 
-void game::endEffect(){
+void game::endEffect() {
 	system("cls");
 	if (win()) {
 		if (x_turn) {
@@ -322,7 +342,7 @@ void game::x_win_effect()
 					if (j % 2)
 						if (i % 2) coutColored("X", DarkRed);
 						else cout << " ";
-					else 
+					else
 						if (i % 2 == 0) coutColored("X", DarkRed);
 						else cout << " ";
 				else
@@ -416,5 +436,26 @@ void game::draw_effect()
 		Sleep(400);
 	}
 }
+
+void game::resetData() {
+	x_count = 0; o_count = 0; x = 0; y = 0;
+	for (int i = 0; i < size; ++i) {
+		for (int j = 0; j < size; ++j) {
+			board[i][j] = 0;
+		}
+	}
+	x_turn = true;
+}
+
+void game::getContinuePlay(int& key) {
+	system("cls");
+	cout << "Do you want to continue playing?";
+	cout << "Press Y to play,ESC to quit";
+	FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
+	key = getInput();
+	//if (i == 6) exit(0);
+
+}
+
 
 

@@ -20,6 +20,7 @@ public:
 	int x_score = 0, o_score = 0, x_count = 0, o_count = 0, x = 0, y = 0;
 	int board[size][size]{};
 	bool x_turn = true;
+	
 
 	static void game_pvp();
 	static void drawBoard();
@@ -41,4 +42,6 @@ public:
 	void x_win_effect();
 	void o_win_effect();
 	void draw_effect();
+	void resetData();
+	void getContinuePlay(int &key);
 };
