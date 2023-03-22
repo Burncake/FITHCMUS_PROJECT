@@ -9,6 +9,7 @@ void menu::mainScreen(int selectedMenu) {
 	//menu::clearConsole();
 	int x = 51, y = 14;
 	int flag = selectedMenu;
+	common::setUpConsole();
 	common::setColor(Blue);
 	menu::printLogo();
 	common::setColor(Black);
@@ -49,6 +50,7 @@ void menu::modeSelection() {
 	while (1) {
 		menu::drawGameMode(selectedMode);
 		int a = getInput();
+		common::playSound(Move);
 		if (a == 1) {
 			selectedMode = (selectedMode - 1 + 3) % 3;
 		}
@@ -56,6 +58,12 @@ void menu::modeSelection() {
 			selectedMode = (selectedMode + 1) % 3;
 		}
 		else if (a == 5) {
+			common::playSound(Select);
+			break;
+		}
+		if (a == 6) {
+			menu::clearConsole();
+			menuSelection();
 			break;
 		}
 
@@ -77,13 +85,14 @@ void menu::modeSelection() {
 }
 
 void menu::menuSelection() {
-	
+	common::playSound(Start);
 	int selectedMenu = 0;
 	
 	common::showCursor(false);
 	while (1) {
 		menu::mainScreen(selectedMenu);
 		int a = getInput();
+		common::playSound(Move);
 		if (a == 1) {
 			selectedMenu = (selectedMenu - 1 + 5) % 5;
 		}
@@ -91,6 +100,7 @@ void menu::menuSelection() {
 			selectedMenu = (selectedMenu + 1) % 5;
 		}
 		else if (a == 5) {
+			common::playSound(Select);
 			break;
 		}
 
@@ -98,38 +108,71 @@ void menu::menuSelection() {
 	switch (selectedMenu) {
 	case 0: {
 		menu::modeSelection();
-		if (getInput() == 6) {
-			menu::clearConsole();
-			menuSelection();
+		int c = -1;
+		while (c != 6) {
+			c = getInput();
+			if (c == 6) {
+				menu::clearConsole();
+				menuSelection();
+				break;
+			}
 		}
 		break;
 	}
 	case 1: {
 		//ham load file o day
-		if (getInput() == 6) {
-			menu::clearConsole();
-			menuSelection();
+		int c = -1;
+		while (c != 6) {
+			c = getInput();
+			if (c == 6) {
+				menu::clearConsole();
+				menuSelection();
+				break;
+			}
 		}
+
 		break;
 	}
 	case 2: {
 		menu::aboutScreen();
-		if (getInput() == 6) {
-			menu::clearConsole();
-			menuSelection();
+		int c = -1;
+		while (c != 6) {
+			c = getInput();
+			if (c == 6) {
+				menu::clearConsole();
+				menuSelection();
+				break;
+			}
 		}
+		
 		break;
 	}
 	case 3: {
 		menu::helpScreen();
-		if (getInput() == 6) {
-			menu::clearConsole();
-			menuSelection();
+		int c = -1;
+		while (c != 6) {
+			c = getInput();
+			if (c == 6) {
+				menu::clearConsole();
+				menuSelection();
+				break;
+			}
 		}
+
 		break;
 	}
 	case 4: {
 		//menu::exitScreen();
+		int c = -1;
+		while (c != 6) {
+			c = getInput();
+			if (c == 6) {
+				menu::clearConsole();
+				menuSelection();
+				break;
+			}
+		}
+
 		break;
 	}
 	default: break;
