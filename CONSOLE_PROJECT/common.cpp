@@ -95,15 +95,21 @@ void coutColored(char chr, int color)
 int getInput()
 {
     char c = _getch();
-    if (c == 'w' || c == 72)    return 1; // up
-    if (c == 'a' || c == 75)    return 2; // left
-    if (c == 's' || c == 80)    return 3; // down
-    if (c == 'd' || c == 77)    return 4; // right
-    if (c == '\r' || c == ' ')  return 5; // select
-    if (c == 27)                return 6; // esc
-    if (c == 'o')               return 7; // save
-    if (c == 'i')               return 8; // load
-    if (c == 'y')                 return 9;//continue playing
-    if (c == 'n')                  return 10;
+    
+    if (c == 'w' || c == 'W' || c == 72)    return 1; // up
+    if (c == 'a' || c == 'A' || c == 75)    return 2; // left
+    if (c == 's' || c == 'S' || c == 80)    return 3; // down
+    if (c == 'd' || c == 'D' || c == 77)    return 4; // right
+    if (c == '\r' || c == ' ')              return 5; // select
+    if (c == 27)                            return 6; // esc
+    if (c == 'o' || c == 'O')               return 7; // save
+    if (c == 'i' || c == 'I')               return 8; // load
+    if (c == 'y' || c == 'Y')               return 9;//continue playing
+    if (c == 'n' || c == 'N')               return 10;
                                 return 0; // default              
+}
+
+void printText(string text, int x, int y) {
+    common::gotoXY(x, y);
+    cout << text;
 }

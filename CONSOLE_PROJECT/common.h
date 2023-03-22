@@ -58,3 +58,4 @@ public:
 void coutColored(string str, int color);
 void coutColored(char chr, int color);
 int getInput();
+void printText(string text, int x, int y);
