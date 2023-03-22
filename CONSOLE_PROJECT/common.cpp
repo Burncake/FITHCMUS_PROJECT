@@ -108,7 +108,6 @@ int getInput()
     if (c == 'n' || c == 'N')               return 10;
                                 return 0; // default              
 }
-
 void printText(string text, int x, int y) {
     common::gotoXY(x, y);
     cout << text;

@@ -2,10 +2,9 @@
 #include "menu.h"
 int main()
 {
-	/*game::game_pvp();
-	return 0;*/
+	//game::game_pvp();
 	system("color F0");
-	menu::clearConsole();
-	menu::menuSelection();
+	menu::printOptionsBoard();
+	return 0;
 }
 
