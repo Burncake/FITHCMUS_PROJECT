@@ -348,27 +348,6 @@ void menu::mainScreen() {
 	printText(options[4], x + 3, y + 8);
 	common::gotoXY(x + 3, y + 10);
 }
-void menu::drawGameMode() {
-	int x = 51, y = 14;
-	common::setColor(Blue);
-	menu::printLogo();
-	common::setColor(Black);
-	menu::printModeBoard();
-	printText(gameMode[0], x + 4, y);
-	printText(gameMode[1], x + 1, y + 2);
-	printText(gameMode[2], x + 1, y + 4);
-}
-void menu::printModeBoard() {
-	common::setColor(Black);
-	int left = 50;
-	int top = 13;
-	common::gotoXY(left, top);
-	putchar(201);
-	for (int i = 1; i < 12; i++)
-	{
-		putchar(205);
-	}
-	putchar(187);
 
 
 ////thay doi lua chon, truyen tham so direction 0 de di len hoac 1 de di xuong

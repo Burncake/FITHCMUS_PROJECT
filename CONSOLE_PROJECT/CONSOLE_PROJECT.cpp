@@ -4,7 +4,7 @@ int main()
 {
 	//game::game_pvp();
 	system("color F0");
-	menu::printOptionsBoard();
+	menu::menuSelection();
 	return 0;
 }
 
