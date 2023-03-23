@@ -10,7 +10,7 @@ void menu::mainScreen(int selectedMenu) {
 	int x = 51, y = 14;
 	int flag = selectedMenu;
 	common::setUpConsole();
-	common::setColor(Cyan);
+	common::setColor(DarkCyan);
 	menu::printLogo();
 	common::setColor(Black);
 	menu::printOptionsBoard();
@@ -183,7 +183,7 @@ void menu::drawGameMode(int selectedMode) {
 	//menu::clearConsole();
 	int x = 51, y = 14;
 	int flag = selectedMode;
-	common::setColor(Cyan);
+	common::setColor(DarkCyan);
 	menu::printLogo();
 	common::setColor(Black);
 	menu::printModeBoard();
@@ -308,7 +308,7 @@ void menu::printOptionsBoard() {
 //Luat choi
 void menu::helpScreen() {
 	menu::clearConsole();
-	common::setColor(Cyan);
+	common::setColor(DarkCyan);
 	menu::printLogo();
 
 	int x = 18;
@@ -335,13 +335,12 @@ void menu::helpScreen() {
 //Thong tin nhom
 void menu::aboutScreen() {
 	menu::clearConsole();
-	common::setColor(Cyan);
+	common::setColor(DarkCyan);
 	menu::printLogo();
 	common::setColor(Black);
 	printText("ABOUT", 57, 12);
 	printText("=============== DO AN CARO ===============", 39, 14);
 	printText("  TRUONG DAI HOC KHOA HOC TU NHIEN", 43, 15);
-
 	printText("==========  GIAO VIEN HUONG DAN ==========", 39, 18);
 	printText(" THAY TRUONG TOAN THINH", 48, 19);
 	printText("============  NHOM 3 - 22CLC01 ============", 39, 21);
