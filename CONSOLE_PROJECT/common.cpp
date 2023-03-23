@@ -74,8 +74,14 @@ void common::setColor(int color)
 
 void common::playSound(int i)
 {
-    static const wchar_t* fileName[7] = { L"background.wav", L"start.wav", 
-        L"move.wav", L"select.wav", L"win.wav", L"lose.wav", L"draw.wav" };
+    static const wchar_t* fileName[7] = { 
+        L"resources/background.wav", 
+        L"resources/start.wav", 
+        L"resources/move.wav", 
+        L"resources/select.wav", 
+        L"resources/win.wav", 
+        L"resources/lose.wav", 
+        L"resources/draw.wav" };
     PlaySound(fileName[i], NULL, SND_FILENAME | SND_ASYNC);
 }
 

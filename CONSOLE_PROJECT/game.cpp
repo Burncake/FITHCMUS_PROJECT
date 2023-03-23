@@ -344,6 +344,7 @@ void game::endEffect() {
 
 void game::x_win_effect()
 {
+	common::playSound(Win);
 	for (int color = 241; color < 256; color++) {
 		for (int i = 0; i <= 10; i++) {
 			for (int j = 0; j < 6; j++) {
@@ -374,6 +375,7 @@ void game::x_win_effect()
 
 void game::o_win_effect()
 {
+	common::playSound(Win);
 	for (int color = 241; color < 256; color++) {
 		for (int i = 0; i <= 10; i++) {
 			for (int j = 0; j < 6; j++) {
@@ -404,6 +406,7 @@ void game::o_win_effect()
 
 void game::draw_effect()
 {
+	common::playSound(Draw);
 	for (int color = 241; color < 256; color++) {
 		for (int i = 0; i <= 10; i++)
 			for (int j = 0; j < 6; j++) {

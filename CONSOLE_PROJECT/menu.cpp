@@ -1,7 +1,7 @@
 #include "menu.h"
 
 //cac lua chon trong menu
-string options[] = { "PLAY GAME", "LOAD GAME", "ABOUT","HELP", "EXIT" };
+string options[] = { "PLAY GAME", "LOAD GAME", "ABOUT", "HELP", "EXIT" };
 //cac che do choi
 string gameMode[] = { "PvP","PvC(easy)","PvC(hard)" };
 //man hinh chinh
@@ -85,7 +85,7 @@ void menu::modeSelection() {
 }
 
 void menu::menuSelection() {
-	common::playSound(Start);
+	common::playSound(Background);
 	int selectedMenu = 0;
 	
 	common::showCursor(false);
