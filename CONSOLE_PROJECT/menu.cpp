@@ -10,34 +10,34 @@ void menu::mainScreen(int selectedMenu) {
 	int x = 51, y = 14;
 	int flag = selectedMenu;
 	common::setUpConsole();
-	common::setColor(Blue);
+	common::setColor(Cyan);
 	menu::printLogo();
 	common::setColor(Black);
 	menu::printOptionsBoard();
-	common::setColor(Red);
+	common::setColor(Black);
 	
 	if (flag == 0) {
-		common::setColor(Cyan);
+		common::setColor(Red);
 	}
 	printText(options[0], x + 1, y);
-	common::setColor(Red);
+	common::setColor(Black);
 	if (flag == 1) {
-		common::setColor(Cyan);
+		common::setColor(Red);
 	}
 	printText(options[1], x + 1, y + 2);
-	common::setColor(Red);
+	common::setColor(Black);
 	if (flag == 2) {
-		common::setColor(Cyan);
+		common::setColor(Red);
 	}
 	printText(options[2], x + 3, y + 4);
-	common::setColor(Red);
+	common::setColor(Black);
 	if (flag == 3) {
-		common::setColor(Cyan);
+		common::setColor(Red);
 	}
 	printText(options[3], x + 3, y + 6);
-	common::setColor(Red);
+	common::setColor(Black);
 	if (flag == 4) {
-		common::setColor(Cyan);
+		common::setColor(Red);
 	}
 	printText(options[4], x + 3, y + 8);
 	
@@ -183,23 +183,23 @@ void menu::drawGameMode(int selectedMode) {
 	//menu::clearConsole();
 	int x = 51, y = 14;
 	int flag = selectedMode;
-	common::setColor(Blue);
+	common::setColor(Cyan);
 	menu::printLogo();
 	common::setColor(Black);
 	menu::printModeBoard();
-	common::setColor(Red);
+	common::setColor(Black);
 	if (flag == 0) {
-		common::setColor(Cyan);
+		common::setColor(Red);
 	}
 	printText(gameMode[0], x + 4, y);
-	common::setColor(Red);
+	common::setColor(Black);
 	if (flag == 1) {
-		common::setColor(Cyan);
+		common::setColor(Red);
 	}
 	printText(gameMode[1], x + 1, y + 2);
-	common::setColor(Red);
+	common::setColor(Black);
 	if (flag == 2) {
-		common::setColor(Cyan);
+		common::setColor(Red);
 	}
 	printText(gameMode[2], x + 1, y + 4);
 }
@@ -308,7 +308,7 @@ void menu::printOptionsBoard() {
 //Luat choi
 void menu::helpScreen() {
 	menu::clearConsole();
-	common::setColor(Blue);
+	common::setColor(Cyan);
 	menu::printLogo();
 
 	int x = 18;
@@ -328,13 +328,14 @@ void menu::helpScreen() {
 	printText(" theo hang ngang, hang doc hoac hang cheo ma khong bi chan o hai dau", x, ++y);
 	printText(" - Khi tat ca cac o tren ban co deu kin ma chua ai chien thang thi game dau hoa nhau.", x, ++y);
 	printText(" - Chuc cac ban choi game vui ve. An ESC de tro ve menu chinh.", x, ++y);
+	printText("Press ESC to go back", 50, 28);
 
 }
 
 //Thong tin nhom
 void menu::aboutScreen() {
 	menu::clearConsole();
-	common::setColor(Blue);
+	common::setColor(Cyan);
 	menu::printLogo();
 	common::setColor(Black);
 	printText("ABOUT", 57, 12);
@@ -346,7 +347,9 @@ void menu::aboutScreen() {
 	printText("============  NHOM 3 - 22CLC01 ============", 39, 21);
 	printText("22127141 - NGO HOANG NAM HUNG", 46, 22);
 	printText("22127234 - CAO HOANG LOC", 46, 23);
-	printText("22127422 - LE THANH MINH TRI", 46, 24);
+	printText("22127418 - NGUYEN KHANH TOAN", 46, 24);
+	printText("22127422 - LE THANH MINH TRI", 46, 25);
+	printText("Press ESC to go back", 50, 28);
 }
 
 
