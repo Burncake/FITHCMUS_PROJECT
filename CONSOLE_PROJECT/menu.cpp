@@ -316,14 +316,13 @@ void menu::helpScreen() {
 	int left = 17, top = 11, width = 86, height = 14;
 	common::setColor(Black);
 	menu::printRectangle(left, top, width, height);
-	printText(" ================================= HUONG DAN ==================================", x, y);
-	printText(" - Tro choi su dung hai ki hieu 'X','O' de dai dien cho hai nguoi choi.", x, ++y);
-	printText(" - Trong muc menu su dung cac phim 'A', 'S', 'Enter' de di chuyen va chon. ", x, ++y);
-	printText(" - Chon 'PLAY Game' de bat dau tro choi.                                       ", x, ++y);
-	printText(" - Nguoi choi su dung cac phim 'S' de di chuyen xuong duoi, 'W' de di chuyen", x, ++y);
-	printText(" len tren, 'A' de di chuyen sang trai, 'D' de di chuyen sang phai.", x, ++y);
+	printText(" ==================================== HUONG DAN =====================================", x, y);
+	printText(" 'W' : di chuyen len tren \t\t\t 'S' : di chuyen xuong duoi", x + 3, ++y);
+	printText(" 'A' : di chuyen sang trai\t\t\t 'D' : di chuyen sang phai ", x + 3, ++y);
 	++y;
-	printText(" ================================= LUAT CHOI ==================================", x, ++y);
+	printText(" \t\t\t- Chon 'PLAY Game' de bat dau tro choi.", x, ++y);
+	++y;
+	printText(" ==================================== LUAT CHOI =====================================", x, ++y);
 	printText(" - Hai nguoi choi  lan luot di chuyen va chon vao cac o chua duoc danh. ", x, ++y);
 	printText(" - Nguoi choi se chien thang tro choi khi nguoi choi do co 5 quan co lien tiep nhau", x, ++y);
 	printText(" theo hang ngang, hang doc hoac hang cheo ma khong bi chan o hai dau", x, ++y);
@@ -344,7 +343,7 @@ void menu::aboutScreen() {
 
 	printText("==========  GIAO VIEN HUONG DAN ==========", 39, 18);
 	printText(" THAY TRUONG TOAN THINH", 48, 19);
-	printText("============  NHOM 22 - 20CTT3 ============", 39, 21);
+	printText("============  NHOM 3 - 22CLC01 ============", 39, 21);
 	printText("22127141 - NGO HOANG NAM HUNG", 46, 22);
 	printText("22127234 - CAO HOANG LOC", 46, 23);
 	printText("22127422 - LE THANH MINH TRI", 46, 24);
