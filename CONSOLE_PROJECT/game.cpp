@@ -20,8 +20,8 @@ void game::game_pvp()
 		g.showScore();
 		system("cls");
 		g.endEffect();
-		g.askContinuePlay(key);
 		do {
+			g.askContinuePlay(key);
 			if (key == 9) {
 				g.resetData();
 				key = -1;
@@ -42,7 +42,7 @@ void game::game_pvp()
 				key = -1;
 				break;
 			}
-			key = getInput();
+			
 		} while (key != 9 && key != 10);
 	} while (1);
 	
