@@ -12,6 +12,7 @@ void common::setUpConsole()
     disableScroll();
     disableMouseSelect();
     showCursor(FALSE);
+    changeFont();
 }
 
 void common::setUpWindow()
@@ -76,6 +77,18 @@ void common::playSound(int i)
     static const wchar_t* fileName[7] = { L"background.wav", L"start.wav", 
         L"move.wav", L"select.wav", L"win.wav", L"lose.wav", L"draw.wav" };
     PlaySound(fileName[i], NULL, SND_FILENAME | SND_ASYNC);
+}
+
+void common::changeFont(){
+    CONSOLE_FONT_INFOEX cfi;
+    cfi.cbSize = sizeof(cfi);
+    cfi.nFont = 0;
+    cfi.dwFontSize.X = 0;                   // Width of each character in the font
+    cfi.dwFontSize.Y = 16;                  // Height
+    cfi.FontFamily = FF_DONTCARE;
+    cfi.FontWeight = FW_NORMAL;
+    std::wcscpy(cfi.FaceName, L"Consolas"); // Choose your font
+    SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &cfi);
 }
 
 void coutColored(string str, int color)

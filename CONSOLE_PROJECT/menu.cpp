@@ -70,6 +70,7 @@ void menu::modeSelection() {
 	switch (selectedMode) {
 	case 0: {
 		game::game_pvp();
+		
 		break;
 	}
 	case 1: {
@@ -107,15 +108,7 @@ void menu::menuSelection() {
 	switch (selectedMenu) {
 	case 0: {
 		menu::modeSelection();
-		int c = -1;
-		while (c != 6) {
-			c = getInput();
-			if (c == 6) {
-				menu::clearConsole();
-				menuSelection();
-				break;
-			}
-		}
+		
 		break;
 	}
 	case 1: {

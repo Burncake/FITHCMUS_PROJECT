@@ -45,5 +45,5 @@ public:
 	void o_win_effect();
 	void draw_effect();
 	void resetData();
-	void getContinuePlay(int &key);
+	void askContinuePlay(int &key);
 };

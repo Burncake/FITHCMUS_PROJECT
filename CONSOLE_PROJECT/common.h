@@ -54,6 +54,7 @@ public:
 	static void gotoXY(int x, int y);
 	static void setColor(int color);
 	static void playSound(int i);
+	static void changeFont();
 };
 void coutColored(string str, int color);
 void coutColored(char chr, int color);

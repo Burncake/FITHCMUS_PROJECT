@@ -20,20 +20,32 @@ void game::game_pvp()
 		g.showScore();
 		system("cls");
 		g.endEffect();
-		g.getContinuePlay(key);
-		if (key == 9) g.resetData();
-	} while (key == 9);
-	if (key == 10) {
-		system("cls");
-		common::setUpConsole();
-		system("color F0");
-		drawBoard();
-		drawInformation();
-		common::playSound(Start);
-		g.showScore();
-		key = getInput();
-		if (key == 9) g.game_pvp();
-	}
+		g.askContinuePlay(key);
+		do {
+			if (key == 9) {
+				g.resetData();
+				key = -1;
+				break;
+			}
+			else if (key == 10) {
+				system("cls");
+				common::setUpConsole();
+				system("color F0");
+				drawBoard();
+				drawInformation();
+				common::playSound(Start);
+				g.showScore();
+				// them ham load vi tri cu
+				//
+				//
+				//
+				key = -1;
+				break;
+			}
+			key = getInput();
+		} while (key != 9 && key != 10);
+	} while (1);
+	
 }
 
 void game::drawBoard()
@@ -447,11 +459,11 @@ void game::resetData() {
 	x_turn = true;
 }
 
-void game::getContinuePlay(int& key) {
+void game::askContinuePlay(int& key) {
 	common::gotoXY(55, 24);
 	cout << "Continue?";
-	common::gotoXY(31, 25);
-	cout << "Press Y to continue, or any key else to get back to menu.";
+	common::gotoXY(38, 25);
+	cout << "Press Y to continue, N to see the last board.";
 	FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
 	key = getInput();
 	//if (i == 6) exit(0);
