@@ -6,7 +6,6 @@ string options[] = { "PLAY GAME", "LOAD GAME", "ABOUT","HELP", "EXIT" };
 string gameMode[] = { "PvP","PvC(easy)","PvC(hard)" };
 //man hinh chinh
 void menu::mainScreen(int selectedMenu) {
-	//menu::clearConsole();
 	int x = 51, y = 14;
 	int flag = selectedMenu;
 	common::setUpConsole();
