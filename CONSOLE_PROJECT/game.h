@@ -18,7 +18,6 @@ static int setC = 60, setR = 15;
 
 class game {
 public:
-	string x_player{}, o_player{};
 	int x_score = 0, o_score = 0, x_count = 0, o_count = 0, x = 0, y = 0;
 	int board[size][size]{};
 	bool x_turn = true;
@@ -42,4 +41,6 @@ public:
 	void draw_effect();
 	void resetData();
 	void askContinuePlay(int &key);
+	void saveGame(string file);
+	void loadGame(string file);
 };

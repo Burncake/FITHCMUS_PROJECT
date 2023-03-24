@@ -423,5 +423,22 @@ void game::askContinuePlay(int& key) {
 	//if (i == 6) exit(0);
 }
 
+void game::saveGame(string file)
+{
+	ofstream game(file);
+	if (!game) return;
+	int cur = 0;
+	/* 
+	x_score o_score
+	x_count o_count
+	x		y
+	board
+	*/
+}
+
+void game::loadGame(string file)
+{
+}
+
 
 
