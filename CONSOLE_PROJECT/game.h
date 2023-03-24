@@ -27,10 +27,6 @@ public:
 	static void game_pvp();
 	static void drawBoard();
 	static void draw_txt(string name, int x, int y, int color);
-	static void clLogoX();
-	static void clLogoO();
-	static void logoX();
-	static void logoO();
 	static void drawInstruct();
 	static void drawInformation();
 	void showTurn();

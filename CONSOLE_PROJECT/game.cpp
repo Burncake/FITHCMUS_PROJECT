@@ -86,7 +86,7 @@ void game::drawBoard()
 
 void game::draw_txt(string name, int x, int y, int color)
 {
-	ifstream pic(loc + name + ".txt");
+	ifstream pic(loc + name);
 	if (!pic) return;
 	string line;
 	while (getline(pic, line)) {
@@ -94,55 +94,6 @@ void game::draw_txt(string name, int x, int y, int color)
 		coutColored(line, color);
 	}
 	pic.close();
-}
-
-void game::clLogoX() {
-	int i = setC, j = setR - setR;
-	ifstream xLogo("logoX.txt");
-	if (!xLogo) return;
-	string line;
-	while (getline(xLogo, line)) {
-		common::gotoXY(i, j);
-		coutColored(line, Red);
-		++j;
-	}
-	xLogo.close();
-}
-void game::clLogoO() {
-	int i = setC + 31, j = setR - setR;
-	ifstream oLogo("logoO.txt");
-	if (!oLogo) return;
-	string line;
-	while (getline(oLogo, line)) {
-		common::gotoXY(i, j);
-		coutColored(line, Blue);
-		++j;
-	}
-	oLogo.close();
-}
-void game::logoX() {
-	int i = setC, j = setR - setR;
-	ifstream xLogo("logoX.txt");
-	if (!xLogo) return;
-	string line;
-	while (getline(xLogo, line)) {
-		common::gotoXY(i, j);
-		coutColored(line, Grey);
-		++j;
-	}
-	xLogo.close();
-}
-void game::logoO() {
-	int i = setC + 31, j = setR - setR;
-	ifstream oLogo("logoO.txt");
-	if (!oLogo) return;
-	string line;
-	while (getline(oLogo, line)) {
-		common::gotoXY(i, j);
-		coutColored(line, Grey);
-		++j;
-	}
-	oLogo.close();
 }
 
 void game::drawInstruct() {
@@ -172,8 +123,8 @@ void game::drawInstruct() {
 
 void game::drawInformation() {
 	int xC = 0, oC = 0;
-	clLogoX();
-	logoO();
+	draw_txt("logoX.txt", setC, 0, Red);
+	draw_txt("logoO.txt", setC + 31, 0, Grey);
 	drawInstruct();
 	for (int i = 1; i <= dSizeC; ++i) {
 		for (int j = 1; j <= dSizeR; ++j) {
@@ -273,15 +224,15 @@ void game::processBoard() {
 	if (x_turn) {
 		board[y][x] = 1;
 		x_count++;
-		logoX();
-		clLogoO();
+		draw_txt("logoX.txt", setC, 0, Grey);
+		draw_txt("logoO.txt", setC + 31, 0, Blue);
 		x_turn = false;
 	}
 	else {
 		board[y][x] = 2;
 		o_count++;
-		logoO();
-		clLogoX();
+		draw_txt("logoO.txt", setC + 31, 0, Grey);
+		draw_txt("logoX.txt", setC, 0, Red);
 		x_turn = true;
 	}
 }
@@ -368,7 +319,7 @@ void game::x_win_effect()
 			}
 		}
 		if (color == DarkWhite || color == Yellow || color == DarkYellow || color == Cyan || color == White) continue;
-		draw_txt("x_win", fSizeC + 10, dSizeR - 4, color);
+		draw_txt("x_win.txt", fSizeC + 10, dSizeR - 4, color);
 		Sleep(400);
 	}
 }
@@ -399,7 +350,7 @@ void game::o_win_effect()
 			}
 		}
 		if (color == DarkWhite || color == Yellow || color == DarkYellow || color == Cyan || color == White) continue;
-		draw_txt("o_win", fSizeC + 10, dSizeR - 4, color);
+		draw_txt("o_win.txt", fSizeC + 10, dSizeR - 4, color);
 		Sleep(400);
 	}
 }
@@ -447,7 +398,7 @@ void game::draw_effect()
 				}
 			}
 		if (color == DarkWhite || color == Yellow || color == DarkYellow || color == Cyan || color == White) continue;
-		draw_txt("draw", fSizeC + 7, dSizeR - 3, color);
+		draw_txt("draw.txt", fSizeC + 7, dSizeR - 3, color);
 		Sleep(400);
 	}
 }
