@@ -425,19 +425,37 @@ void game::askContinuePlay(int& key) {
 
 void game::saveGame(string file)
 {
-	ofstream game(file);
+	ifstream game(file);
 	if (!game) return;
-	int cur = 0;
-	/* 
+	game >> x_score >> o_score;
+	game >> x_count >> o_count;
+	game >> x >> y;
+	for (int i = 0; i < size; i++)
+		for (int j = 0; j < size; j++)
+			game >> board[i][j];
+	game.close();
+}
+
+void game::loadGame(string file)
+{
+	/*
 	x_score o_score
 	x_count o_count
 	x		y
 	board
 	*/
-}
-
-void game::loadGame(string file)
-{
+	ofstream game(file);
+	if (!game) return;
+	game << x_score << " " << o_score << endl;
+	game << x_count << " " << o_count << endl;
+	game << x << " " << y << endl;
+	for (int i = 0; i < size; i++) {
+		game << " ";
+		for (int j = 0; j < size; j++)
+			game << board[i][j] << " ";
+		game << endl;
+	}
+	game.close();
 }
 
 
