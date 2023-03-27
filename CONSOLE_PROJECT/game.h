@@ -13,15 +13,15 @@
 #define fSizeR 13
 #define consoleR 119
 #define consoleD 29
-
+#define maxDepth 5
 static int setC = 60, setR = 15;
 
 class game {
 public:
-	int x_score = 0, o_score = 0, x_count = 0, o_count = 0, x = 0, y = 0;
+	int x_score = 0, o_score = 0, x_count = 0, o_count = 0, x = 0, y = 0, depth=15, value = 0, pos_i = -1, pos_j = -1;
 	int board[size][size]{};
 	bool x_turn = true;
-	
+	int scoreVal[size][size];
 
 	static void game_pvp();
 	static void drawBoard();
@@ -43,4 +43,12 @@ public:
 	void askContinuePlay(int &key);
 	void saveGame(string file);
 	void loadGame(string file);
+	int minimax(bool isMaxiPlayer, int depth, int alpha, int beta);
+	//void dummyBoard();
+	void findBestMove(bool isMaxiPlayer, int  &pos_i, int &pos_j);
+	void pveMove();
+	static void game_pve();
+	void processBoardPveX();
+	void processBoardPveO();
+
 };

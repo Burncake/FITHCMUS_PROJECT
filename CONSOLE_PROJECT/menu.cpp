@@ -74,7 +74,7 @@ void menu::modeSelection() {
 		break;
 	}
 	case 1: {
-		//game::game_pvc_easy;
+		game::game_pve();
 		break;
 	}
 	case 2: {

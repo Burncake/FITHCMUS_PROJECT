@@ -42,10 +42,10 @@ void game::game_pvp()
 				key = -1;
 				break;
 			}
-			
+
 		} while (key != 9 && key != 10);
 	} while (1);
-	
+
 }
 
 void game::drawBoard()
@@ -428,7 +428,7 @@ void game::saveGame(string file)
 	ofstream game(file);
 	if (!game) return;
 	int cur = 0;
-	/* 
+	/*
 	x_score o_score
 	x_count o_count
 	x		y
@@ -439,6 +439,213 @@ void game::saveGame(string file)
 void game::loadGame(string file)
 {
 }
+int game::minimax(bool isMaxiPlayer, int depth, int alpha, int beta) {
+	int val = 0;
+	bool stop = false;
+	if (depth == 0) return 0;
+	int i = 0, j = 0;
+	if (draw()) {
+		return 0;
+	}
+	else if (win()) {
+		if (!x_turn) {
+			return -10-depth;
+		}
+		else {
+			return 10+depth;
+		}
+	}
+	//else if (depth == 0) return value;
+	if (isMaxiPlayer) {
+		int bestVal = -1000;
+		for (i =0; i < 3 &&(!stop); ++i)
+			for (j = 0; j < 3 &&(!stop); ++j)
+				if (board[i][j] == 0) {
+					board[i][j] = 1;
+					val = minimax(false, depth - 1, alpha, beta);
+					board[i][j] = 0;
+					bestVal = max(bestVal, val);
+					alpha = max(alpha, bestVal);
+					if (beta <= alpha) {
+						stop = true;
+					}
+				}
+		return bestVal;
+	}
+	else {
+		int bestVal = 1000;
+		for (i = 0; i < 3 &&(!stop); ++i)
+			for (j = 0; j < 3 &&(!stop); ++j)
+				if (board[i][j] == 0) {
+					board[i][j] = 2;
+					val = minimax(true, depth - 1, alpha, beta);
+					board[i][j] = 0;
+					bestVal = min(bestVal, val);
+					beta = min(beta, bestVal);
+					if (beta <= alpha) {
+						stop = true;
+					}
+				}
+		return bestVal;
+	}
+}//fix my  findBestMove function
+
+void game::findBestMove(bool isMaxiPlayer, int& pos_i, int& pos_j) {
+	int bestVal = -1000;
+	//minimax(false,depth,-1000, 1000);
+	for (int i = 0; i < size; ++i) {
+		for (int j = 0; j < size; ++j) {
+			//cout << board[i][j];
+			if (board[i][j] == 0) {
+				board[i][j] = 2;
+				int val = minimax(false, depth, -1000, 1000);
+				if (val > bestVal) {
+					bestVal = val;
+					pos_i = i;
+					pos_j = j;
+				}
+				board[i][j] = 0;
+				//printf("%d ", i, j);
+			}
+		}
+	}
+		printf("%d %d ", pos_i, pos_j);
+
+}
+void game::pveMove() {
+	int tx = x, ty = y;
+	common::gotoXY(6 + 4 * x, 3 + 2 * y);
+	if (board[y][x] == 0) {
+		if (x_turn)		coutColored(char(120), PointerColor);
+		else			coutColored(char(248), PointerColor);
+	}
+	if (board[y][x] == 1) coutColored("X", 178);
+	if (board[y][x] == 2) coutColored("O", 181);
+	int i = getInput();
+	switch (i) {
+	case 1:
+		common::playSound(Move);
+		y--;
+		if (y < 0) y = size - 1;
+		break;
+	case 2:
+		common::playSound(Move);
+		x--;
+		if (x < 0) x = size - 1;
+		break;
+	case 3:
+		common::playSound(Move);
+		y++;
+		if (y > size - 1) y = 0;
+		break;
+	case 4:
+		common::playSound(Move);
+		x++;
+		if (x > size - 1) x = 0;
+		break;
+	case 5:
+		common::playSound(Select);
+		processBoardPveX();
+		//x_turn = false;
+		//findMove(false);
+		break;
+	}
+	if (board[ty][tx] == 0) {
+		common::gotoXY(6 + 4 * tx, 3 + 2 * ty);
+		cout << " ";
+	}
+	if (board[ty][tx] == 1) {
+		common::gotoXY(6 + 4 * tx, 3 + 2 * ty);
+		coutColored("X", DarkRed);
+	}
+	if (board[ty][tx] == 2) {
+		common::gotoXY(6 + 4 * tx, 3 + 2 * ty);
+		coutColored("O", DarkBlue);
+	}
+	
+	//processBoardPveO();
+	
+}
+
+void game::game_pve() {
+
+	game g;
+	//g.minimax(false);
+	int key = -1;
+	do {
+		system("cls");
+		common::setUpConsole();
+		system("color F0");
+		drawBoard();
+		drawInformation();
+		common::playSound(Start);
+		g.showScore();
+		while (!g.draw()) {
+			g.showTurn();
+			//if (g.x_turn)
+			g.pveMove();
+			if (g.win()) break;
+			//g.findBestMove(false, g.pos_i, g.pos_j);
+			g.processBoardPveO();
+			if (g.win()) break;
 
 
+		}
+		g.score();
+		g.showScore();
+		system("cls");
+		g.endEffect();
+		do {
+			g.askContinuePlay(key);
+			if (key == 9) {
+				g.resetData();
+				key = -1;
+				break;
+			}
+			else if (key == 10) {
+				system("cls");
+				common::setUpConsole();
+				system("color F0");
+				drawBoard();
+				drawInformation();
+				common::playSound(Start);
+				g.showScore();
+				// them ham load vi tri cu
+				//
+				//
+				//
+				key = -1;
+				break;
+			}
 
+		} while (key != 9 && key != 10);
+	} while (1);
+}
+
+void game::processBoardPveX() {
+	if (board[y][x]) return;
+	if (x_turn) {
+		board[y][x] = 1;
+		x_count++;
+		draw_txt("logoX.txt", setC, 0, Grey);
+		draw_txt("logoO.txt", setC + 31, 0, Blue);
+		x_turn = false;
+	}
+	
+}
+void game::processBoardPveO() {
+	if (!x_turn) {
+	   findBestMove(false, pos_j, pos_i);
+		x= pos_i;
+		y = pos_j;
+		board[y][x] = 2;
+		//board[pos_i][pos_j] = 2;
+		common::gotoXY(6 + 4 * pos_i, 3 + 2 * pos_j);
+		coutColored("O", DarkBlue);
+		o_count++;
+		Sleep(100);
+		draw_txt("logoO.txt", setC + 31, 0, Grey);
+		draw_txt("logoX.txt", setC, 0, Red);
+		x_turn = true;
+	}
+}
