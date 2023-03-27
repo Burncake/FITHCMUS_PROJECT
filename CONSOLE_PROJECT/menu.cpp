@@ -1,9 +1,9 @@
 #include "menu.h"
 
 //cac lua chon trong menu
-string options[] = { "PLAY GAME", "LOAD GAME", "ABOUT", "HELP", "EXIT" };
+string options[] = { "PLAY GAME", "LOAD GAME", "ABOUT", "HELP","SETTING", "EXIT" };
 //cac che do choi
-string gameMode[] = { "PvP","PvC(easy)","PvC(hard)" };
+string gameMode[] = { "PvP","PvC" };
 //man hinh chinh
 void menu::mainScreen(int selectedMenu) {
 	int x = 51, y = 14;
@@ -38,9 +38,16 @@ void menu::mainScreen(int selectedMenu) {
 	if (flag == 4) {
 		common::setColor(Red);
 	}
-	printText(options[4], x + 3, y + 8);
+	printText(options[4], x + 2, y + 8);
 	
-	common::gotoXY(x + 3, y + 8);
+	common::gotoXY(x + 2, y + 8);
+	common::setColor(Black);
+	if (flag == 5) {
+		common::setColor(Red);
+	}
+	printText(options[5], x + 3, y + 10);
+
+	common::gotoXY(x + 3, y + 10);
 }
 void menu::modeSelection() {
 	int selectedMode = 0;
@@ -51,10 +58,10 @@ void menu::modeSelection() {
 		int a = getInput();
 		common::playSound(Move);
 		if (a == 1) {
-			selectedMode = (selectedMode - 1 + 3) % 3;
+			selectedMode = (selectedMode - 1 + 2) % 2;
 		}
 		else if (a == 3) {
-			selectedMode = (selectedMode + 1) % 3;
+			selectedMode = (selectedMode + 1) % 2;
 		}
 		else if (a == 5) {
 			common::playSound(Select);
@@ -77,10 +84,7 @@ void menu::modeSelection() {
 		game::game_pve();
 		break;
 	}
-	case 2: {
-		//game::game_pvc_hard;
-		break;
-	}
+	
 	}
 }
 
@@ -94,10 +98,10 @@ void menu::menuSelection() {
 		int a = getInput();
 		common::playSound(Move);
 		if (a == 1) {
-			selectedMenu = (selectedMenu - 1 + 5) % 5;
+			selectedMenu = (selectedMenu - 1 + 6) % 6;
 		}
 		else if (a == 3) {
-			selectedMenu = (selectedMenu + 1) % 5;
+			selectedMenu = (selectedMenu + 1) % 6;
 		}
 		else if (a == 5) {
 			common::playSound(Select);
@@ -154,6 +158,20 @@ void menu::menuSelection() {
 		break;
 	}
 	case 4: {
+		//menu::setting();
+		int c = -1;
+		while (c != 6) {
+			c = getInput();
+			if (c == 6) {
+				menu::clearConsole();
+				menuSelection();
+				break;
+			}
+		}
+
+		break;
+	}
+	case 5: {
 		//menu::exitScreen();
 		int c = -1;
 		while (c != 6) {
@@ -188,12 +206,9 @@ void menu::drawGameMode(int selectedMode) {
 	if (flag == 1) {
 		common::setColor(Red);
 	}
-	printText(gameMode[1], x + 1, y + 2);
+	printText(gameMode[1], x + 4, y + 2);
 	common::setColor(Black);
-	if (flag == 2) {
-		common::setColor(Red);
-	}
-	printText(gameMode[2], x + 1, y + 4);
+	
 }
 //ve bang cac che do game
 void menu::printModeBoard() {
@@ -209,7 +224,7 @@ void menu::printModeBoard() {
 	putchar(187);
 
 
-	for (int i = 1; i < 6; i++)
+	for (int i = 1; i < 4; i++)
 	{
 		common::gotoXY(left, top + i);
 		if (i % 2 != 0)
@@ -228,7 +243,7 @@ void menu::printModeBoard() {
 			putchar(182);
 		}
 	}
-	common::gotoXY(left, top + 6);
+	common::gotoXY(left, top + 4);
 	putchar(200);
 	for (int i = 1; i < 12; i++)
 	{
@@ -269,7 +284,7 @@ void menu::printOptionsBoard() {
 	putchar(187);
 
 
-	for (int i = 1; i < 10; i++)
+	for (int i = 1; i < 12; i++)
 	{
 		common::gotoXY(left, top + i);
 		if (i % 2 != 0)
@@ -288,7 +303,7 @@ void menu::printOptionsBoard() {
 			putchar(182);
 		}
 	}
-	common::gotoXY(left, top + 10);
+	common::gotoXY(left, top + 12);
 	putchar(200);
 	for (int i = 1; i < 12; i++)
 	{

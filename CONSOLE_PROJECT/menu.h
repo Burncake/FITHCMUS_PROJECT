@@ -19,10 +19,7 @@ public:
 	//static void playMenu();						
 	static void helpScreen();	
 	static void aboutScreen();
-	//static void exitScreen();			
-	//static void playPvP();							
-	//static void playPvC1();								
-	//static void playPvC2();								
+	//static void exitScreen();										
 	static void printLogo();		
 	static void printOptionsBoard();
 	static void clearConsole();
