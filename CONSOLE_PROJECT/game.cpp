@@ -428,16 +428,24 @@ void game::saveGame(string file)
 	ofstream game(file);
 	if (!game) return;
 	int cur = 0;
-	/*
+	/* 
 	x_score o_score
-	x_count o_count
-	x		y
-	board
+	x y
 	*/
-}
-
-void game::loadGame(string file)
-{
+	ifstream game(file);
+	if (!game) return;
+	x_count = o_count = 0;
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
+			game >> board[i][j];
+			if (board[i][j] == 1)		x_count++;
+			else if (board[i][j] == 2)	o_count++;
+		}
+	}
+	game >> x_score >> o_score;
+	game >> x >> y;
+	x_turn = (x_count == o_count);
+	game.close();
 }
 int game::minimax(bool isMaxiPlayer, int depth, int alpha, int beta) {
 	int val = 0;
