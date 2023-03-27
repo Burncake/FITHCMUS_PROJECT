@@ -423,32 +423,32 @@ void game::askContinuePlay(int& key) {
 	//if (i == 6) exit(0);
 }
 
-void game::saveGame(string file)
-{
-	ofstream game(file);
-	if (!game) return;
-	int cur = 0;
-	/* 
-	x_score o_score
-	x y
-	*/
-	ifstream game(file);
-	if (!game) return;
-	x_count = o_count = 0;
-	for (int i = 0; i < size; i++) {
-		for (int j = 0; j < size; j++) {
-			game >> board[i][j];
-			if (board[i][j] == 1)		x_count++;
-			else if (board[i][j] == 2)	o_count++;
-		}
-	}
-	game >> x_score >> o_score;
-	game >> x >> y;
-	x_turn = (x_count == o_count);
-	game.close();
-}
+//void game::saveGame(string file)
+//{
+//	ofstream game(file);
+//	if (!game) return;
+//	int cur = 0;
+//	/* 
+//	x_score o_score
+//	x y
+//	*/
+//	ifstream game(file);
+//	if (!game) return;
+//	x_count = o_count = 0;
+//	for (int i = 0; i < size; i++) {
+//		for (int j = 0; j < size; j++) {
+//			game >> board[i][j];
+//			if (board[i][j] == 1)		x_count++;
+//			else if (board[i][j] == 2)	o_count++;
+//		}
+//	}
+//	game >> x_score >> o_score;
+//	game >> x >> y;
+//	x_turn = (x_count == o_count);
+//	game.close();
+//}
 int game::minimax(bool isMaxiPlayer, int depth, int alpha, int beta) {
-	int val = 0;
+	//int val = 0;
 	bool stop = false;
 	if (depth == 0) return 0;
 	int i = 0, j = 0;
@@ -457,67 +457,80 @@ int game::minimax(bool isMaxiPlayer, int depth, int alpha, int beta) {
 	}
 	else if (win()) {
 		if (!x_turn) {
-			return -10-depth;
+			return -10;
 		}
 		else {
-			return 10+depth;
+			return 10;
 		}
-	}
-	//else if (depth == 0) return value;
-	if (isMaxiPlayer) {
-		int bestVal = -1000;
-		for (i =0; i < 3 &&(!stop); ++i)
-			for (j = 0; j < 3 &&(!stop); ++j)
-				if (board[i][j] == 0) {
-					board[i][j] = 1;
-					val = minimax(false, depth - 1, alpha, beta);
-					board[i][j] = 0;
-					bestVal = max(bestVal, val);
-					alpha = max(alpha, bestVal);
-					if (beta <= alpha) {
-						stop = true;
-					}
-				}
-		return bestVal;
 	}
 	else {
-		int bestVal = 1000;
-		for (i = 0; i < 3 &&(!stop); ++i)
-			for (j = 0; j < 3 &&(!stop); ++j)
-				if (board[i][j] == 0) {
-					board[i][j] = 2;
-					val = minimax(true, depth - 1, alpha, beta);
-					board[i][j] = 0;
-					bestVal = min(bestVal, val);
-					beta = min(beta, bestVal);
-					if (beta <= alpha) {
-						stop = true;
+		//else if (depth == 0) return value;
+		if (isMaxiPlayer) {
+			int bestVal = -1000;
+			for (i = y-5; i < y+5; ++i) {
+				for (j = x-5; j < x+5; ++j) {
+					if (i >= 0 && i < size && j >= 0 && j <= size) {
+						if (board[i][j] == 0) {
+							board[i][j] = 1;
+							val = minimax(false, depth - 1, alpha, beta);
+							board[i][j] = 0;
+							bestVal = max(bestVal, val);
+							alpha = max(alpha, bestVal);
+							if (beta <= alpha) {
+								return bestVal;
+							}
+						}
 					}
 				}
-		return bestVal;
-	}
-}//fix my  findBestMove function
-
-void game::findBestMove(bool isMaxiPlayer, int& pos_i, int& pos_j) {
-	int bestVal = -1000;
-	//minimax(false,depth,-1000, 1000);
-	for (int i = 0; i < size; ++i) {
-		for (int j = 0; j < size; ++j) {
-			//cout << board[i][j];
-			if (board[i][j] == 0) {
-				board[i][j] = 2;
-				int val = minimax(false, depth, -1000, 1000);
-				if (val > bestVal) {
-					bestVal = val;
-					pos_i = i;
-					pos_j = j;
-				}
-				board[i][j] = 0;
-				//printf("%d ", i, j);
 			}
+			return bestVal;
+		}
+		else {
+			int bestVal = 1000;
+			for (i = y-5; i < y + 5; ++i) {
+				for (j = x-5; j < x + 5; ++j) {
+					if (i >= 0 && i < size && j >= 0 && j <= size) {
+						if (board[i][j] == 0) {
+							board[i][j] = 2;
+							val = minimax(true, depth - 1, alpha, beta);
+							board[i][j] = 0;
+							bestVal = min(bestVal, val);
+							beta = min(beta, bestVal);
+							if (beta <= alpha) {
+								return bestVal;
+
+							}
+						}
+					}
+				}
+			}
+			return bestVal;
 		}
 	}
-		printf("%d %d ", pos_i, pos_j);
+}
+void game::findBestMove(bool isMaxiPlayer, int& pos_i, int& pos_j) {
+	int bestVal = 1000;
+	bool stop = false;
+	//minimax(false,depth,-1000, 1000);
+	for (int i = y; i <y+5; ++i) {
+		for (int j = x; j < x+5; ++j) {
+			if (i >= 0 && i < size && j >= 0 && j <= size) {
+				if (board[i][j] == 0) {
+					board[i][j] = 2;
+					int val = minimax(false, depth, -1000, 1000);
+					if (val < bestVal) {
+						bestVal = val;
+						pos_i = i;
+						pos_j = j;
+					}
+					board[i][j] = 0;
+					//printf("%d ", i, j);
+				}
+			}
+		}
+
+	}
+	printf("%d %d ", pos_i, pos_j);
 
 }
 void game::pveMove() {
@@ -570,9 +583,9 @@ void game::pveMove() {
 		common::gotoXY(6 + 4 * tx, 3 + 2 * ty);
 		coutColored("O", DarkBlue);
 	}
-	
+
 	//processBoardPveO();
-	
+
 }
 
 void game::game_pve() {
@@ -639,12 +652,12 @@ void game::processBoardPveX() {
 		draw_txt("logoO.txt", setC + 31, 0, Blue);
 		x_turn = false;
 	}
-	
+
 }
 void game::processBoardPveO() {
 	if (!x_turn) {
-	   findBestMove(false, pos_j, pos_i);
-		x= pos_i;
+		findBestMove(false, pos_j, pos_i);
+		x = pos_i;
 		y = pos_j;
 		board[y][x] = 2;
 		//board[pos_i][pos_j] = 2;

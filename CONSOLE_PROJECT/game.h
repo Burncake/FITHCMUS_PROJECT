@@ -18,10 +18,10 @@ static int setC = 60, setR = 15;
 
 class game {
 public:
-	int x_score = 0, o_score = 0, x_count = 0, o_count = 0, x = 0, y = 0, depth=15, value = 0, pos_i = -1, pos_j = -1;
+	int x_score = 0, o_score = 0, x_count = 0, o_count = 0, x = 0, y = 0, depth=5, value = 0, pos_i = -1, pos_j = -1;
 	int board[size][size]{};
 	bool x_turn = true;
-	int scoreVal[size][size];
+	int scoreVal[size][size], val;
 
 	static void game_pvp();
 	static void drawBoard();
