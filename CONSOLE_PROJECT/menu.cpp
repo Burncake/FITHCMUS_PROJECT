@@ -327,14 +327,15 @@ void menu::helpScreen() {
 	printText(" 'W' : di chuyen len tren \t\t\t 'S' : di chuyen xuong duoi", x + 3, ++y);
 	printText(" 'A' : di chuyen sang trai\t\t\t 'D' : di chuyen sang phai ", x + 3, ++y);
 	++y;
-	printText(" \t\t\t- Chon 'PLAY Game' de bat dau tro choi.", x, ++y);
 	++y;
 	printText(" ==================================== LUAT CHOI =====================================", x, ++y);
 	printText(" - Hai nguoi choi  lan luot di chuyen va chon vao cac o chua duoc danh. ", x, ++y);
 	printText(" - Nguoi choi se chien thang tro choi khi nguoi choi do co 5 quan co lien tiep nhau", x, ++y);
-	printText(" theo hang ngang, hang doc hoac hang cheo ma khong bi chan o hai dau", x, ++y);
-	printText(" - Khi tat ca cac o tren ban co deu kin ma chua ai chien thang thi game dau hoa nhau.", x, ++y);
-	printText(" - Chuc cac ban choi game vui ve. An ESC de tro ve menu chinh.", x, ++y);
+	printText(" theo hang ngang, hang doc hoac hang cheo.", x, ++y);
+	printText(" - Khi tat ca cac o tren ban co deu kin ma chua ai chien thang thi game dau hoa nhau.", x, ++y); 
+	++y;
+	++y;
+	printText("\t\t\t\tChuc cac ban choi game vui ve.", x, ++y);
 	printText("Press ESC to go back", 50, 28);
 
 }
@@ -400,8 +401,3 @@ void menu::mainScreen() {
 	common::gotoXY(x + 3, y + 10);
 }
 
-
-////thay doi lua chon, truyen tham so direction 0 de di len hoac 1 de di xuong
-//void menu::changeOption(bool direction, bool flag) {
-//
-//}

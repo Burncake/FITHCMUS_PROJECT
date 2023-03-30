@@ -13,10 +13,7 @@ public:
 	static void modeSelection();
 	static void menuSelection();
 	static void drawGameMode(int selectedMode);
-	static void printModeBoard();
-	//static void mainMenu();		
-	//static void loadScreen();					
-	//static void playMenu();						
+	static void printModeBoard();					
 	static void helpScreen();	
 	static void aboutScreen();
 	//static void exitScreen();										
