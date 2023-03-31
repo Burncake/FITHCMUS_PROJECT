@@ -149,7 +149,7 @@ void game::drawInformation() {
 			}
 		}
 	}
-	for (int i = 1; i <= 23; ++i) {
+	for (int i = 3; i <= 23; ++i) {
 		common::gotoXY(25 + setC, i);
 		coutColored(186, Black);
 	}

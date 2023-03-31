@@ -74,18 +74,18 @@ void common::setColor(int color)
 
 void common::playSound(int i)
 {
-    static const wchar_t* fileName[7] = { 
-        L"resources/background.wav", 
-        L"resources/start.wav", 
-        L"resources/move.wav", 
-        L"resources/select.wav", 
-        L"resources/win.wav", 
-        L"resources/lose.wav", 
+    static const wchar_t* fileName[7] = {
+        L"resources/background.wav",
+        L"resources/start.wav",
+        L"resources/move.wav",
+        L"resources/select.wav",
+        L"resources/win.wav",
+        L"resources/lose.wav",
         L"resources/draw.wav" };
     PlaySound(fileName[i], NULL, SND_FILENAME | SND_ASYNC);
 }
 
-void common::changeFont(){
+void common::changeFont() {
     CONSOLE_FONT_INFOEX cfi;
     cfi.cbSize = sizeof(cfi);
     cfi.nFont = 0;
@@ -114,7 +114,7 @@ void coutColored(char chr, int color)
 int getInput()
 {
     char c = _getch();
-    
+
     if (c == 'w' || c == 'W' || c == 72)    return 1; // up
     if (c == 'a' || c == 'A' || c == 75)    return 2; // left
     if (c == 's' || c == 'S' || c == 80)    return 3; // down
@@ -123,9 +123,9 @@ int getInput()
     if (c == 27)                            return 6; // esc
     if (c == 'o' || c == 'O')               return 7; // save
     if (c == 'i' || c == 'I')               return 8; // load
-    if (c == 'y' || c == 'Y')               return 9;//continue playing
-    if (c == 'n' || c == 'N')               return 10;
-                                return 0; // default              
+    if (c == 'y' || c == 'Y')               return 9; // continue playing
+    if (c == 'n' || c == 'N')               return 10;// no
+                                            return 0; // default              
 }
 void printText(string text, int x, int y) {
     common::gotoXY(x, y);
