@@ -236,29 +236,35 @@ void game::processBoard() {
 		x_turn = true;
 	}
 }
-
 bool game::win()
 {
 	int countR = 0, countD = 0, countUR = 0, countDR = 0;
-	for (int i = -4; i < 5; i++) {
-		if (!board[y][x]) break;
-		if ((x + i >= 0) && (x + i <= size - 1)) {
-			if (board[y][x] == board[y][x + i]) countR++;
-			else countR = 0;
+	for (int m = 0; m < size; m++) {
+		for (int n = 0; n < size; n++) {
+			for (int i = -4; i < 5; i++) {
+				if (!board[m][n]) {
+					countR = 0, countD = 0, countUR = 0, countDR = 0;
+					break;
+				}
+				if ((n + i >= 0) && (n + i <= size - 1)) {
+					if (board[m][n] == board[m][n + i]) countR++;
+					else countR = 0;
+				}
+				if ((m + i >= 0) && (m + i <= size - 1)) {
+					if (board[m][n] == board[m + i][n]) countD++;
+					else countD = 0;
+				}
+				if ((n + i >= 0) && (n + i <= size - 1) && (m + i >= 0) && (m + i <= size - 1)) {
+					if (board[m][n] == board[m + i][n + i]) countDR++;
+					else countDR = 0;
+				}
+				if ((n + i >= 0) && (n + i <= size - 1) && (m - i >= 0) && (m - i <= size - 1)) {
+					if (board[m][n] == board[m - i][n + i]) countUR++;
+					else countUR = 0;
+				}
+				if ((countR == 5) || (countD == 5) || (countDR == 5) || (countUR == 5)) return true;
+			}
 		}
-		if ((y + i >= 0) && (y + i <= size - 1)) {
-			if (board[y][x] == board[y + i][x]) countD++;
-			else countD = 0;
-		}
-		if ((x + i >= 0) && (x + i <= size - 1) && (y + i >= 0) && (y + i <= size - 1)) {
-			if (board[y][x] == board[y + i][x + i]) countDR++;
-			else countDR = 0;
-		}
-		if ((x + i >= 0) && (x + i <= size - 1) && (y - i >= 0) && (y - i <= size - 1)) {
-			if (board[y][x] == board[y - i][x + i]) countUR++;
-			else countUR = 0;
-		}
-		if ((countR == 5) || (countD == 5) || (countDR == 5) || (countUR == 5)) return true;
 	}
 	return false;
 }
@@ -452,92 +458,85 @@ void game::loadGame(string file) {
 	x_turn = (x_count == o_count);
 	game.close();
 }
-int game::minimax(bool isMaxiPlayer, int depth, int alpha, int beta) {
-	//int val = 0;
-	bool stop = false;
-	if (depth == 0) return 0;
-	int i = 0, j = 0;
-	if (draw()) {
-		return 0;
+
+
+int game::minimax(bool ismaxiPlayer, int depth, int alpha, int beta) {
+	const int HUMAN_PLAYER = 1;
+	const int AI_PLAYER = 2;
+
+	int c = depth * 1000;
+	if (win()||depth==0) {
+		if(x_turn)
+		return -evaluate()-c;
+		else return evaluate()+c;
 	}
-	else if (win()) {
-		if (!x_turn) {
-			return -10;
+
+	if (ismaxiPlayer) {
+		int bestScore = INT_MIN;
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				if (board[i][j] == 0) {
+					board[i][j] = HUMAN_PLAYER;
+					int score = minimax(false, depth - 1, alpha, beta);
+					board[i][j] = 0;
+					bestScore = max(bestScore, score);
+					alpha = max(alpha, bestScore);
+					if (beta <= alpha) {
+						break;
+					}
+				}
+			}
 		}
-		else {
-			return 10;
-		}
+		return bestScore;
 	}
 	else {
-		//else if (depth == 0) return value;
-		if (isMaxiPlayer) {
-			int bestVal = -1000;
-			for (i = y-5; i < y+5; ++i) {
-				for (j = x-5; j < x+5; ++j) {
-					if (i >= 0 && i < size && j >= 0 && j <= size) {
-						if (board[i][j] == 0) {
-							board[i][j] = 1;
-							val = minimax(false, depth - 1, alpha, beta);
-							board[i][j] = 0;
-							bestVal = max(bestVal, val);
-							alpha = max(alpha, bestVal);
-							if (beta <= alpha) {
-								return bestVal;
-							}
-						}
-					}
-				}
-			}
-			return bestVal;
-		}
-		else {
-			int bestVal = 1000;
-			for (i = y-5; i < y + 5; ++i) {
-				for (j = x-5; j < x + 5; ++j) {
-					if (i >= 0 && i < size && j >= 0 && j <= size) {
-						if (board[i][j] == 0) {
-							board[i][j] = 2;
-							val = minimax(true, depth - 1, alpha, beta);
-							board[i][j] = 0;
-							bestVal = min(bestVal, val);
-							beta = min(beta, bestVal);
-							if (beta <= alpha) {
-								return bestVal;
-
-							}
-						}
-					}
-				}
-			}
-			return bestVal;
-		}
-	}
-}
-void game::findBestMove(bool isMaxiPlayer, int& pos_i, int& pos_j) {
-	int bestVal = 1000;
-	bool stop = false;
-	//minimax(false,depth,-1000, 1000);
-	for (int i = y; i <y+5; ++i) {
-		for (int j = x; j < x+5; ++j) {
-			if (i >= 0 && i < size && j >= 0 && j <= size) {
+		int bestScore = INT_MAX;
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
 				if (board[i][j] == 0) {
-					board[i][j] = 2;
-					int val = minimax(false, depth, -1000, 1000);
-					if (val < bestVal) {
-						bestVal = val;
-						pos_i = i;
-						pos_j = j;
-					}
+					board[i][j] = AI_PLAYER;
+					int score = minimax(true, depth - 1, alpha, beta);
 					board[i][j] = 0;
-					//printf("%d ", i, j);
+					bestScore = min(bestScore, score);
+					beta = min(beta, bestScore);
+					if (beta <= alpha) {
+						break;
+					}
 				}
 			}
 		}
-
+		return bestScore;
 	}
-	printf("%d %d ", pos_i, pos_j);
-
 }
+
+void game::findBestMove( int& pos_i, int& pos_j) {
+	int bestVal = -1000;
+	bool stop = false;
+	for (int i = 0; i < size && !stop; ++i) {
+		for (int j = 0; j < size && !stop; ++j) {
+			if (board[i][j] == 0) {
+				board[i][j] = 2;
+				int val = minimax(false,2, INT_MIN, INT_MAX);
+				board[i][j] = 0;
+
+				if (val > bestVal) {
+					bestVal = val;
+					pos_i = i;
+					pos_j = j;
+				}
+
+				if (val == 10) {
+					stop = true;
+					break;
+				}
+			}
+		}
+	}
+	
+
+	return;
+}
+
 void game::pveMove() {
 	int tx = x, ty = y;
 	common::gotoXY(6 + 4 * x, 3 + 2 * y);
@@ -596,7 +595,6 @@ void game::pveMove() {
 void game::game_pve() {
 
 	game g;
-	//g.minimax(false);
 	int key = -1;
 	do {
 		system("cls");
@@ -608,14 +606,11 @@ void game::game_pve() {
 		g.showScore();
 		while (!g.draw()) {
 			g.showTurn();
-			//if (g.x_turn)
+	//		g.board[g.pos_i][g.pos_j] = 2;
 			g.pveMove();
-			if (g.win()) break;
-			//g.findBestMove(false, g.pos_i, g.pos_j);
+			if(g.win()) break;
 			g.processBoardPveO();
 			if (g.win()) break;
-
-
 		}
 		g.score();
 		g.showScore();
@@ -646,6 +641,7 @@ void game::game_pve() {
 
 		} while (key != 9 && key != 10);
 	} while (1);
+	
 }
 
 void game::processBoardPveX() {
@@ -661,12 +657,12 @@ void game::processBoardPveX() {
 }
 void game::processBoardPveO() {
 	if (!x_turn) {
-		findBestMove(false, pos_j, pos_i);
-		x = pos_i;
-		y = pos_j;
-		board[y][x] = 2;
-		//board[pos_i][pos_j] = 2;
-		common::gotoXY(6 + 4 * pos_i, 3 + 2 * pos_j);
+		findBestMove(pos_i,pos_j);
+		board[pos_i][pos_j] = 2;
+		x = pos_j;
+		y = pos_i;
+		common::gotoXY(6 + 4 * x, 3 + 2 * y);
+
 		coutColored("O", DarkBlue);
 		o_count++;
 		Sleep(100);
@@ -674,4 +670,187 @@ void game::processBoardPveO() {
 		draw_txt("logoX.txt", setC, 0, Red);
 		x_turn = true;
 	}
+}
+int game::evaluate() {
+	int maxiPlayerScore = 0;
+	int miniPlayerScore = 0;
+	for (int i = 0; i < 12; i++) {
+		for (int j = 0; j < 12; j++) {
+			if (board[i][j] == 2) {
+				miniPlayerScore += evaluateCell(i, j, 2);
+			}
+			else if (board[i][j] == 1) {
+				maxiPlayerScore += evaluateCell(i, j, 1);
+			}
+		}
+	}
+	
+	return miniPlayerScore  - maxiPlayerScore;
+}
+int game::evaluateCell(int row, int col, int move) {
+	int score = 0;
+	//check horizontal
+	int count = 0;
+	for (int i = col; i >= 0; i--) {
+		if (board[row][i] == move) {
+			count++;
+		}
+		else if (board[row][i] == 0) {
+			break;
+		}
+		else {
+			count = 0;
+			break;
+		}
+	}
+	for (int i = col + 1; i < 12; i++) {
+		if (board[row][i] == move) {
+			count++;
+		}
+		else if (board[row][i] == 0) {
+			break;
+		}
+		else {
+			count = 0;
+			break;
+		}
+	}
+	if (count == 1) {
+		score += 1;
+	}
+	else if (count == 2) {
+		score += 10;
+	}
+	else if (count == 3) {
+		score += 100;
+	}
+	else if (count == 4) {
+		score += 1000;
+	}
+	else if (count == 5) {
+		score += 10000;
+	}
+	//check vertical
+	count = 0;
+	for (int i = row; i >= 0; i--) {
+		if (board[i][col] == move) {
+			count++;
+		}
+		else if (board[i][col] == 0) {
+			break;
+		}
+		else {
+			count = 0;
+			break;
+		}
+	}
+	for (int i = row + 1; i < 12; i++) {
+		if (board[i][col] == move) {
+			count++;
+		}
+		else if (board[i][col] == 0) {
+			break;
+		}
+		else {
+			count = 0;
+			break;
+		}
+	}
+	if (count == 1) {
+		score += 1;
+	}
+	else if (count == 2) {
+		score += 10;
+	}
+	else if (count == 3) {
+		score += 100;
+	}
+	else if (count == 4) {
+		score += 1000;
+	}
+	else if (count == 5) {
+		score += 10000;
+	}
+	//check diagonal
+	count = 0;
+	for (int i = row, j = col; i >= 0 && j >= 0; i--, j--) {
+		if (board[i][j] == move) {
+			count++;
+		}
+		else if (board[i][j] == 0) {
+			break;
+		}
+		else {
+			count = 0; break;
+		}
+	}
+	for (int i = row + 1, j = col + 1; i < 12 && j < 12; i++, j++) {
+		if (board[i][j] == move) {
+			count++;
+		}
+		else if (board[i][j] == 0) {
+			break;
+		}
+		else {
+			count = 0;
+			break;
+		}
+	}
+	if (count == 1) {
+		score += 1;
+	}
+	else if (count == 2) {
+		score += 10;
+	}
+	else if (count == 3) {
+		score += 100;
+	}
+	else if (count == 4) {
+		score += 1000;
+	}
+	else if (count == 5) {
+		score += 10000;
+	}
+	//check anti-diagonal
+	count = 0;
+	for (int i = row, j = col; i >= 0 && j < 12; i--, j++) {
+		if (board[i][j] == move) {
+			count++;
+		}
+		else if (board[i][j] == 0) {
+			break;
+		}
+		else {
+			count = 0;
+			break;
+		}
+	}
+	for (int i = row + 1, j = col - 1; i < 12 && j >= 0; i++, j--) {
+		if (board[i][j] == move) {
+			count++;
+		}
+		else if (board[i][j] == 0) {
+			break;
+		}
+		else {
+			count = 0;
+			break;
+		}
+	}
+	if (count == 1) {
+		score += 1;
+	}
+	else if (count == 2) {
+		score += 10;
+	}
+	else if (count == 3) {
+		score += 100;
+	}
+	else if (count == 4) {
+		score += 1000;
+	}
+	else if (count == 5) {
+		score += 10000;
+	}
+	return score;
 }

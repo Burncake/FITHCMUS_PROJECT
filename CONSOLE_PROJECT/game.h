@@ -18,11 +18,9 @@ static int setC = 60, setR = 15;
 
 class game {
 public:
-	int x_score = 0, o_score = 0, x_count = 0, o_count = 0, x = 0, y = 0, depth=5, value = 0, pos_i = -1, pos_j = -1;
-	int board[size][size]{};
+	int x_score = 0, o_score = 0, x_count = 0, o_count = 0, x = 0, y = 0, value = 0, pos_i = -1, pos_j = -1;
+	int board[size][size] = {};
 	bool x_turn = true;
-	int scoreVal[size][size], val;
-
 	static void game_pvp();
 	static void drawBoard();
 	static void draw_txt(string name, int x, int y, int color);
@@ -45,10 +43,16 @@ public:
 	void loadGame(string file);
 	int minimax(bool isMaxiPlayer, int depth, int alpha, int beta);
 	//void dummyBoard();
-	void findBestMove(bool isMaxiPlayer, int  &pos_i, int &pos_j);
+	void findBestMove(int& pos_i, int& pos_j);
 	void pveMove();
 	static void game_pve();
 	void processBoardPveX();
 	void processBoardPveO();
+
+	int evaluate();
+
+	int evaluateCell(int row, int col, int move);
+
+	
 
 };
