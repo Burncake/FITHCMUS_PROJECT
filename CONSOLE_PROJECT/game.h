@@ -53,6 +53,11 @@ public:
 
 	int evaluateCell(int row, int col, int move);
 
+	bool checkWinScore(int row, int col, int move);
+
+
+	int evaluateCellDef(int row, int col, int move);
+
 	
 
 };

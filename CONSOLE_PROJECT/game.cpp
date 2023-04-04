@@ -464,11 +464,9 @@ int game::minimax(bool ismaxiPlayer, int depth, int alpha, int beta) {
 	const int HUMAN_PLAYER = 1;
 	const int AI_PLAYER = 2;
 
-	int c = depth * 1000;
+	//int c = depth * 1000;
 	if (win()||depth==0) {
-		if(x_turn)
-		return -evaluate()-c;
-		else return evaluate()+c;
+		return evaluate();
 	}
 
 	if (ismaxiPlayer) {
@@ -510,10 +508,10 @@ int game::minimax(bool ismaxiPlayer, int depth, int alpha, int beta) {
 }
 
 void game::findBestMove( int& pos_i, int& pos_j) {
-	int bestVal = -1000;
+	int bestVal = INT_MIN;
 	bool stop = false;
-	for (int i = 0; i < size && !stop; ++i) {
-		for (int j = 0; j < size && !stop; ++j) {
+	for (int i = 0; i < size ; ++i) {
+		for (int j = 0; j < size ; ++j) {
 			if (board[i][j] == 0) {
 				board[i][j] = 2;
 				int val = minimax(false,2, INT_MIN, INT_MAX);
@@ -525,14 +523,11 @@ void game::findBestMove( int& pos_i, int& pos_j) {
 					pos_j = j;
 				}
 
-				if (val == 10) {
-					stop = true;
-					break;
-				}
+				
 			}
 		}
 	}
-	
+	cout << pos_i << pos_j;
 
 	return;
 }
@@ -647,6 +642,7 @@ void game::game_pve() {
 void game::processBoardPveX() {
 	if (board[y][x]) return;
 	if (x_turn) {
+
 		board[y][x] = 1;
 		x_count++;
 		draw_txt("logoX.txt", setC, 0, Grey);
@@ -659,34 +655,44 @@ void game::processBoardPveO() {
 	if (!x_turn) {
 		findBestMove(pos_i,pos_j);
 		board[pos_i][pos_j] = 2;
-		x = pos_j;
-		y = pos_i;
-		common::gotoXY(6 + 4 * x, 3 + 2 * y);
+		/*x = pos_j;
+		y = pos_i;*/
+		common::gotoXY(6 + 4 * pos_j, 3 + 2 * pos_i);
 
 		coutColored("O", DarkBlue);
 		o_count++;
 		Sleep(100);
 		draw_txt("logoO.txt", setC + 31, 0, Grey);
 		draw_txt("logoX.txt", setC, 0, Red);
+		Sleep(100);
 		x_turn = true;
 	}
 }
 int game::evaluate() {
 	int maxiPlayerScore = 0;
+	bool check3Min = false;
+	bool check3Max = false;
 	int miniPlayerScore = 0;
-	for (int i = 0; i < 12; i++) {
-		for (int j = 0; j < 12; j++) {
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
 			if (board[i][j] == 2) {
-				miniPlayerScore += evaluateCell(i, j, 2);
+				if (checkWinScore(i, j, 2)) return INT_MAX;
+				maxiPlayerScore += evaluateCell(i, j, 2);
 			}
 			else if (board[i][j] == 1) {
-				maxiPlayerScore += evaluateCell(i, j, 1);
+				if (checkWinScore(i, j, 1)) return INT_MIN;
+
+				miniPlayerScore += evaluateCell(i, j, 1);
 			}
 		}
 	}
-	
-	return miniPlayerScore  - maxiPlayerScore;
+	/*if (check3Max) return INT_MIN;
+	if(check3Min) return INT_MAX;
+	*/
+	return maxiPlayerScore - miniPlayerScore;
 }
+
+
 int game::evaluateCell(int row, int col, int move) {
 	int score = 0;
 	//check horizontal
@@ -730,6 +736,7 @@ int game::evaluateCell(int row, int col, int move) {
 	else if (count == 5) {
 		score += 10000;
 	}
+
 	//check vertical
 	count = 0;
 	for (int i = row; i >= 0; i--) {
@@ -741,6 +748,7 @@ int game::evaluateCell(int row, int col, int move) {
 		}
 		else {
 			count = 0;
+
 			break;
 		}
 	}
@@ -753,6 +761,7 @@ int game::evaluateCell(int row, int col, int move) {
 		}
 		else {
 			count = 0;
+
 			break;
 		}
 	}
@@ -771,8 +780,10 @@ int game::evaluateCell(int row, int col, int move) {
 	else if (count == 5) {
 		score += 10000;
 	}
+	
 	//check diagonal
 	count = 0;
+
 	for (int i = row, j = col; i >= 0 && j >= 0; i--, j--) {
 		if (board[i][j] == move) {
 			count++;
@@ -781,7 +792,9 @@ int game::evaluateCell(int row, int col, int move) {
 			break;
 		}
 		else {
-			count = 0; break;
+			count = 0; 
+
+			break;
 		}
 	}
 	for (int i = row + 1, j = col + 1; i < 12 && j < 12; i++, j++) {
@@ -793,6 +806,7 @@ int game::evaluateCell(int row, int col, int move) {
 		}
 		else {
 			count = 0;
+
 			break;
 		}
 	}
@@ -811,6 +825,7 @@ int game::evaluateCell(int row, int col, int move) {
 	else if (count == 5) {
 		score += 10000;
 	}
+
 	//check anti-diagonal
 	count = 0;
 	for (int i = row, j = col; i >= 0 && j < 12; i--, j++) {
@@ -822,6 +837,7 @@ int game::evaluateCell(int row, int col, int move) {
 		}
 		else {
 			count = 0;
+
 			break;
 		}
 	}
@@ -834,6 +850,7 @@ int game::evaluateCell(int row, int col, int move) {
 		}
 		else {
 			count = 0;
+
 			break;
 		}
 	}
@@ -853,4 +870,51 @@ int game::evaluateCell(int row, int col, int move) {
 		score += 10000;
 	}
 	return score;
+}
+bool game::checkWinScore(int row, int col, int move) {
+	int count = 0;
+	for (int i = 1; i <= 4; i++) {
+		if (row + i >= size || board[row + i][col] != move) {
+			break;
+		}
+		count++;
+	}
+	if (count ==4) {
+		return true;
+	}
+
+	count = 0;
+	for (int i = 1; i <= 4; i++) {
+		if (col + i >= size || board[row][col + i] != move) {
+			break;
+		}
+		count++;
+	}
+	if (count ==4) {
+		return true;
+	}
+
+	count = 0;
+	for (int i = 1; i <=4; i++) {
+		if (row + i >= size || col + i >= size || board[row + i][col + i] != move) {
+			break;
+		}
+		count++;
+	}
+	if (count ==4) {
+		return true;
+	}
+
+	count = 0;
+	for (int i = 1; i <= 4; i++) {
+		if (row - i < 0 || col + i >= size || board[row - i][col + i] != move) {
+			break;
+		}
+		count++;
+	}
+	if (count ==4) {
+		return true;
+	}
+
+	return false;
 }
