@@ -363,10 +363,10 @@ void menu::helpScreen() {
 	int y = 12;
 	int left = 14, top = 11, width = 86, height = 14;
 	common::setColor(Black);
-	menu::printRectangle(left, top, width, height);
+
 	printText(" ==================================== HUONG DAN =====================================", x, y);
-	printText(" 'W' : di chuyen len tren \t\t\t 'S' : di chuyen xuong duoi", x + 6, ++y);
-	printText(" 'A' : di chuyen sang trai\t\t\t 'D' : di chuyen sang phai ", x + 6, ++y);
+	printText(" 'W' : Di chuyen len tren \t\t\t 'S' : Di chuyen xuong duoi", x + 6, ++y);
+	printText(" 'A' : Di chuyen sang trai\t\t\t 'D' : Di chuyen sang phai ", x + 6, ++y);
 	++y;
 	++y;
 	printText(" ==================================== LUAT CHOI =====================================", x, ++y);
@@ -385,21 +385,21 @@ void menu::aboutScreen() {
 	common::setColor(DarkCyan);
 	menu::printLogo();
 
-	int x = 36, y = 14;
-	int left = 35, top = 12, width = 42, height = 14;
+	int x = 38, y = 14;
+	int left = 37, top = 12, width = 42, height = 14;
 	common::setColor(Black);
 	menu::printRectangle(left, top, width, height);
 	printText("ABOUT", x + 18, y - 2);
 	printText(" ============== DO AN CARO ============== ", x, y);
 	printText("  TRUONG DAI HOC KHOA HOC TU NHIEN", x + 3, y + 1);
-	printText(" ========== GIAO VIEN HUONG DAN ========= ", x, y + 4);
-	printText(" THAY TRUONG TOAN THINH", x + 9, y + 5);
-	printText(" =========== NHOM 3 - 22CLC01 =========== ", x, y + 7);
-	printText("22127141 - NGO HOANG NAM HUNG", x + 7, y + 8);
-	printText("22127234 - CAO HOANG LOC", x + 7, y + 9);
-	printText("22127418 - NGUYEN KHANH TOAN", x + 7, y + 10);
-	printText("22127422 - LE THANH MINH TRI", x + 7, y + 11);
-	printText("Press ESC to go back", 48, 24);
+	printText(" ========== GIAO VIEN HUONG DAN ========= ", x, y + 3);
+	printText(" THAY TRUONG TOAN THINH", x + 9, y + 4);
+	printText(" =========== NHOM 3 - 22CLC01 =========== ", x, y + 6);
+	printText("22127141 - NGO HOANG NAM HUNG", x + 7, y + 7);
+	printText("22127234 - CAO HOANG LOC", x + 7, y + 8);
+	printText("22127418 - NGUYEN KHANH TOAN", x + 7, y + 9);
+	printText("22127422 - LE THANH MINH TRI", x + 7, y + 10);
+	printText("Press ESC to go back", 47, y + 14);
 }
 
 void menu::setting() {
