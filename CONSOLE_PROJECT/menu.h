@@ -24,5 +24,7 @@ public:
 	static void printOptionsBoard();
 	static void clearConsole();
 	static void printRectangle(int left, int top, int width, int height);
-	static void mainScreen();
+
 };
+//ham ve unicode
+void printCharacter(wstring character, COORD point, int text_color, int background_color);

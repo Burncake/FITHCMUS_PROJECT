@@ -1,7 +1,7 @@
 #include "menu.h"
 
 //cac lua chon trong menu
-string options[] = { "PLAY GAME", "LOAD GAME", "ABOUT", "HELP", "SETTING", "EXIT" };
+string options[6] = { "PLAY GAME", "LOAD GAME", "ABOUT", "HELP", "SETTING", "EXIT" };
 //cac che do choi
 string gameMode[] = { "PvP","PvC" };
 //man hinh chinh
@@ -534,18 +534,15 @@ void menu::printRectangle(int left, int top, int width, int height) {
 	putchar(188);
 }
 
-void menu::mainScreen() {
-	int x = 51, y = 14;
-	common::setColor(Blue);
-	menu::printLogo();
-	common::setColor(Black);
-	menu::printOptionsBoard();
-	common::setColor(Red);
-	printText(options[0], x + 1, y);
-	printText(options[1], x + 1, y + 2);
-	printText(options[2], x + 3, y + 4);
-	printText(options[3], x + 3, y + 6);
-	printText(options[4], x + 3, y + 8);
-	common::gotoXY(x + 3, y + 10);
-}
+void printCharacter(wstring character, COORD point, int text_color, int background_color) {
+	HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	DWORD Written;
 
+	int color = (int)text_color + (int)background_color * 16;
+	for (int i = 0; i < character.length(); i++) {
+		FillConsoleOutputAttribute(hOut, color, 1, point, &Written);
+		FillConsoleOutputCharacterW(hOut, character[i], 1, point, &Written);
+		point.X++;
+	}
+
+}
