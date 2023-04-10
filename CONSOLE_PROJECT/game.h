@@ -19,7 +19,7 @@ static int setC = 60, setR = 15;
 class game {
 public:
 	int x_score = 0, o_score = 0, x_count = 0, o_count = 0, x = 0, y = 0, value = 0, pos_i = -1, pos_j = -1;
-	int board[size][size] = {};
+	int board[size][size]{};
 	bool x_turn = true;
 	static void game_pvp();
 	static void drawBoard();
@@ -38,26 +38,18 @@ public:
 	void o_win_effect();
 	void draw_effect();
 	void resetData();
-	void askContinuePlay(int &key);
+	void askContinuePlay(int& key);
 	void saveGame(string file);
 	void loadGame(string file);
-	int minimax(bool isMaxiPlayer, int depth, int alpha, int beta);
+	//int minimax(bool isMaxiPlayer, int depth, int alpha, int beta);
 	//void dummyBoard();
-	void findBestMove(int& pos_i, int& pos_j);
+	void findBestMove();
 	void pveMove();
 	static void game_pve();
 	void processBoardPveX();
 	void processBoardPveO();
-
-	int evaluate();
-
-	int evaluateCell(int row, int col, int move);
-
-	bool checkWinScore(int row, int col, int move);
-
-
-	int evaluateCellDef(int row, int col, int move);
-
-	
+	bool checkBorder(int x, int y);
+	int defendPoint(int x, int y);
+	int attackPoint(int x, int y);
 
 };
