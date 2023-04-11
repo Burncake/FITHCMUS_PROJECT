@@ -35,6 +35,11 @@ using namespace std;
 #define	Lose			5
 #define Draw			6
 
+//DrawPixel
+#define pixel			219
+#define pixelDown		220
+#define pixelUp			223
+
 // Resources folder
 #define loc "resources/"
 
