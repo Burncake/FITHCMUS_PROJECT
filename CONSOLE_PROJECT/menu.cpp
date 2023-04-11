@@ -51,7 +51,7 @@ void menu::mainScreen(int selectedMenu) {
 void menu::settingScreen(int selectedMenu, int& x, int& y, const int cursor) {
 	int flag = selectedMenu;
 	common::setColor(DarkCyan);
-	menu::printLogo();
+	printLogo();
 	common::setColor(Black);
 	printRectangle(x - 2, y - 1, 45, 6);
 	printText("================= SETTING =================", x, y);
@@ -232,7 +232,7 @@ void menu::drawGameMode(int selectedMode) {
 	int x = 51, y = 15;
 	int flag = selectedMode;
 	common::setColor(DarkCyan);
-	menu::printLogo();
+	printLogo();
 	common::setColor(Black);
 	menu::printModeBoard();
 	common::setColor(Black);
@@ -290,25 +290,6 @@ void menu::printModeBoard() {
 	}
 	putchar(188);
 }
-//logo caro
-void menu::printLogo() {
-	int width = 114, height = 29;
-	unsigned char logo[] = {
-		32,32,32,32,220,219,219,219,219,219,219,220,32,32,32,32,32,32,32,220,219,219,220,32,32,32,32,32,254,219,219,219,219,219,219,219,219,220,32,32,32,32,32,220,219,219,219,219,219,219,220,32,
-	32,32,220,223,219,32,32,32,32,32,222,219,219,32,32,220,32,220,219,219,32,32,219,219,220,32,32,32,32,219,219,32,221,32,32,32,220,219,219,32,254,32,219,219,223,32,32,32,32,223,219,219,
-	32,32,32,219,219,254,32,32,32,32,32,32,32,32,32,32,219,219,223,32,32,32,32,223,219,221,32,32,223,219,219,221,32,32,220,219,219,32,32,32,32,220,223,219,32,32,32,32,32,223,219,219,
-	32,223,32,219,219,32,32,32,32,32,32,32,32,32,220,220,223,223,219,219,219,219,219,219,219,219,32,223,32,219,219,219,222,219,219,32,32,32,32,32,32,32,219,219,32,32,32,220,220,32,222,219,
-	220,220,32,219,220,223,32,32,32,32,32,219,219,32,32,32,219,219,32,32,32,32,32,220,223,219,223,223,220,223,219,32,32,32,223,219,219,220,32,32,223,221,219,219,220,32,32,32,32,220,219,219,
-	32,32,32,32,223,219,219,219,219,219,219,223,32,223,32,222,219,221,32,32,32,32,32,32,219,219,32,32,32,219,219,32,32,32,32,32,254,219,219,32,32,32,32,223,219,219,219,219,219,219,223,32 };
-	int num_lines = 6, num_chars = 52;
-	int top = 4, left = width / 2 - num_chars / 2;
-	for (int i = 0; i < num_lines; i++)
-	{
-		common::gotoXY(left, i + top);
-		for (int j = 0; j < num_chars; j++)
-			putchar(logo[i * num_chars + j]);
-	}
-}
 
 void menu::printOptionsBoard() {
 	common::setColor(Black);
@@ -354,13 +335,13 @@ void menu::printOptionsBoard() {
 //Luat choi
 void menu::helpScreen() {
 	common::setColor(DarkCyan);
-	menu::printLogo();
+	printLogo();
 
 	int x = 15;
 	int y = 12;
 	int left = 14, top = 11, width = 86, height = 14;
 	common::setColor(Black);
-	menu::printRectangle(left, top, width, height);
+	printRectangle(left, top, width, height);
 	printText(" ==================================== HUONG DAN =====================================", x, y);
 	printText(" 'W' | ' ' : Di chuyen len tren \t\t 'S' | ' ' : Di chuyen xuong duoi", x + 3, y + 1);
 	printText(" 'A' | ' ' : Di chuyen sang trai\t\t 'D' | ' ' : Di chuyen sang phai ", x + 3, y + 2);
@@ -384,7 +365,7 @@ void menu::helpScreen() {
 //Thong tin nhom
 void menu::aboutScreen() {
 	common::setColor(DarkCyan);
-	menu::printLogo();
+	printLogo();
 
 	int x = 37, y = 14;
 	int left = 36, top = 12, width = 42, height = 14;
@@ -457,7 +438,7 @@ void menu::setting() {
 
 void menu::exitScreen(int selectedOption, int& x, int& y) {
 	common::setColor(DarkCyan);
-	menu::printLogo();
+	printLogo();
 
 	int flag = selectedOption;
 	common::setColor(Black);
