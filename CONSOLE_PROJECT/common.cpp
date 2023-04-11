@@ -127,7 +127,33 @@ int getInput()
     if (c == 'n' || c == 'N')               return 10;// no
                                             return 0; // default              
 }
-void printText(string text, int x, int y) {
+void printText(string text, int x, int y) 
+{
     common::gotoXY(x, y);
     cout << text;
+}
+
+void putcharXY(int ch, int x, int y)
+{
+    common::gotoXY(x, y);
+    putchar(ch);
+}
+
+void drawPixelXY(int ch, int x, int y)
+{
+    common::gotoXY(x + 30, y + 4);
+    putchar(ch);
+}
+
+void drawPixel(int ch, unsigned char pix[])
+{
+    int num, temp = 0;
+    for (int i = 0; i < 6; i++) {
+        num = temp;
+        while (pix[num] != 0) {
+            putcharXY(ch, 30 + pix[num], 4 + i);
+            num++;
+        }
+        temp = ++num;
+    }
 }

@@ -21,6 +21,9 @@ public:
 	static void exitScreen(int selectedOption, int& x, int& y);
 	static void exitSelection();
 	static void printLogo();
+	static void bigOScreen();
+	static void bigXScreen();
+	static void particles();
 	static void printOptionsBoard();
 	static void clearConsole();
 	static void printRectangle(int left, int top, int width, int height);

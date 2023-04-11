@@ -9,7 +9,6 @@ void menu::mainScreen(int selectedMenu) {
 	int x = 51, y = 14;
 	int flag = selectedMenu;
 	common::setUpConsole();
-	common::setColor(DarkCyan);
 	menu::printLogo();
 	common::setColor(Black);
 	menu::printOptionsBoard();
@@ -48,7 +47,6 @@ void menu::mainScreen(int selectedMenu) {
 
 void menu::settingScreen(int selectedMenu, int& x, int& y, const int cursor) {
 	int flag = selectedMenu;
-	common::setColor(DarkCyan);
 	menu::printLogo();
 	common::setColor(Black);
 	menu::printRectangle(x - 2, y - 1, 45, 6);
@@ -232,9 +230,8 @@ void menu::menuSelection() {
 //ve cac che do cua game
 void menu::drawGameMode(int selectedMode) {
 	//menu::clearConsole();
-	int x = 51, y = 15;
+	int x = 52, y = 15;
 	int flag = selectedMode;
-	common::setColor(DarkCyan);
 	menu::printLogo();
 	common::setColor(Black);
 	menu::printModeBoard();
@@ -255,7 +252,7 @@ void menu::drawGameMode(int selectedMode) {
 //ve bang cac che do game
 void menu::printModeBoard() {
 	common::setColor(Black);
-	int left = 50;
+	int left = 51;
 	int top = 14;
 	common::gotoXY(left, top);
 	putchar(201);
@@ -295,22 +292,150 @@ void menu::printModeBoard() {
 }
 //logo caro
 void menu::printLogo() {
-	int width = 114, height = 29;
-	unsigned char logo[] = {
-		32,32,32,32,220,219,219,219,219,219,219,220,32,32,32,32,32,32,32,220,219,219,220,32,32,32,32,32,254,219,219,219,219,219,219,219,219,220,32,32,32,32,32,220,219,219,219,219,219,219,220,32,
-	32,32,220,223,219,32,32,32,32,32,222,219,219,32,32,220,32,220,219,219,32,32,219,219,220,32,32,32,32,219,219,32,221,32,32,32,220,219,219,32,254,32,219,219,223,32,32,32,32,223,219,219,
-	32,32,32,219,219,254,32,32,32,32,32,32,32,32,32,32,219,219,223,32,32,32,32,223,219,221,32,32,223,219,219,221,32,32,220,219,219,32,32,32,32,220,223,219,32,32,32,32,32,223,219,219,
-	32,223,32,219,219,32,32,32,32,32,32,32,32,32,220,220,223,223,219,219,219,219,219,219,219,219,32,223,32,219,219,219,222,219,219,32,32,32,32,32,32,32,219,219,32,32,32,220,220,32,222,219,
-	220,220,32,219,220,223,32,32,32,32,32,219,219,32,32,32,219,219,32,32,32,32,32,220,223,219,223,223,220,223,219,32,32,32,223,219,219,220,32,32,223,221,219,219,220,32,32,32,32,220,219,219,
-	32,32,32,32,223,219,219,219,219,219,219,223,32,223,32,222,219,221,32,32,32,32,32,32,219,219,32,32,32,219,219,32,32,32,32,32,254,219,219,32,32,32,32,223,219,219,219,219,219,219,223,32 };
-	int num_lines = 6, num_chars = 52;
-	int top = 4, left = width / 2 - num_chars / 2;
-	for (int i = 0; i < num_lines; i++)
-	{
-		common::gotoXY(left, i + top);
-		for (int j = 0; j < num_chars; j++)
-			putchar(logo[i * num_chars + j]);
-	}
+	//black pixel
+	common::setColor(Black);
+	unsigned char blackPixel[] = {
+		6,7,8,9,10,21,30,31,32,33,34,35,36,45,46,47,48,49,0,
+		12,19,23,30,38,43,51,0,
+		4,17,25,30,36,51,0,
+		4,19,20,21,22,23,24,25,30,31,34,43,51,0,
+		4,12,17,43,51,0,
+		6,7,8,9,10,17,25,30,38,45,46,47,48,49,0 }; 
+	drawPixel(pixel, blackPixel);
+
+	//red pixel
+	common::setColor(DarkRed);
+	unsigned char redPixel[] = {
+		0,
+		11,22,29,32,42,0,
+		3,16,0,
+		3,29,33,42,50,0,
+		3,11,16,42,0,
+		11,16,29,0
+	};
+	drawPixel(pixel, redPixel);
+
+	//red down
+	unsigned char redD[] = {
+		4,19,28,43,0,
+		2,15,17,36,40,0,
+		34,41,0,
+		1,14,47,0,
+		23,28,49,0,
+		36,0
+	};
+	drawPixel(pixelDown, redD);
+	drawPixelXY(pixelDown, 0, 4);
+
+	//red up
+	unsigned char redU[] = {
+		0,
+		49,0,
+		23,28,49,0,
+		27,0,
+		34,0,
+		4,13,43,0
+	};
+	drawPixel(pixelUp, redU);
+
+	//blue pixel
+	common::setColor(Cyan);
+	unsigned char bluePixel[] = {
+		0,
+		5,13,20,31,33,39,52,0,
+		26,31,44,52,0,
+		5,26,32,35,44,52,0,
+		5,13,18,31,52,0,
+		18,26,31,39,0
+	};
+	drawPixel(pixel, bluePixel);
+
+	//blue down
+	unsigned char blueD[] = {
+		12,23,38,51,0,
+		16,25,41,0,
+		6,0,
+		2,49,0,
+		2,38,45,0,
+		0
+	};
+	drawPixel(pixelDown, blueD);
+
+	//blue up
+	unsigned char blueU[] = {
+		0,
+		45,0,
+		19,0,
+		28,0,
+		6,27,0,
+		12,14,51,0
+	};
+	drawPixel(pixelUp, blueU);
+
+	//black down pixel, red bg 
+	common::setColor(64); //black red
+	unsigned char blackRedD[] = {
+		5,20,29,44,0,
+		3,18,37,0,
+		29,35,0,
+		0,
+		50,0,
+		37,0
+	};
+	drawPixel(pixelDown, blackRedD);
+
+	//black up, red bg
+	unsigned char blackRedU[] = {
+		0,
+		4,50,0,
+		24,29,43,50,0,
+		18,0,
+		25,30,35,0,
+		5,44,0
+	};
+	drawPixel(pixelUp, blackRedU);
+
+	//black down, blue bg
+	common::setColor(176); //black blue
+	unsigned char blackBlueD[] = {
+		11,22,37,50,0,
+		24,0,
+		5,0,
+		0,
+		36,37,44,0,
+		0
+	};
+	drawPixel(pixelDown, blackBlueD);
+
+	//black up, blue bg
+	unsigned char blackBlueU[] = {
+		0,
+		44,0,
+		18,0,
+		0,
+		26,0,
+		11,50,0
+	};
+	drawPixel(pixelUp, blackBlueU);
+
+	//blue red
+	common::setColor(180);
+	unsigned char redBlue[] = {
+		0,
+		0,
+		42,0,
+		16,0,
+		5,24,29,0,
+		0
+	};
+	drawPixel(pixelUp, redBlue);
+
+	//black
+	common::setColor(Black);
+	drawPixelXY(223, 17, 3);
+	drawPixelXY(220, 48, 3);
+	drawPixelXY(220, 1, 4);
+	drawPixelXY(220, 15, 3);
 }
 
 void menu::printOptionsBoard() {
@@ -356,37 +481,39 @@ void menu::printOptionsBoard() {
 
 //Luat choi
 void menu::helpScreen() {
-	common::setColor(DarkCyan);
 	menu::printLogo();
 
 	int x = 15;
 	int y = 12;
 	int left = 14, top = 11, width = 86, height = 14;
 	common::setColor(Black);
-
+	menu::printRectangle(left, top, width, height);
 	printText(" ==================================== HUONG DAN =====================================", x, y);
-	printText(" 'W' : Di chuyen len tren \t\t\t 'S' : Di chuyen xuong duoi", x + 6, ++y);
-	printText(" 'A' : Di chuyen sang trai\t\t\t 'D' : Di chuyen sang phai ", x + 6, ++y);
-	++y;
-	++y;
-	printText(" ==================================== LUAT CHOI =====================================", x, ++y);
-	printText(" - Hai nguoi choi lan luot di chuyen va chon vao cac o chua duoc danh. ", x, ++y);
-	printText(" - Nguoi choi se chien thang tro choi khi nguoi choi do co 5 quan co lien tiep nhau", x, ++y);
-	printText(" theo hang ngang, hang doc hoac hang cheo.", x, ++y);
-	printText(" - Khi tat ca cac o tren ban co deu kin ma chua ai chien thang thi game dau hoa nhau.", x, ++y); 
-	++y;
-	++y;
-	printText("Chuc cac ban choi game vui ve!", width / 2, y);
+	printText(" 'W' | ' ' : Di chuyen len tren \t\t 'S' | ' ' : Di chuyen xuong duoi", x + 3, y + 1);
+	printText(" 'A' | ' ' : Di chuyen sang trai\t\t 'D' | ' ' : Di chuyen sang phai ", x + 3, y + 2);
+	common::gotoXY(x + 11, y + 1);
+	putchar(30);
+	common::gotoXY(x + 57, y + 1);
+	putchar(31);
+	common::gotoXY(x + 11, y + 2);
+	putchar(17);
+	common::gotoXY(x + 57, y + 2);
+	putchar(16);
+	printText(" ==================================== LUAT CHOI =====================================", x, y + 5);
+	printText(" - Hai nguoi choi lan luot di chuyen va chon vao cac o chua duoc danh. ", x, y + 6);
+	printText(" - Nguoi choi se chien thang tro choi khi nguoi choi do co 5 quan co lien tiep nhau", x, y + 7);
+	printText(" theo hang ngang, hang doc hoac hang cheo.", x, y + 8);
+	printText(" - Khi tat ca cac o tren ban co deu kin ma chua ai chien thang thi game dau hoa nhau.", x, y + 9);
+	printText("Chuc cac ban choi game vui ve!", width / 2, y + 11);
 	printText("Press ESC to go back", 48, 28);
 }
 
 //Thong tin nhom
 void menu::aboutScreen() {
-	common::setColor(DarkCyan);
 	menu::printLogo();
 
-	int x = 38, y = 14;
-	int left = 37, top = 12, width = 42, height = 14;
+	int x = 37, y = 14;
+	int left = 36, top = 12, width = 42, height = 14;
 	common::setColor(Black);
 	menu::printRectangle(left, top, width, height);
 	printText("ABOUT", x + 18, y - 2);
@@ -399,7 +526,7 @@ void menu::aboutScreen() {
 	printText("22127234 - CAO HOANG LOC", x + 7, y + 8);
 	printText("22127418 - NGUYEN KHANH TOAN", x + 7, y + 9);
 	printText("22127422 - LE THANH MINH TRI", x + 7, y + 10);
-	printText("Press ESC to go back", 47, y + 14);
+	printText("Press ESC to go back", 48, 28);
 }
 
 void menu::setting() {
@@ -455,7 +582,6 @@ void menu::setting() {
 }
 
 void menu::exitScreen(int selectedOption, int& x, int& y) {
-	common::setColor(DarkCyan);
 	menu::printLogo();
 
 	int flag = selectedOption;

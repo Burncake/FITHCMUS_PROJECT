@@ -35,6 +35,11 @@ using namespace std;
 #define	Lose			5
 #define Draw			6
 
+//DrawPixel
+#define pixel			219
+#define pixelDown		220
+#define pixelUp			223
+
 // Resources folder
 #define loc "resources/"
 
@@ -61,3 +66,6 @@ void coutColored(char chr, int color);
 int getInput();
 
 void printText(string text, int x, int y);
+void putcharXY(int ch, int x, int y);
+void drawPixelXY(int ch, int x, int y);
+void drawPixel(int ch, unsigned char pix[]);
