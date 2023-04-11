@@ -59,5 +59,7 @@ public:
 void coutColored(string str, int color);
 void coutColored(char chr, int color);
 int getInput();
-
 void printText(string text, int x, int y);
+void clearConsole();
+void printRectangle(int left, int top, int width, int height);
+void printLogo();

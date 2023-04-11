@@ -81,7 +81,7 @@ void common::playSound(int i)
         L"resources/select.wav",
         L"resources/win.wav",
         L"resources/lose.wav",
-        L"resources/draw.wav" };
+        L"resources/draw.wav"  };
     PlaySound(fileName[i], NULL, SND_FILENAME | SND_ASYNC);
 }
 
@@ -121,8 +121,8 @@ int getInput()
     if (c == 'd' || c == 'D' || c == 77)    return 4; // right
     if (c == '\r' || c == ' ')              return 5; // select
     if (c == 27)                            return 6; // esc
-    if (c == 'o' || c == 'O')               return 7; // save
-    if (c == 'i' || c == 'I')               return 8; // load
+    if (c == 'l' || c == 'L')               return 7; // save
+    if (c == 't' || c == 'T')               return 8; // load
     if (c == 'y' || c == 'Y')               return 9; // continue playing
     if (c == 'n' || c == 'N')               return 10;// no
                                             return 0; // default              
@@ -130,4 +130,50 @@ int getInput()
 void printText(string text, int x, int y) {
     common::gotoXY(x, y);
     cout << text;
+}
+
+void clearConsole()
+{
+    system("cls");
+}
+
+void printRectangle(int left, int top, int width, int height) {
+    common::gotoXY(left, top);
+    putchar(201);
+    for (int i = 0; i < width; i++)
+        putchar(205);
+    putchar(187);
+
+    int i = 0;
+    for (i = 0; i < height; i++) {
+        common::gotoXY(left, top + i + 1);
+        putchar(186);
+        common::gotoXY(left + width + 1, top + i + 1);
+        putchar(186);
+    }
+
+    common::gotoXY(left, top + i);
+    putchar(200);
+    for (i = 0; i < width; i++)
+        putchar(205);
+    putchar(188);
+}
+
+void printLogo() {
+    int width = 114, height = 29;
+    unsigned char logo[] = {
+        32,32,32,32,220,219,219,219,219,219,219,220,32,32,32,32,32,32,32,220,219,219,220,32,32,32,32,32,254,219,219,219,219,219,219,219,219,220,32,32,32,32,32,220,219,219,219,219,219,219,220,32,
+    32,32,220,223,219,32,32,32,32,32,222,219,219,32,32,220,32,220,219,219,32,32,219,219,220,32,32,32,32,219,219,32,221,32,32,32,220,219,219,32,254,32,219,219,223,32,32,32,32,223,219,219,
+    32,32,32,219,219,254,32,32,32,32,32,32,32,32,32,32,219,219,223,32,32,32,32,223,219,221,32,32,223,219,219,221,32,32,220,219,219,32,32,32,32,220,223,219,32,32,32,32,32,223,219,219,
+    32,223,32,219,219,32,32,32,32,32,32,32,32,32,220,220,223,223,219,219,219,219,219,219,219,219,32,223,32,219,219,219,222,219,219,32,32,32,32,32,32,32,219,219,32,32,32,220,220,32,222,219,
+    220,220,32,219,220,223,32,32,32,32,32,219,219,32,32,32,219,219,32,32,32,32,32,220,223,219,223,223,220,223,219,32,32,32,223,219,219,220,32,32,223,221,219,219,220,32,32,32,32,220,219,219,
+    32,32,32,32,223,219,219,219,219,219,219,223,32,223,32,222,219,221,32,32,32,32,32,32,219,219,32,32,32,219,219,32,32,32,32,32,254,219,219,32,32,32,32,223,219,219,219,219,219,219,223,32 };
+    int num_lines = 6, num_chars = 52;
+    int top = 4, left = width / 2 - num_chars / 2;
+    for (int i = 0; i < num_lines; i++)
+    {
+        common::gotoXY(left, i + top);
+        for (int j = 0; j < num_chars; j++)
+            putchar(logo[i * num_chars + j]);
+    }
 }

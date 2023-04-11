@@ -7,8 +7,5 @@ int main()
 	system("color F0");
 	menu::menuSelection();
 	return 0;
-	
-	
-
 }
 

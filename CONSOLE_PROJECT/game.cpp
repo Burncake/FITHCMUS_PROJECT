@@ -1,12 +1,12 @@
 #include "game.h"
+#include "file.h"
 int attackEvaluate[10] = { 0, 3, 24, 192, 1536, 12288, 98304, 531441, 4782969, 500000000 };
 int defendEvaluate[10] = { 0, 2, 18, 140, 800, 8000, 70569, 350000, 30000000,	300000000 };
-void game::game_pvp()
+void game::game_pvp(game& g)
 {
-	game g;
 	int key = -1;
 	do {
-		system("cls");
+		clearConsole();
 		common::setUpConsole();
 		system("color F0");
 		drawBoard();
@@ -15,7 +15,18 @@ void game::game_pvp()
 		g.showScore();
 		while (!g.win() && !g.draw()) {
 			g.showTurn();
-			g.move();
+			g.drawCursor();
+			key = getInput();
+			g.move(key);
+			if (key == 7) {
+				file::saveScreen(g);
+				game_pvp(g);
+			}
+			if (key == 8) {
+				file::loadScreen(g);
+				if (g.mode == pvp) game_pvp(g);
+				if (g.mode == pve) game_pve(g);
+			}
 		}
 		g.score();
 		g.showScore();
@@ -167,9 +178,8 @@ void game::showTurn() {
 	coutColored(to_string(o_count), Blue);
 }
 
-void game::move()
+void game::drawCursor()
 {
-	int tx = x, ty = y;
 	common::gotoXY(6 + 4 * x, 3 + 2 * y);
 	if (board[y][x] == 0) {
 		if (x_turn)		coutColored(char(120), PointerColor);
@@ -177,8 +187,11 @@ void game::move()
 	}
 	if (board[y][x] == 1) coutColored("X", 178);
 	if (board[y][x] == 2) coutColored("O", 181);
+}
 
-	int i = getInput();
+void game::move(int i)
+{
+	int tx = x, ty = y;
 	switch (i) {
 	case 1:
 		common::playSound(Move);
@@ -364,6 +377,79 @@ void game::o_win_effect()
 	}
 }
 
+void game::botMode_end_effect()
+{
+	system("cls");
+	if (win()) {
+		if (x_turn) {
+			player_lose_effect();
+		}
+		else {
+			player_win_effect();
+		}
+	}
+	else draw_effect();
+}
+void game::player_win_effect() {
+	common::playSound(Win);
+	for (int color = 241; color < 256; color++) {
+		for (int i = 0; i <= 10; i++) {
+			for (int j = 0; j < 6; j++) {
+				if (i >= 3 && i <= 7)
+					if (j >= 1 && j <= 3) continue;
+				common::gotoXY(i * 10 + 9, j * 5 + 2);
+				if (color % 2)
+					if (j % 2)
+						if (i % 2) coutColored("X", DarkRed);
+						else cout << " ";
+					else
+						if (i % 2 == 0) coutColored("X", DarkRed);
+						else cout << " ";
+				else
+					if (j % 2)
+						if (i % 2) cout << " ";
+						else coutColored("X", DarkRed);
+					else
+						if (i % 2 == 0) cout << " ";
+						else coutColored("X", DarkRed);
+			}
+		}
+		if (color == DarkWhite || color == Yellow || color == DarkYellow || color == Cyan || color == White) continue;
+		draw_txt("player_win.txt", fSizeC + 10, dSizeR - 4, color);
+		Sleep(400);
+	}
+}
+void game::player_lose_effect() {
+	common::playSound(Lose);
+	for (int color = 241; color < 256; color++) {
+		/*for (int i = 0; i <= 10; i++) {
+			for (int j = 0; j < 6; j++) {
+				if (i >= 3 && i <= 7)
+					if (j >= 1 && j <= 3) continue;
+				common::gotoXY(i * 10 + 9, j * 5 + 2);
+				if (color % 2)
+					if (j % 2)
+						if (i % 2) coutColored("X", DarkRed);
+						else cout << " ";
+					else
+						if (i % 2 == 0) coutColored("X", DarkRed);
+						else cout << " ";
+				else
+					if (j % 2)
+						if (i % 2) cout << " ";
+						else coutColored("X", DarkRed);
+					else
+						if (i % 2 == 0) cout << " ";
+						else coutColored("X", DarkRed);
+			}
+		}*/
+
+		if (color == DarkWhite || color == Yellow || color == DarkYellow || color == Cyan || color == White) continue;
+		draw_txt("player_lose.txt", fSizeC + 10, dSizeR - 4, color);
+		Sleep(700);
+	}
+}
+
 void game::draw_effect()
 {
 	common::playSound(Draw);
@@ -436,6 +522,7 @@ void game::saveGame(string file)
 {
 	ofstream game(file);
 	if (!game) return;
+	game << mode << endl;
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
 			game << board[i][j] << " ";
@@ -444,11 +531,13 @@ void game::saveGame(string file)
 	}
 	game << x_score << " " << o_score << endl;
 	game << x << " " << y << endl;
+	game << value << " " << pos_i << " " << pos_j << endl;
 	game.close();
 }
 void game::loadGame(string file) {
 	ifstream game(file);
 	x_count = o_count = 0;
+	game >> mode;
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size; j++) {
 			game >> board[i][j];
@@ -458,21 +547,14 @@ void game::loadGame(string file) {
 	}
 	game >> x_score >> o_score;
 	game >> x >> y;
+	game >> value >> pos_i >> pos_j;
 	x_turn = (x_count == o_count);
 	game.close();
 }
 
 
-void game::pveMove() {
+void game::pveMove(int i) {
 	int tx = x, ty = y;
-	common::gotoXY(6 + 4 * x, 3 + 2 * y);
-	if (board[y][x] == 0) {
-		if (x_turn)		coutColored(char(120), PointerColor);
-		else			coutColored(char(248), PointerColor);
-	}
-	if (board[y][x] == 1) coutColored("X", 178);
-	if (board[y][x] == 2) coutColored("O", 181);
-	int i = getInput();
 	switch (i) {
 	case 1:
 		common::playSound(Move);
@@ -516,9 +598,7 @@ void game::pveMove() {
 
 }
 
-void game::game_pve() {
-
-	game g;
+void game::game_pve(game& g) {
 	int key = -1;
 	do {
 		system("cls");
@@ -528,24 +608,29 @@ void game::game_pve() {
 		drawInformation();
 		common::playSound(Start);
 		g.showScore();
-		int k = 0;
 		while (!g.draw()) {
 			g.showTurn();
-			g.pveMove();
-			if (g.win()) {
-				Sleep(1000);
-				break;
+			g.drawCursor();
+			key = getInput();
+			g.pveMove(key);
+			if (key == 7) {
+				file::saveScreen(g);
+				game_pve(g);
 			}
+			if (key == 8) {
+				file::loadScreen(g);
+				if (g.mode == pvp) game_pvp(g);
+				if (g.mode == pve) game_pve(g);
+			}
+			if (g.win()) break;
 			g.processBoardPveO();
-			if (g.win()) {
-				Sleep(1000);
-				break;
-			}
+			if (g.win()) break;
 		}
+		Sleep(1000);
 		g.score();
 		g.showScore();
 		system("cls");
-		g.endEffect();
+		g.botMode_end_effect();
 		do {
 			g.askContinuePlay(key);
 			if (key == 9) {

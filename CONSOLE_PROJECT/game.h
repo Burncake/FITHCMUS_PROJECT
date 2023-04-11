@@ -14,20 +14,23 @@
 #define consoleR 119
 #define consoleD 29
 #define maxDepth 5
+#define pvp 1
+#define pve 2
 static int setC = 60, setR = 15;
 
 class game {
 public:
-	int x_score = 0, o_score = 0, x_count = 0, o_count = 0, x = 0, y = 0, value = 0, pos_i = -1, pos_j = -1;
+	int mode = 0, x_score = 0, o_score = 0, x_count = 0, o_count = 0, x = 0, y = 0, value = 0, pos_i = -1, pos_j = -1;
 	int board[size][size]{};
 	bool x_turn = true;
-	static void game_pvp();
+	static void game_pvp(game& g);
 	static void drawBoard();
 	static void draw_txt(string name, int x, int y, int color);
 	static void drawInstruct();
 	static void drawInformation();
 	void showTurn();
-	void move();
+	void drawCursor();
+	void move(int i);
 	void processBoard();
 	bool win();
 	bool draw();
@@ -36,6 +39,9 @@ public:
 	void endEffect();
 	void x_win_effect();
 	void o_win_effect();
+	void botMode_end_effect();
+	void player_win_effect();
+	void player_lose_effect();
 	void draw_effect();
 	void resetData();
 	void askContinuePlay(int& key);
@@ -44,8 +50,8 @@ public:
 	//int minimax(bool isMaxiPlayer, int depth, int alpha, int beta);
 	//void dummyBoard();
 	void findBestMove();
-	void pveMove();
-	static void game_pve();
+	void pveMove(int i);
+	static void game_pve(game& g);
 	void processBoardPveX();
 	void processBoardPveO();
 	bool checkBorder(int x, int y);

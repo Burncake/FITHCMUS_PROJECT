@@ -1,11 +1,10 @@
 ﻿#pragma once
 #include "common.h"
 #include "game.h"
+#include "file.h"
 #include <iostream>
 #include <string>
 #include "Windows.h"
-using namespace std;
-
 class menu {
 
 public:
@@ -20,10 +19,7 @@ public:
 	static void setting();
 	static void exitScreen(int selectedOption, int& x, int& y);
 	static void exitSelection();
-	static void printLogo();
 	static void printOptionsBoard();
-	static void clearConsole();
-	static void printRectangle(int left, int top, int width, int height);
 
 };
 //ham ve unicode

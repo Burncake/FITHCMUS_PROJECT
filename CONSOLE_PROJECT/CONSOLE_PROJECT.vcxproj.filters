@@ -27,6 +27,9 @@
     <ClCompile Include="menu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="file.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
@@ -36,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="menu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="file.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -56,6 +62,9 @@
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="resources\o_win.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="resources\f_manager.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

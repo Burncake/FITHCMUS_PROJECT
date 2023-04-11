@@ -131,11 +131,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CONSOLE_PROJECT.cpp" />
+    <ClCompile Include="file.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="common.cpp" />
     <ClCompile Include="menu.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="file.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="common.h" />
     <ClInclude Include="menu.h" />
@@ -145,6 +147,7 @@
     <Text Include="logoX.txt" />
     <Text Include="resources\amogus.txt" />
     <Text Include="resources\draw.txt" />
+    <Text Include="resources\f_manager.txt" />
     <Text Include="resources\o_win.txt" />
     <Text Include="resources\x_win.txt" />
   </ItemGroup>
