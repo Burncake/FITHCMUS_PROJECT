@@ -72,17 +72,31 @@ void common::setColor(int color)
     SetConsoleTextAttribute(consoleOutput, color);
 }
 
+void common::bgmusic(int n) {
+	switch (n) {
+	case 0:
+		PlaySound(0, 0, 0);
+	case 1:
+		PlaySound(L"resources/background.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
+	}
+}
+
 void common::playSound(int i)
 {
-    static const wchar_t* fileName[7] = {
-        L"resources/background.wav",
-        L"resources/start.wav",
-        L"resources/move.wav",
-        L"resources/select.wav",
-        L"resources/win.wav",
-        L"resources/lose.wav",
-        L"resources/draw.wav"  };
-    PlaySound(fileName[i], NULL, SND_FILENAME | SND_ASYNC);
+	wstring fileName[6] = {
+		 L"resources/start.wav",
+		 L"resources/move.wav",
+		 L"resources/select.wav",
+		 L"resources/win.wav",
+		 L"resources/lose.wav",
+		 L"resources/draw.wav" };
+	// Open sound files
+	mciSendString(L"close sound", NULL, 0, NULL);
+	wstring command = L"open \"" + fileName[i] + L"\" type waveaudio alias sound";
+	mciSendString(command.c_str(), NULL, 0, NULL);
+
+	//Play sound
+	mciSendString(L"play sound from 0", NULL, 0, NULL);
 }
 
 void common::changeFont() {

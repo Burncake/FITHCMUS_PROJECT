@@ -124,12 +124,15 @@ void menu::modeSelection() {
 }
 
 void menu::menuSelection() {
-	common::playSound(Background);
+	bool music = 1;
+	common::bgmusic(music);
 	int selectedMenu = 0;
+
 	printLogo();
 	bigOScreen();
 	bigXScreen();
 	particles();
+	
 	while (1) {
 		menu::mainScreen(selectedMenu);
 		int a = getInput();
@@ -194,7 +197,7 @@ void menu::menuSelection() {
 	}
 	case 4: {
 		clearConsole();
-		menu::setting();
+		menu::setting(&music);
 		int c = -1;
 		while (c != 6) {
 			c = getInput();
@@ -424,13 +427,14 @@ void menu::aboutScreen() {
 	printText("Press ESC to go back", 48, 28);
 }
 
-void menu::setting() {
+void menu::setting(bool* music) {
 	int selectedMenu = 0;
 	int x = 36, y = 14;
 	const int cursor_col = 75;
 	common::showCursor(false);
 	while (1) {
 		menu::settingScreen(selectedMenu, x, y, cursor_col);
+		printText("On", cursor_col, y + 2);
 		int a = getInput();
 		common::playSound(Move);
 		if (a == 1) {
@@ -452,17 +456,26 @@ void menu::setting() {
 
 	switch (selectedMenu) {
 	case 0: {
-		//tat nhac (hoan thien bgmusic khong bi ngat)
 		common::gotoXY(cursor_col, y + 2);
-		bool backgroundMusic = 1;
-		backgroundMusic = !backgroundMusic;
-		if (backgroundMusic) {
-			cout << "On";
-			common::playSound(Background);
+		int select = 1;
+		while (1) {
+			int a = getInput();
+			if (a == 5) {
+				*music = select;
+				break;
+			}
+			else if ((a == 2) || (a == 4)) {
+				select = (select + 1) % 2;
+			}
+
+			if (select == 0) {
+				printText("Off", cursor_col, y + 2);
+			}
+			else if (select == 1) {
+				printText("   ", cursor_col, y + 2);
+				printText("On", cursor_col, y + 2);
+			}
 		}
-		else
-			cout << "Off";
-		break;
 	}
 	case 1: {
 		//doi mau nhan vat 1

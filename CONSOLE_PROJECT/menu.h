@@ -16,7 +16,7 @@ public:
 	static void printModeBoard();					
 	static void helpScreen();
 	static void aboutScreen();
-	static void setting();
+	static void setting(bool* music);
 	static void exitScreen(int selectedOption, int& x, int& y);
 	static void exitSelection();
 	static void printOptionsBoard();

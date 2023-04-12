@@ -31,13 +31,12 @@ using namespace std;
 #define redCyan			180
 
 // Sounds
-#define Background		0
-#define Start			1
-#define Move			2
-#define Select			3
-#define Win				4
-#define	Lose			5
-#define Draw			6
+#define Start			0
+#define Move			1
+#define Select			2
+#define Win				3
+#define	Lose			4
+#define Draw			5
 
 //drawPixel
 #define pixel			219
@@ -62,6 +61,7 @@ public:
 	static void setTitle();
 	static void gotoXY(int x, int y);
 	static void setColor(int color);
+	static void bgmusic(int n);
 	static void playSound(int i);
 	static void changeFont();
 };
