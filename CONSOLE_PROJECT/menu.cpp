@@ -350,7 +350,8 @@ void menu::saveSetting(menu m)
 		out.close();
 		return;
 	}
-	out << m.music << endl;
+	if (m.music) out << 1 << endl;
+	else out << 0 << endl;
 	out << m.st_color << " " << m.nd_color;
 	out.close();
 }
@@ -415,6 +416,9 @@ void menu::setting(menu& m) {
 	common::showCursor(false);
 	printLogo();
 	while (false == false) {
+		if (m.st_color == m.nd_color) printText("But why?", cursor_col, y + 6);
+		else printText("        ", cursor_col, y + 6);
+
 		while (false == false) {
 			menu::settingScreen(selectedMenu, x, y, cursor_col, m);
 			a = getInput();
