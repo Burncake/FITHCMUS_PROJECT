@@ -3,7 +3,8 @@
 //cac lua chon trong menu
 string options[6] = { "PLAY GAME", "LOAD GAME", "ABOUT", "HELP", "SETTING", "EXIT" };
 //cac che do choi
-string gameMode[] = { "PvP","PvC" };
+string gameMode[2] = { "PvP","PvC" };
+
 //man hinh chinh
 void menu::mainScreen(int selectedMenu) {
 	int x = 51, y = 14;
@@ -12,19 +13,13 @@ void menu::mainScreen(int selectedMenu) {
 	menu::printOptionsBoard();
 	common::setColor(Black);
 	
-	if (flag == 0) {
-		common::setColor(Red);
-	}
+	if (flag == 0) common::setColor(Red);
 	printText(options[0], x + 1, y);
 	common::setColor(Black);
-	if (flag == 1) {
-		common::setColor(Red);
-	}
+	if (flag == 1) common::setColor(Red);
 	printText(options[1], x + 1, y + 2);
 	common::setColor(Black);
-	if (flag == 2) {
-		common::setColor(Red);
-	}
+	if (flag == 2) common::setColor(Red);
 	printText(options[2], x + 3, y + 4);
 	common::setColor(Black);
 	if (flag == 3) {
@@ -33,9 +28,7 @@ void menu::mainScreen(int selectedMenu) {
 	}
 	else printText(options[3] + " ", x + 3, y + 6);
 	common::setColor(Black);
-	if (flag == 4) {
-		common::setColor(Red);
-	}
+	if (flag == 4) common::setColor(Red);
 	printText(options[4], x + 2, y + 8);
 	common::setColor(Black);
 	if (flag == 5) {
@@ -45,9 +38,8 @@ void menu::mainScreen(int selectedMenu) {
 	else printText(options[5] + " ", x + 3, y + 10);
 }
 
-void menu::settingScreen(int selectedMenu, int& x, int& y, const int cursor) {
+void menu::settingScreen(int selectedMenu, int& x, int& y, const int cursor, menu& m) {
 	int flag = selectedMenu;
-	printLogo();
 	common::setColor(Black);
 	printRectangle(x - 2, y - 1, 45, 6);
 	printText("================= SETTING =================", x, y);
@@ -60,8 +52,9 @@ void menu::settingScreen(int selectedMenu, int& x, int& y, const int cursor) {
 		printText(">", cursor - 2, y + 2);
 	}
 	printText("Background Music:", x, y + 2);
-	printText("ON", cursor, y + 2);
 	common::setColor(Black);
+	if (m.music) printText("On ", cursor, y + 2);
+	else printText("Off", cursor, y + 2);
 	if (flag == 1) {
 		printText(" ", cursor - 2, y + 4);
 		printText(" ", cursor - 2, y + 2);
@@ -69,8 +62,30 @@ void menu::settingScreen(int selectedMenu, int& x, int& y, const int cursor) {
 		printText(">", cursor - 2, y + 3);
 	}
 	printText("First player color:", x, y + 3);
-	common::setColor(DarkRed);
-	printText("Red", cursor, y + 3);
+	common::setColor(m.color[m.st_color]);
+	switch (m.st_color) {
+	case 0:
+		printText("Red   ", cursor, y + 3);
+		break;
+	case 1:
+		printText("Blue  ", cursor, y + 3);
+		break;
+	case 2:
+		printText("Cyan  ", cursor, y + 3);
+		break;
+	case 3:
+		printText("Aqua  ", cursor, y + 3);
+		break;
+	case 4:
+		printText("Green ", cursor, y + 3);
+		break;
+	case 5:
+		printText("Pink  ", cursor, y + 3);
+		break;
+	case 6:
+		printText("Purple", cursor, y + 3);
+		break;
+	}
 	common::setColor(Black);
 	if (flag == 2) {
 		printText(" ", cursor - 2, y + 2);
@@ -79,53 +94,65 @@ void menu::settingScreen(int selectedMenu, int& x, int& y, const int cursor) {
 		printText(">", cursor - 2, y + 4);
 	}
 	printText("Second player | BOT color:", x, y + 4);
-	common::setColor(DarkBlue);
-	printText("Blue", cursor, y + 4);
+	common::setColor(m.color[m.nd_color]);
+	switch (m.nd_color) {
+	case 0:
+		printText("Red   ", cursor, y + 4);
+		break;
+	case 1:
+		printText("Blue  ", cursor, y + 4);
+		break;
+	case 2:
+		printText("Green ", cursor, y + 4);
+		break;
+	case 3:
+		printText("Aqua  ", cursor, y + 4);
+		break;
+	case 4:
+		printText("Cyan  ", cursor, y + 4);
+		break;
+	case 5:
+		printText("Pink  ", cursor, y + 4);
+		break;
+	case 6:
+		printText("Purple", cursor, y + 4);
+		break;
+	}
 	common::setColor(Black);
 }
 
-void menu::modeSelection() {
+void menu::modeSelection(menu& m) {
 	int selectedMode = 0;
-	common::showCursor(false);
-	while (1) {
+	while (false == false) {
 		menu::drawGameMode(selectedMode);
 		int a = getInput();
 		common::playSound(Move);
-		if (a == 1) {
-			selectedMode = (selectedMode - 1 + 2) % 2;
-		}
-		else if (a == 3) {
-			selectedMode = (selectedMode + 1) % 2;
-		}
-		else if (a == 5) {
+		if (a == 1) selectedMode = (selectedMode - 1 + 2) % 2;
+		if (a == 3) selectedMode = (selectedMode + 1) % 2;
+		if (a == 5) {
 			common::playSound(Select);
 			break;
 		}
 		if (a == 6) {
 			clearConsole();
-			menuSelection();
+			menuSelection(m);
 			break;
 		}
+	}
 
-	}
 	game g;
-	switch (selectedMode) {
-	case 0: {
-		g.mode = pvp;
-		game::game_pvp(g);
-		break;
-	}
-	case 1: {
+	if (selectedMode) {
 		g.mode = pve;
-		game::game_pve(g);
-		break;
+		game::game_pve(g, m.color[m.st_color], m.color[m.nd_color]);
 	}
+	else {
+		g.mode = pvp;
+		game::game_pvp(g, m.color[m.st_color], m.color[m.nd_color]);
 	}
 }
 
-void menu::menuSelection() {
-	bool music = 1;
-	common::bgmusic(music);
+void menu::menuSelection(menu& m) {
+	common::bgmusic(m.music);
 	int selectedMenu = 0;
 
 	printLogo();
@@ -133,99 +160,65 @@ void menu::menuSelection() {
 	bigXScreen();
 	particles();
 	
-	while (1) {
+	while (false == false) {
 		menu::mainScreen(selectedMenu);
 		int a = getInput();
 		common::playSound(Move);
-		if (a == 1) {
-			selectedMenu = (selectedMenu - 1 + 6) % 6;
-		}
-		else if (a == 3) {
-			selectedMenu = (selectedMenu + 1) % 6;
-		}
-		else if (a == 5) {
+		if (a == 1) selectedMenu = (selectedMenu - 1 + 6) % 6;
+		if (a == 3) selectedMenu = (selectedMenu + 1) % 6;
+		if (a == 5) {
 			common::playSound(Select);
 			break;
 		}
-
 	}
+
 	switch (selectedMenu) {
-	case 0: {
-		clearConsole();
-		menu::modeSelection();
-		break;
-	}
-	case 1: {
-		game g;
-		if (file::loadScreen(g)) {
-			if (g.mode == pvp) game::game_pvp(g);
-			if (g.mode == pve) game::game_pve(g);
+		case 0: {
+			clearConsole();
+			menu::modeSelection(m);
+			break;
 		}
-		clearConsole();
-		menuSelection();
-		break;
-	}
-	case 2: {
-		clearConsole();
-		menu::aboutScreen();
-		int c = -1;
-		while (c != 6) {
-			c = getInput();
-			if (c == 6) {
-				clearConsole();
-				menuSelection();
-				break;
+		case 1: {
+			game g;
+			if (file::loadScreen(g)) {
+				if (g.mode == pvp) game::game_pvp(g, m.color[m.st_color], m.color[m.nd_color]);
+				if (g.mode == pve) game::game_pve(g, m.color[m.st_color], m.color[m.nd_color]);
 			}
+			clearConsole();
+			menuSelection(m);
+			break;
 		}
-		
-		break;
-	}
-	case 3: {
-		clearConsole();
-		menu::helpScreen();
-		int c = -1;
-		while (c != 6) {
-			c = getInput();
-			if (c == 6) {
-				clearConsole();
-				menuSelection();
-				break;
-			}
+		case 2: {
+			clearConsole();
+			menu::aboutScreen();
+			while (getInput() != 6);
+			clearConsole();
+			menuSelection(m);
+			break;
 		}
-
-		break;
-	}
-	case 4: {
-		clearConsole();
-		menu::setting(&music);
-		int c = -1;
-		while (c != 6) {
-			c = getInput();
-			if (c == 6) {
-				clearConsole();
-				menuSelection();
-				break;
-			}
+		case 3: {
+			clearConsole();
+			menu::helpScreen();
+			while (getInput() != 6);
+			clearConsole();
+			menuSelection(m);
+			break;
 		}
-
-		break;
-	}
-	case 5: {
-		clearConsole();
-		menu::exitSelection();
-		int c = -1;
-		while (c != 6) {
-			c = getInput();
-			if (c == 6) {
-				clearConsole();
-				menuSelection();
-				break;
-			}
+		case 4: {
+			clearConsole();
+			menu::setting(m);
+			clearConsole();
+			menuSelection(m);
+			break;
 		}
-
-		break;
-	}
-	default: break;
+		case 5: {
+			clearConsole();
+			menu::exitSelection(m);
+			clearConsole();
+			menuSelection(m);
+			break;
+		}
+		default: break;
 	}
 }
 
@@ -238,14 +231,10 @@ void menu::drawGameMode(int selectedMode) {
 	common::setColor(Black);
 	menu::printModeBoard();
 	common::setColor(Black);
-	if (flag == 0) {
-		common::setColor(Red);
-	}
+	if (flag == 0) common::setColor(Red);
 	printText(gameMode[0], x + 4, y);
 	common::setColor(Black);
-	if (flag == 1) {
-		common::setColor(Red);
-	}
+	if (flag == 1) common::setColor(Red);
 	printText(gameMode[1], x + 4, y + 2);
 	common::setColor(Black);
 	printText("Press ESC to go back", 48, 28);	
@@ -256,40 +245,29 @@ void menu::printModeBoard() {
 	common::setColor(Black);
 	int left = 51;
 	int top = 14;
+
 	common::gotoXY(left, top);
 	putchar(201);
-	for (int i = 1; i < 12; i++)
-	{
-		putchar(205);
-	}
+	for (int i = 1; i < 12; i++) putchar(205);
 	putchar(187);
 
-
-	for (int i = 1; i < 4; i++)
-	{
+	for (int i = 1; i < 4; i++) {
 		common::gotoXY(left, top + i);
-		if (i % 2 != 0)
-		{
+		if (i % 2 != 0) {
 			putchar(186);
 			common::gotoXY(left + 12, top + i);
 			putchar(186);
 		}
-		else
-		{
+		else {
 			putchar(199);
-			for (int i = 1; i < 12; i++)
-			{
-				putchar(196);
-			}
+			for (int i = 1; i < 12; i++) putchar(196);
 			putchar(182);
 		}
 	}
+
 	common::gotoXY(left, top + 4);
 	putchar(200);
-	for (int i = 1; i < 12; i++)
-	{
-		putchar(205);
-	}
+	for (int i = 1; i < 12; i++) putchar(205);
 	putchar(188);
 }
 
@@ -340,39 +318,41 @@ void menu::printOptionsBoard() {
 	int top = 13;
 	common::gotoXY(left, top);
 	putchar(219);
-	for (int i = 1; i < 12; i++)
-	{
-		putchar(223);
-	}
+	for (int i = 1; i < 12; i++) putchar(223);
 	putchar(219);
 
-
-	for (int i = 1; i < 12; i++)
-	{
+	for (int i = 1; i < 12; i++) {
 		common::gotoXY(left, top + i);
-		if (i % 2 != 0)
-		{
+		if (i % 2 != 0) {
 			putchar(219);
 			common::gotoXY(left + 12, top + i);
 			putchar(219);
 		}
-		else
-		{
+		else {
 			putchar(199);
-			for (int i = 1; i < 12; i++)
-			{
-				putchar(196);
-			}
+			for (int i = 1; i < 12; i++) putchar(196);
 			putchar(182);
 		}
 	}
+
 	common::gotoXY(left, top + 12);
 	putchar(219);
-	for (int i = 1; i < 12; i++)
-	{
-		putchar(220);
-	}
+
+	for (int i = 1; i < 12; i++) putchar(220);
 	putchar(219);
+}
+
+void menu::saveSetting(menu m)
+{
+	string location = loc;
+	ofstream out(location + m_manager);
+	if (!out) {
+		out.close();
+		return;
+	}
+	out << m.music << endl;
+	out << m.st_color << " " << m.nd_color;
+	out.close();
 }
 
 //Luat choi
@@ -427,65 +407,48 @@ void menu::aboutScreen() {
 	printText("Press ESC to go back", 48, 28);
 }
 
-void menu::setting(bool* music) {
+void menu::setting(menu& m) {
 	int selectedMenu = 0;
 	int x = 36, y = 14;
-	const int cursor_col = 75;
+	const int cursor_col = 73;
+	int a;
 	common::showCursor(false);
-	while (1) {
-		menu::settingScreen(selectedMenu, x, y, cursor_col);
-		printText("On", cursor_col, y + 2);
-		int a = getInput();
-		common::playSound(Move);
-		if (a == 1) {
-			selectedMenu = (selectedMenu - 1 + 3) % 3;
-		}
-		else if (a == 3) {
-			selectedMenu = (selectedMenu + 1) % 3;
-		}
-		else if (a == 5) {
-			common::playSound(Select);
-			break;
-		}
-		else if (a == 6) {
-			clearConsole();
-			menuSelection();
-			break;
-		}
-	}
-
-	switch (selectedMenu) {
-	case 0: {
-		common::gotoXY(cursor_col, y + 2);
-		int select = 1;
-		while (1) {
-			int a = getInput();
-			if (a == 5) {
-				*music = select;
+	printLogo();
+	while (false == false) {
+		while (false == false) {
+			menu::settingScreen(selectedMenu, x, y, cursor_col, m);
+			a = getInput();
+			common::playSound(Move);
+			if (a == 1) selectedMenu = (selectedMenu - 1 + 3) % 3;
+			if (a == 3) selectedMenu = (selectedMenu + 1) % 3;
+			if (a == 2 || a == 4 || a == 5) {
+				common::playSound(Select);
 				break;
 			}
-			else if ((a == 2) || (a == 4)) {
-				select = (select + 1) % 2;
-			}
-
-			if (select == 0) {
-				printText("Off", cursor_col, y + 2);
-			}
-			else if (select == 1) {
-				printText("   ", cursor_col, y + 2);
-				printText("On", cursor_col, y + 2);
-			}
+			if (a == 6) return;
 		}
-	}
-	case 1: {
-		//doi mau nhan vat 1
-		break;
-	}
-	case 2: {
-		//doi mau nhan vat 2
-		break;
-	}
-	default: break;
+
+		switch (selectedMenu) {
+			case 0:
+				if (m.music) m.music = false;
+				else m.music = true;
+				common::bgmusic(m.music);
+				break;
+			case 1:
+				if (a == 2) m.st_color--;
+				if (a == 4 || a == 5) m.st_color++;
+				if (m.st_color == -1) m.st_color = 6;
+				if (m.st_color == 7) m.st_color = 0;
+				break;
+			case 2:
+				if (a == 2) m.nd_color--;
+				if (a == 4 || a == 5) m.nd_color++;
+				if (m.nd_color == -1) m.nd_color = 6;
+				if (m.nd_color == 7) m.nd_color = 0;
+				break;
+			default: 
+				break;
+		}
 	}
 }
 
@@ -497,49 +460,34 @@ void menu::exitScreen(int selectedOption, int& x, int& y) {
 	common::setColor(Black);
 	printRectangle(x - 2, y - 1, 42, 4);
 	printText("Are you sure you want to leave the game?", x, y);
-	if (flag == 0) {
-		common::setColor(79);
-	}
+	if (flag == 0) common::setColor(79);
 	printText("  Yes!  ", x + 7, y + 2);
 	common::setColor(Black);
-	if (flag == 1) {
-		common::setColor(47);
-	}
+	if (flag == 1) common::setColor(47);
 	printText("  No~~  ", x + 25, y + 2);
 	common::setColor(Black);
 }
 
-void menu::exitSelection() {
+void menu::exitSelection(menu m) {
 	int selectedOption = 0;
 	int x = 38, y = 16;
-	common::showCursor(false);
 
-	while (1) {
+	while (false == false) {
 		menu::exitScreen(selectedOption, x, y);
 		int a = getInput();
 		common::playSound(Move);
-		if (a == 2) {
-			selectedOption = (selectedOption - 1 + 2) % 2;
-		}
-		else if (a == 4) {
-			selectedOption = (selectedOption + 1) % 2;
-		}
-		else if (a == 5) {
+		if (a == 2) selectedOption = (selectedOption - 1 + 2) % 2;
+		if (a == 4) selectedOption = (selectedOption + 1) % 2;
+		if (a == 5) {
 			common::playSound(Select);
 			break;
 		}
 	}
 
-	switch (selectedOption) {
-	case 0:
-		common::gotoXY(x, y + 4);
-		exit(0);
-		break;
-	case 1:
+	if (!selectedOption) {
 		clearConsole();
-		menu::menuSelection();
-		break;
-	default: break;
+		menu::saveSetting(m);
+		exit(0);
 	}
 }
 
@@ -554,4 +502,11 @@ void printCharacter(wstring character, COORD point, int text_color, int backgrou
 		point.X++;
 	}
 
+}
+
+void startMenu()
+{
+	common::setUpConsole();
+	menu m;
+	menu::menuSelection(m);
 }

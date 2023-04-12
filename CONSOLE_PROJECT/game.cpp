@@ -2,7 +2,7 @@
 #include "file.h"
 int attackEvaluate[10] = { 0, 3, 24, 192, 1536, 12288, 98304, 531441, 4782969, 500000000 };
 int defendEvaluate[10] = { 0, 2, 18, 140, 800, 8000, 70569, 350000, 30000000,	300000000 };
-void game::game_pvp(game& g)
+void game::game_pvp(game& g, int stcolor, int ndcolor)
 {
 	int key = -1;
 	do {
@@ -17,15 +17,15 @@ void game::game_pvp(game& g)
 			g.showTurn();
 			g.drawCursor();
 			key = getInput();
-			g.move(key);
+			g.move(key, stcolor, ndcolor);
 			if (key == 7) {
 				file::saveScreen(g);
-				game_pvp(g);
+				game_pvp(g, stcolor, ndcolor);
 			}
 			if (key == 8) {
 				file::loadScreen(g);
-				if (g.mode == pvp) game_pvp(g);
-				if (g.mode == pve) game_pve(g);
+				if (g.mode == pvp) game_pvp(g, stcolor, ndcolor);
+				if (g.mode == pve) game_pve(g, stcolor, ndcolor);
 			}
 		}
 		g.score();
@@ -57,7 +57,6 @@ void game::game_pvp(game& g)
 
 		} while (key != 9 && key != 10);
 	} while (1);
-
 }
 
 void game::drawBoard()
@@ -189,7 +188,7 @@ void game::drawCursor()
 	if (board[y][x] == 2) coutColored("O", 181);
 }
 
-void game::move(int i)
+void game::move(int i, int stcolor, int ndcolor)
 {
 	int tx = x, ty = y;
 	switch (i) {
@@ -224,11 +223,11 @@ void game::move(int i)
 	}
 	if (board[ty][tx] == 1) {
 		common::gotoXY(6 + 4 * tx, 3 + 2 * ty);
-		coutColored("X", DarkRed);
+		coutColored("X", stcolor);
 	}
 	if (board[ty][tx] == 2) {
 		common::gotoXY(6 + 4 * tx, 3 + 2 * ty);
-		coutColored("O", DarkBlue);
+		coutColored("O", ndcolor);
 	}
 }
 
@@ -553,7 +552,7 @@ void game::loadGame(string file) {
 }
 
 
-void game::pveMove(int i) {
+void game::pveMove(int i, int stcolor, int ndcolor) {
 	int tx = x, ty = y;
 	switch (i) {
 	case 1:
@@ -587,18 +586,18 @@ void game::pveMove(int i) {
 	}
 	if (board[ty][tx] == 1) {
 		common::gotoXY(6 + 4 * tx, 3 + 2 * ty);
-		coutColored("X", DarkRed);
+		coutColored("X", stcolor);
 	}
 	if (board[pos_i][pos_j] == 2) {
 		common::gotoXY(6 + 4 * pos_j, 3 + 2 * pos_i);
-		coutColored("O", DarkBlue);
+		coutColored("O", ndcolor);
 	}
 
 	//processBoardPveO();
 
 }
 
-void game::game_pve(game& g) {
+void game::game_pve(game& g, int stcolor, int ndcolor) {
 	int key = -1;
 	do {
 		system("cls");
@@ -612,15 +611,15 @@ void game::game_pve(game& g) {
 			g.showTurn();
 			g.drawCursor();
 			key = getInput();
-			g.pveMove(key);
+			g.pveMove(key, stcolor, ndcolor);
 			if (key == 7) {
 				file::saveScreen(g);
-				game_pve(g);
+				game_pve(g, stcolor, ndcolor);
 			}
 			if (key == 8) {
 				file::loadScreen(g);
-				if (g.mode == pvp) game_pvp(g);
-				if (g.mode == pve) game_pve(g);
+				if (g.mode == pvp) game_pvp(g, stcolor, ndcolor);
+				if (g.mode == pve) game_pve(g, stcolor, ndcolor);
 			}
 			if (g.win()) break;
 			g.processBoardPveO();

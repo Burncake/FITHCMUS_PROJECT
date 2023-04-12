@@ -6,6 +6,7 @@ HANDLE common::consoleInput = GetStdHandle(STD_INPUT_HANDLE);
 
 void common::setUpConsole()
 {
+	system("color F0");
     setTitle();
     setUpWindow();
     disableMaximize();
@@ -72,13 +73,9 @@ void common::setColor(int color)
     SetConsoleTextAttribute(consoleOutput, color);
 }
 
-void common::bgmusic(int n) {
-	switch (n) {
-	case 0:
-		PlaySound(0, 0, 0);
-	case 1:
-		PlaySound(L"resources/background.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
-	}
+void common::bgmusic(bool n) {
+	if (!n) PlaySound(0, 0, 0);
+	else PlaySound(L"resources/background.wav", NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);
 }
 
 void common::playSound(int i)

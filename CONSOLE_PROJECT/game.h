@@ -23,14 +23,14 @@ public:
 	int mode = 0, x_score = 0, o_score = 0, x_count = 0, o_count = 0, x = 0, y = 0, value = 0, pos_i = -1, pos_j = -1;
 	int board[size][size]{};
 	bool x_turn = true;
-	static void game_pvp(game& g);
+	static void game_pvp(game& g, int stcolor, int ndcolor);
 	static void drawBoard();
 	static void draw_txt(string name, int x, int y, int color);
 	static void drawInstruct();
 	static void drawInformation();
 	void showTurn();
 	void drawCursor();
-	void move(int i);
+	void move(int i, int stcolor, int ndcolor);
 	void processBoard();
 	bool win();
 	bool draw();
@@ -50,8 +50,8 @@ public:
 	//int minimax(bool isMaxiPlayer, int depth, int alpha, int beta);
 	//void dummyBoard();
 	void findBestMove();
-	void pveMove(int i);
-	static void game_pve(game& g);
+	void pveMove(int i, int stcolor, int ndcolor);
+	static void game_pve(game& g, int stcolor, int ndcolor);
 	void processBoardPveX();
 	void processBoardPveO();
 	bool checkBorder(int x, int y);

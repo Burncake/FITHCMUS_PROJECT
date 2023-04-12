@@ -4,9 +4,7 @@
 int main()
 {
 	//game::game_pvp();
-	system("color F0");
-	common::setUpConsole();
-	menu::menuSelection();
+	startMenu();
 	return 0;
 }
 

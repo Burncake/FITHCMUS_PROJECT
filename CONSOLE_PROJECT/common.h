@@ -10,19 +10,19 @@ using namespace std;
 #define PointerColor	246
 
 #define Black			240
-#define DarkBlue		241
-#define DarkGreen		242
-#define DarkCyan		243
-#define DarkRed			244
-#define DarkPink		245
-#define DarkYellow		246
+#define DarkBlue		241 //
+#define DarkGreen		242 // Green
+#define DarkCyan		243 //
+#define DarkRed			244 //
+#define DarkPink		245 // Purple
+#define DarkYellow		246 
 #define DarkWhite		247
 #define Grey			248
 #define Blue			249
 #define Green			250
-#define Cyan			251
+#define Cyan			251 // Cyan
 #define Red				252
-#define Pink			253
+#define Pink			253 // Pink
 #define Yellow			254
 #define White			255
 
@@ -61,7 +61,7 @@ public:
 	static void setTitle();
 	static void gotoXY(int x, int y);
 	static void setColor(int color);
-	static void bgmusic(int n);
+	static void bgmusic(bool n);
 	static void playSound(int i);
 	static void changeFont();
 };
