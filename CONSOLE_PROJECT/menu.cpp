@@ -103,13 +103,13 @@ void menu::settingScreen(int selectedMenu, int& x, int& y, const int cursor, men
 		printText("Blue  ", cursor, y + 4);
 		break;
 	case 2:
-		printText("Green ", cursor, y + 4);
+		printText("Cyan ", cursor, y + 4);
 		break;
 	case 3:
 		printText("Aqua  ", cursor, y + 4);
 		break;
 	case 4:
-		printText("Cyan  ", cursor, y + 4);
+		printText("Green  ", cursor, y + 4);
 		break;
 	case 5:
 		printText("Pink  ", cursor, y + 4);
