@@ -8,9 +8,6 @@ string gameMode[] = { "PvP","PvC" };
 void menu::mainScreen(int selectedMenu) {
 	int x = 51, y = 14;
 	int flag = selectedMenu;
-	common::setUpConsole();
-	common::setColor(DarkCyan);
-	printLogo();
 	common::setColor(Black);
 	menu::printOptionsBoard();
 	common::setColor(Black);
@@ -50,7 +47,6 @@ void menu::mainScreen(int selectedMenu) {
 
 void menu::settingScreen(int selectedMenu, int& x, int& y, const int cursor) {
 	int flag = selectedMenu;
-	common::setColor(DarkCyan);
 	printLogo();
 	common::setColor(Black);
 	printRectangle(x - 2, y - 1, 45, 6);
@@ -130,6 +126,10 @@ void menu::modeSelection() {
 void menu::menuSelection() {
 	common::playSound(Background);
 	int selectedMenu = 0;
+	printLogo();
+	bigOScreen();
+	bigXScreen();
+	particles();
 	while (1) {
 		menu::mainScreen(selectedMenu);
 		int a = getInput();
@@ -229,9 +229,8 @@ void menu::menuSelection() {
 //ve cac che do cua game
 void menu::drawGameMode(int selectedMode) {
 	//menu::clearConsole();
-	int x = 51, y = 15;
+	int x = 52, y = 15;
 	int flag = selectedMode;
-	common::setColor(DarkCyan);
 	printLogo();
 	common::setColor(Black);
 	menu::printModeBoard();
@@ -291,17 +290,58 @@ void menu::printModeBoard() {
 	putchar(188);
 }
 
+//void menu::printOptionsBoard() {
+//	common::setColor(Black);
+//	int left = 50;
+//	int top = 13;
+//	common::gotoXY(left, top);
+//	putchar(201);
+//	for (int i = 1; i < 12; i++)
+//	{
+//		putchar(205);
+//	}
+//	putchar(187);
+//
+//
+//	for (int i = 1; i < 12; i++)
+//	{
+//		common::gotoXY(left, top + i);
+//		if (i % 2 != 0)
+//		{
+//			putchar(186);
+//			common::gotoXY(left + 12, top + i);
+//			putchar(186);
+//		}
+//		else
+//		{
+//			putchar(199);
+//			for (int i = 1; i < 12; i++)
+//			{
+//				putchar(196);
+//			}
+//			putchar(182);
+//		}
+//	}
+//	common::gotoXY(left, top + 12);
+//	putchar(200);
+//	for (int i = 1; i < 12; i++)
+//	{
+//		putchar(205);
+//	}
+//	putchar(188);
+//}
+
 void menu::printOptionsBoard() {
 	common::setColor(Black);
 	int left = 50;
 	int top = 13;
 	common::gotoXY(left, top);
-	putchar(201);
+	putchar(219);
 	for (int i = 1; i < 12; i++)
 	{
-		putchar(205);
+		putchar(223);
 	}
-	putchar(187);
+	putchar(219);
 
 
 	for (int i = 1; i < 12; i++)
@@ -309,9 +349,9 @@ void menu::printOptionsBoard() {
 		common::gotoXY(left, top + i);
 		if (i % 2 != 0)
 		{
-			putchar(186);
+			putchar(219);
 			common::gotoXY(left + 12, top + i);
-			putchar(186);
+			putchar(219);
 		}
 		else
 		{
@@ -324,12 +364,12 @@ void menu::printOptionsBoard() {
 		}
 	}
 	common::gotoXY(left, top + 12);
-	putchar(200);
+	putchar(219);
 	for (int i = 1; i < 12; i++)
 	{
-		putchar(205);
+		putchar(220);
 	}
-	putchar(188);
+	putchar(219);
 }
 
 //Luat choi

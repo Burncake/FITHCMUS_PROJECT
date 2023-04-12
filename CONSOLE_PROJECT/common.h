@@ -26,6 +26,10 @@ using namespace std;
 #define Yellow			254
 #define White			255
 
+#define blackRed		64
+#define blackCyan		176
+#define redCyan			180
+
 // Sounds
 #define Background		0
 #define Start			1
@@ -35,7 +39,7 @@ using namespace std;
 #define	Lose			5
 #define Draw			6
 
-//DrawPixel
+//drawPixel
 #define pixel			219
 #define pixelDown		220
 #define pixelUp			223
@@ -67,4 +71,13 @@ int getInput();
 void printText(string text, int x, int y);
 void clearConsole();
 void printRectangle(int left, int top, int width, int height);
+void putcharXY(int ch, int x, int y);
+void drawLogoPixelXY(int ch, int x, int y);
+void drawLogoPixel(int ch, unsigned char pix[]);
+void drawXY(int color, int ch, int x, int y);
+void drawRowPixel(int color, int ch, int num, int x, int y);
+
 void printLogo();
+void bigOScreen();
+void bigXScreen();
+void particles();
