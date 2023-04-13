@@ -512,5 +512,5 @@ void startMenu()
 	common::setUpConsole();
 	menu m;
 	common::bgmusic(m.music);
-	menu::menuSelection(m);
+	while (false == false) menu::menuSelection(m);
 }
