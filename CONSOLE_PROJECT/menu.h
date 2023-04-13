@@ -31,7 +31,7 @@ public:
 	static void modeSelection(menu& m);
 	static void menuSelection(menu& m);
 	static void drawGameMode(int selectedMode);
-	static void printModeBoard();					
+	static void printModeBoard();
 	static void helpScreen();
 	static void aboutScreen();
 	static void setting(menu& m);

@@ -24,7 +24,7 @@ public:
 	int board[size][size]{};
 	bool x_turn = true;
 	static void game_pvp(game& g, int stcolor, int ndcolor);
-	static void drawBoard();
+	void drawBoard(int stcolor, int ndcolor);
 	static void draw_txt(string name, int x, int y, int color);
 	static void drawInstruct();
 	static void drawInformation();

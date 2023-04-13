@@ -152,7 +152,6 @@ void menu::modeSelection(menu& m) {
 }
 
 void menu::menuSelection(menu& m) {
-	common::bgmusic(m.music);
 	int selectedMenu = 0;
 
 	printLogo();
@@ -512,5 +511,6 @@ void startMenu()
 {
 	common::setUpConsole();
 	menu m;
+	common::bgmusic(m.music);
 	menu::menuSelection(m);
 }

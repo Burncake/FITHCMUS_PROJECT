@@ -9,7 +9,7 @@ void game::game_pvp(game& g, int stcolor, int ndcolor)
 		clearConsole();
 		common::setUpConsole();
 		system("color F0");
-		drawBoard();
+		g.drawBoard(stcolor, ndcolor);
 		drawInformation();
 		common::playSound(Start);
 		g.showScore();
@@ -43,7 +43,7 @@ void game::game_pvp(game& g, int stcolor, int ndcolor)
 				system("cls");
 				common::setUpConsole();
 				system("color F0");
-				drawBoard();
+				g.drawBoard(stcolor, ndcolor);
 				drawInformation();
 				common::playSound(Start);
 				g.showScore();
@@ -59,7 +59,7 @@ void game::game_pvp(game& g, int stcolor, int ndcolor)
 	} while (1);
 }
 
-void game::drawBoard()
+void game::drawBoard(int stcolor, int ndcolor)
 {
 	const int endRow = 4 * size + 1, endColumn = 2 * size + 1;
 	for (int i = 1; i <= endColumn; i++)
@@ -92,7 +92,13 @@ void game::drawBoard()
 			}
 			cout << endl;
 		}
-
+	for (int ty = 0; ty < size; ty++) {
+		for (int tx = 0; tx < size; tx++) {
+			common::gotoXY(6 + 4 * tx, 3 + 2 * ty);
+			if (board[ty][tx] == 1) coutColored("X", stcolor);
+			if (board[ty][tx] == 2) coutColored("O", ndcolor);
+		}
+	}
 }
 
 void game::draw_txt(string name, int x, int y, int color)
@@ -603,7 +609,7 @@ void game::game_pve(game& g, int stcolor, int ndcolor) {
 		system("cls");
 		common::setUpConsole();
 		system("color F0");
-		drawBoard();
+		g.drawBoard(stcolor, ndcolor);
 		drawInformation();
 		common::playSound(Start);
 		g.showScore();
@@ -641,7 +647,7 @@ void game::game_pve(game& g, int stcolor, int ndcolor) {
 				system("cls");
 				common::setUpConsole();
 				system("color F0");
-				drawBoard();
+				g.drawBoard(stcolor, ndcolor);
 				drawInformation();
 				common::playSound(Start);
 				g.showScore();
