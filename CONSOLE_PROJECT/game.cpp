@@ -56,7 +56,7 @@ void game::game_pvp(game& g, int stcolor, int ndcolor)
 			}
 
 		} while (key != 9 && key != 10);
-	} while (1);
+	} while (false == false);
 }
 
 void game::drawBoard(int stcolor, int ndcolor)
@@ -427,28 +427,6 @@ void game::player_win_effect() {
 void game::player_lose_effect() {
 	common::playSound(Lose);
 	for (int color = 241; color < 256; color++) {
-		/*for (int i = 0; i <= 10; i++) {
-			for (int j = 0; j < 6; j++) {
-				if (i >= 3 && i <= 7)
-					if (j >= 1 && j <= 3) continue;
-				common::gotoXY(i * 10 + 9, j * 5 + 2);
-				if (color % 2)
-					if (j % 2)
-						if (i % 2) coutColored("X", DarkRed);
-						else cout << " ";
-					else
-						if (i % 2 == 0) coutColored("X", DarkRed);
-						else cout << " ";
-				else
-					if (j % 2)
-						if (i % 2) cout << " ";
-						else coutColored("X", DarkRed);
-					else
-						if (i % 2 == 0) cout << " ";
-						else coutColored("X", DarkRed);
-			}
-		}*/
-
 		if (color == DarkWhite || color == Yellow || color == DarkYellow || color == Cyan || color == White) continue;
 		draw_txt("player_lose.txt", fSizeC + 4, dSizeR - 4, color);
 		Sleep(700);
@@ -520,7 +498,6 @@ void game::askContinuePlay(int& key) {
 	cout << "Press Y to continue, N to see the last board.";
 	FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
 	key = getInput();
-	//if (i == 6) exit(0);
 }
 
 void game::saveGame(string file)
@@ -594,13 +571,14 @@ void game::pveMove(int i, int stcolor, int ndcolor) {
 		common::gotoXY(6 + 4 * tx, 3 + 2 * ty);
 		coutColored("X", stcolor);
 	}
-	if (board[pos_i][pos_j] == 2) {
+	if (board[ty][tx] == 2) {
+		common::gotoXY(6 + 4 * tx, 3 + 2 * ty);
+		coutColored("O", ndcolor);
+	}
+	if ((pos_i != ty || pos_j != tx) && (pos_i != -1 || pos_j != -1)) {
 		common::gotoXY(6 + 4 * pos_j, 3 + 2 * pos_i);
 		coutColored("O", ndcolor);
 	}
-
-	//processBoardPveO();
-
 }
 
 void game::game_pve(game& g, int stcolor, int ndcolor) {
@@ -631,7 +609,6 @@ void game::game_pve(game& g, int stcolor, int ndcolor) {
 			g.processBoardPveO();
 			if (g.win()) break;
 		}
-		Sleep(1000);
 		g.score();
 		g.showScore();
 		system("cls");
@@ -660,7 +637,7 @@ void game::game_pve(game& g, int stcolor, int ndcolor) {
 			}
 
 		} while (key != 9 && key != 10);
-	} while (1);
+	} while (false == false);
 
 }
 
@@ -677,17 +654,14 @@ void game::processBoardPveX() {
 }
 void game::processBoardPveO() {
 	if (!x_turn) {
+		Sleep(200);
 		findBestMove();
 		board[pos_i][pos_j] = 2;
-		/*x = pos_j;
-		y = pos_i;*/
 		common::gotoXY(6 + 4 * pos_j, 3 + 2 * pos_i);
 		coutColored("O", 181);
 		o_count++;
-		Sleep(100);
 		draw_txt("logoO.txt", setC + 31, 0, Grey);
 		draw_txt("logoX.txt", setC, 0, Red);
-		Sleep(100);
 		x_turn = true;
 	}
 }
