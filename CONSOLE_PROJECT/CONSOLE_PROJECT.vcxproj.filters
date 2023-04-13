@@ -67,5 +67,8 @@
     <Text Include="resources\f_manager.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="resources\player_lose.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

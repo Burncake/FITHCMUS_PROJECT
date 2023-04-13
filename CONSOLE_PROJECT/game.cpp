@@ -450,7 +450,7 @@ void game::player_lose_effect() {
 		}*/
 
 		if (color == DarkWhite || color == Yellow || color == DarkYellow || color == Cyan || color == White) continue;
-		draw_txt("player_lose.txt", fSizeC + 10, dSizeR - 4, color);
+		draw_txt("player_lose.txt", fSizeC + 4, dSizeR - 4, color);
 		Sleep(700);
 	}
 }
@@ -514,9 +514,9 @@ void game::resetData() {
 }
 
 void game::askContinuePlay(int& key) {
-	common::gotoXY(55, 24);
+	common::gotoXY(55, 23);
 	cout << "Continue?";
-	common::gotoXY(38, 25);
+	common::gotoXY(38, 24);
 	cout << "Press Y to continue, N to see the last board.";
 	FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
 	key = getInput();

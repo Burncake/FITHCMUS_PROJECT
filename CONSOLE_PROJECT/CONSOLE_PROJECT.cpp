@@ -3,7 +3,6 @@
 #include "common.h"
 int main()
 {
-	//game::game_pvp();
 	startMenu();
 	return 0;
 }
