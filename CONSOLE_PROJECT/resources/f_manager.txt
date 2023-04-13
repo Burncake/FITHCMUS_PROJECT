@@ -1,3 +1,2 @@
 playerlose
 pvptest
-daz

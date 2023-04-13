@@ -134,7 +134,7 @@ int getInput()
     if (c == 27)                            return 6; // esc
     if (c == 'l' || c == 'L')               return 7; // save
     if (c == 't' || c == 'T')               return 8; // load
-    if (c == 'y' || c == 'Y')               return 9; // continue playing
+    if (c == 'y' || c == 'Y')               return 9; // yes
     if (c == 'n' || c == 'N')               return 10;// no
                                             return 0; // default              
 }

@@ -26,8 +26,8 @@ public:
 	static void game_pvp(game& g, int stcolor, int ndcolor);
 	void drawBoard(int stcolor, int ndcolor);
 	static void draw_txt(string name, int x, int y, int color);
-	static void drawInstruct();
-	static void drawInformation();
+	static void drawInstruct(bool viewMode);
+	static void drawInformation(bool viewMode);
 	void showTurn();
 	void drawCursor();
 	void move(int i, int stcolor, int ndcolor);

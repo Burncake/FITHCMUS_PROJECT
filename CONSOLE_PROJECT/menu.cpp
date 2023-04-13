@@ -152,6 +152,7 @@ void menu::modeSelection(menu& m) {
 }
 
 void menu::menuSelection(menu& m) {
+	clearConsole();
 	int selectedMenu = 0;
 
 	printLogo();
@@ -183,7 +184,6 @@ void menu::menuSelection(menu& m) {
 				if (g.mode == pvp) game::game_pvp(g, m.color[m.st_color], m.color[m.nd_color]);
 				if (g.mode == pve) game::game_pve(g, m.color[m.st_color], m.color[m.nd_color]);
 			}
-			clearConsole();
 			menuSelection(m);
 			break;
 		}
@@ -191,7 +191,6 @@ void menu::menuSelection(menu& m) {
 			clearConsole();
 			menu::aboutScreen();
 			while (getInput() != 6);
-			clearConsole();
 			menuSelection(m);
 			break;
 		}
@@ -199,21 +198,18 @@ void menu::menuSelection(menu& m) {
 			clearConsole();
 			menu::helpScreen();
 			while (getInput() != 6);
-			clearConsole();
 			menuSelection(m);
 			break;
 		}
 		case 4: {
 			clearConsole();
 			menu::setting(m);
-			clearConsole();
 			menuSelection(m);
 			break;
 		}
 		case 5: {
 			clearConsole();
 			menu::exitSelection(m);
-			clearConsole();
 			menuSelection(m);
 			break;
 		}

@@ -7,10 +7,8 @@ void game::game_pvp(game& g, int stcolor, int ndcolor)
 	int key = -1;
 	do {
 		clearConsole();
-		common::setUpConsole();
-		system("color F0");
 		g.drawBoard(stcolor, ndcolor);
-		drawInformation();
+		drawInformation(false);
 		common::playSound(Start);
 		g.showScore();
 		while (!g.win() && !g.draw()) {
@@ -18,6 +16,23 @@ void game::game_pvp(game& g, int stcolor, int ndcolor)
 			g.drawCursor();
 			key = getInput();
 			g.move(key, stcolor, ndcolor);
+			if (key == 6) {
+				common::playSound(Select);
+				clearConsole();
+				printRectangle(40, 12, 34, 2);
+				printText("Do you want to save? (Y/N)", 45, 13);
+				while (false == false) {
+					key = getInput();
+					if (key == 9) {
+						file::saveScreen(g);
+						game_pvp(g, stcolor, ndcolor);
+					}
+					if (key == 10) {
+						common::playSound(Select);
+						return;
+					}
+				}
+			}
 			if (key == 7) {
 				file::saveScreen(g);
 				game_pvp(g, stcolor, ndcolor);
@@ -30,32 +45,41 @@ void game::game_pvp(game& g, int stcolor, int ndcolor)
 		}
 		g.score();
 		g.showScore();
-		system("cls");
+		clearConsole();
 		g.endEffect();
 		do {
 			g.askContinuePlay(key);
+			if (key == 6) {
+				common::playSound(Select);
+				return;
+			}
 			if (key == 9) {
 				g.resetData();
 				key = -1;
 				break;
 			}
-			else if (key == 10) {
-				system("cls");
-				common::setUpConsole();
-				system("color F0");
+			if (key == 10) {
+				common::playSound(Select);
+				clearConsole();
 				g.drawBoard(stcolor, ndcolor);
-				drawInformation();
-				common::playSound(Start);
+				drawInformation(true);
+				g.showTurn();
 				g.showScore();
-				// them ham load vi tri cu
-				//
-				//
-				//
-				key = -1;
+				while (false == false) {
+					key = getInput();
+					if (key == 6) {
+						common::playSound(Select);
+						return;
+					}
+					if (key == 9) {
+						g.resetData();
+						key = -1;
+						break;
+					}
+				}
 				break;
 			}
-
-		} while (key != 9 && key != 10);
+		} while (key != 6 && key != 9 && key != 10);
 	} while (false == false);
 }
 
@@ -113,9 +137,10 @@ void game::draw_txt(string name, int x, int y, int color)
 	pic.close();
 }
 
-void game::drawInstruct() {
-	common::gotoXY(setC + 3, setR + 10);
-	coutColored("FILL IN", 240);
+void game::drawInstruct(bool viewMode) {
+	common::gotoXY(setC + 4, setR + 10);
+	if (viewMode) coutColored("'Y': Start a new game\t 'ESC': Back to menu", 240);
+	else coutColored("'L': Save\t 'T': Load\t 'ESC': Menu", 240);
 
 	for (int i = 1; i <= iSizeC; ++i) {
 		for (int j = 1; j <= iSizeR; ++j) {
@@ -138,11 +163,11 @@ void game::drawInstruct() {
 	}
 }
 
-void game::drawInformation() {
+void game::drawInformation(bool viewMode) {
 	int xC = 0, oC = 0;
 	draw_txt("logoX.txt", setC, 0, Red);
 	draw_txt("logoO.txt", setC + 31, 0, Grey);
-	drawInstruct();
+	drawInstruct(viewMode);
 	for (int i = 1; i <= dSizeC; ++i) {
 		for (int j = 1; j <= dSizeR; ++j) {
 			common::gotoXY(i + setC, j + setR);
@@ -308,7 +333,7 @@ void game::showScore() {
 }
 
 void game::endEffect() {
-	system("cls");
+	clearConsole();
 	if (win()) {
 		if (x_turn) {
 			o_win_effect();
@@ -384,7 +409,7 @@ void game::o_win_effect()
 
 void game::botMode_end_effect()
 {
-	system("cls");
+	clearConsole();
 	if (win()) {
 		if (x_turn) {
 			player_lose_effect();
@@ -492,10 +517,10 @@ void game::resetData() {
 }
 
 void game::askContinuePlay(int& key) {
-	common::gotoXY(55, 23);
-	cout << "Continue?";
-	common::gotoXY(38, 24);
-	cout << "Press Y to continue, N to see the last board.";
+	printRectangle(42, 21, 32, 4);
+	printText(" Press Y to continue ", 49, 22);
+	printText("Press N to review the game", 46, 23);
+	printText("Press ESC to turn back to menu", 44, 24);
 	FlushConsoleInputBuffer(GetStdHandle(STD_INPUT_HANDLE));
 	key = getInput();
 }
@@ -584,11 +609,9 @@ void game::pveMove(int i, int stcolor, int ndcolor) {
 void game::game_pve(game& g, int stcolor, int ndcolor) {
 	int key = -1;
 	do {
-		system("cls");
-		common::setUpConsole();
-		system("color F0");
+		clearConsole();
 		g.drawBoard(stcolor, ndcolor);
-		drawInformation();
+		drawInformation(false);
 		common::playSound(Start);
 		g.showScore();
 		while (!g.draw()) {
@@ -611,32 +634,41 @@ void game::game_pve(game& g, int stcolor, int ndcolor) {
 		}
 		g.score();
 		g.showScore();
-		system("cls");
+		clearConsole();
 		g.botMode_end_effect();
 		do {
 			g.askContinuePlay(key);
+			if (key == 6) {
+				common::playSound(Select);
+				return;
+			}
 			if (key == 9) {
 				g.resetData();
 				key = -1;
 				break;
 			}
-			else if (key == 10) {
-				system("cls");
-				common::setUpConsole();
-				system("color F0");
+			if (key == 10) {
+				common::playSound(Select);
+				clearConsole();
 				g.drawBoard(stcolor, ndcolor);
-				drawInformation();
-				common::playSound(Start);
+				drawInformation(true);
+				g.showTurn();
 				g.showScore();
-				// them ham load vi tri cu
-				//
-				//
-				//
-				key = -1;
+				while (false == false) {
+					key = getInput();
+					if (key == 6) {
+						common::playSound(Select);
+						return;
+					}
+					if (key == 9) {
+						g.resetData();
+						key = -1;
+						break;
+					}
+				}
 				break;
 			}
-
-		} while (key != 9 && key != 10);
+		} while (key != 6 && key != 9 && key != 10);
 	} while (false == false);
 
 }
