@@ -93,7 +93,7 @@ void common::playSound(int i)
 	mciSendString(command.c_str(), NULL, 0, NULL);
 
 	//Play sound
-	mciSendString(L"play sound from 0", NULL, 0, NULL);
+	mciSendString(L"play sound", NULL, 0, NULL);
 }
 
 void common::changeFont() {
