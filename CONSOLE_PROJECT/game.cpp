@@ -11,7 +11,8 @@ void game::game_pvp(game& g, int stcolor, int ndcolor)
 		drawInformation(false);
 		common::playSound(Start);
 		g.showScore();
-		while (!g.win() && !g.draw()) {
+		int flag = g.win();
+		while (!flag && !g.draw()) {
 			g.showTurn();
 			g.drawCursor();
 			key = getInput();
@@ -42,11 +43,11 @@ void game::game_pvp(game& g, int stcolor, int ndcolor)
 				if (g.mode == pvp) game_pvp(g, stcolor, ndcolor);
 				if (g.mode == pve) game_pve(g, stcolor, ndcolor);
 			}
+			flag = g.win();
 		}
 		g.score();
 		g.showScore();
-		clearConsole();
-		g.endEffect();
+		g.endEffect(flag);
 		do {
 			g.askContinuePlay(key);
 			if (key == 6) {
@@ -280,7 +281,7 @@ void game::processBoard() {
 		x_turn = true;
 	}
 }
-bool game::win()
+int game::win()
 {
 	int countR = 0, countD = 0, countUR = 0, countDR = 0;
 	for (int m = 0; m < size; m++) {
@@ -306,13 +307,30 @@ bool game::win()
 					if (board[m][n] == board[m - i][n + i]) countUR++;
 					else countUR = 0;
 				}
-				if ((countR == 5) || (countD == 5) || (countDR == 5) || (countUR == 5)) {
-					return true;
+				if (countR == 5) {
+					x = n + i;
+					y = m;
+					return 1;
+				}
+				if (countD == 5) {
+					x = n;
+					y = m + i;
+					return 2;
+				}
+				if (countDR == 5) {
+					x = n + i;
+					y = m + i;
+					return 3;
+				}
+				if (countUR == 5) {
+					x = n + i;
+					y = m - i;
+					return 4;
 				}
 			}
 		}
 	}
-	return false;
+	return 0;
 }
 
 bool game::draw() {
@@ -332,7 +350,35 @@ void game::showScore() {
 	coutColored(to_string(o_score), Blue);
 }
 
-void game::endEffect() {
+void game::endEffect(int flag) {
+	int fix_x = 0, fix_y = 0;
+	if (flag == 1) {
+		fix_x = -1;
+		fix_y = 0;
+	}
+	if (flag == 2) {
+		fix_x = 0;
+		fix_y = -1;
+	}
+	if (flag == 3) {
+		fix_x = -1;
+		fix_y = -1;
+	}
+	if (flag == 4) {
+		fix_x = -1;
+		fix_y = 1;
+	}
+	for (int time = 1; time < 3; time++) {
+		for (int color = 241; color < 256; color++) {
+			if (color == DarkWhite || color == Yellow || color == DarkYellow || color == Cyan || color == White) continue;
+			for (int i = 0; i < 5; i++) {
+				common::gotoXY(6 + 4 * (x + fix_x * i), 3 + 2 * (y + fix_y * i));
+				if (board[y + fix_y * i][x + fix_x * i] == 1) coutColored("X", color);
+				if (board[y + fix_y * i][x + fix_x * i] == 2) coutColored("O", color);
+				Sleep(50);
+			}
+		}
+	}
 	clearConsole();
 	if (win()) {
 		if (x_turn) {
@@ -407,8 +453,36 @@ void game::o_win_effect()
 	}
 }
 
-void game::botMode_end_effect()
+void game::botMode_end_effect(int flag)
 {
+	int fix_x = 0, fix_y = 0;
+	if (flag == 1) {
+		fix_x = -1;
+		fix_y = 0;
+	}
+	if (flag == 2) {
+		fix_x = 0;
+		fix_y = -1;
+	}
+	if (flag == 3) {
+		fix_x = -1;
+		fix_y = -1;
+	}
+	if (flag == 4) {
+		fix_x = -1;
+		fix_y = 1;
+	}
+	for (int time = 1; time < 3; time++) {
+		for (int color = 241; color < 256; color++) {
+			if (color == DarkWhite || color == Yellow || color == DarkYellow || color == Cyan || color == White) continue;
+			for (int i = 0; i < 5; i++) {
+				common::gotoXY(6 + 4 * (x + fix_x * i), 3 + 2 * (y + fix_y * i));
+				if (board[y + fix_y * i][x + fix_x * i] == 1) coutColored("X", color);
+				if (board[y + fix_y * i][x + fix_x * i] == 2) coutColored("O", color);
+				Sleep(50);
+			}
+		}
+	}
 	clearConsole();
 	if (win()) {
 		if (x_turn) {
@@ -614,6 +688,7 @@ void game::game_pve(game& g, int stcolor, int ndcolor) {
 		drawInformation(false);
 		common::playSound(Start);
 		g.showScore();
+		int flag = g.win();
 		while (!g.draw()) {
 			g.showTurn();
 			g.drawCursor();
@@ -628,14 +703,15 @@ void game::game_pve(game& g, int stcolor, int ndcolor) {
 				if (g.mode == pvp) game_pvp(g, stcolor, ndcolor);
 				if (g.mode == pve) game_pve(g, stcolor, ndcolor);
 			}
-			if (g.win()) break;
+			flag = g.win();
+			if (flag) break;
 			g.processBoardPveO();
-			if (g.win()) break;
+			flag = g.win();
+			if (flag) break;
 		}
 		g.score();
 		g.showScore();
-		clearConsole();
-		g.botMode_end_effect();
+		g.botMode_end_effect(flag);
 		do {
 			g.askContinuePlay(key);
 			if (key == 6) {

@@ -32,14 +32,14 @@ public:
 	void drawCursor();
 	void move(int i, int stcolor, int ndcolor);
 	void processBoard();
-	bool win();
+	int win();
 	bool draw();
 	void score();
 	void showScore();
-	void endEffect();
+	void endEffect(int flag);
 	void x_win_effect();
 	void o_win_effect();
-	void botMode_end_effect();
+	void botMode_end_effect(int flag);
 	void player_win_effect();
 	void player_lose_effect();
 	void draw_effect();

@@ -150,6 +150,7 @@
     <Text Include="resources\f_manager.txt" />
     <Text Include="resources\o_win.txt" />
     <Text Include="resources\player_lose.txt" />
+    <Text Include="resources\player_win.txt" />
     <Text Include="resources\x_win.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
