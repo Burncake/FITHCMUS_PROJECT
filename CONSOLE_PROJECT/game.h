@@ -27,11 +27,11 @@ public:
 	void drawBoard(int stcolor, int ndcolor);
 	static void draw_txt(string name, int x, int y, int color);
 	static void drawInstruct(bool viewMode);
-	static void drawInformation(bool viewMode);
+	static void drawInformation(bool viewMode, int stcolor, int ndcolor);
 	void showTurn();
 	void drawCursor();
 	void move(int i, int stcolor, int ndcolor);
-	void processBoard();
+	void processBoard(int stcolor, int ndcolor);
 	int win();
 	bool draw();
 	void score();
@@ -52,12 +52,12 @@ public:
 	void findBestMove();
 	void pveMove(int i, int stcolor, int ndcolor);
 	static void game_pve(game& g, int stcolor, int ndcolor);
-	void processBoardPveX();
-	void processBoardPveO();
+	void processBoardPveX(int stcolor, int ndcolor);
+	void processBoardPveO(int stcolor, int ndcolor);
 	bool checkBorder(int x, int y);
 	int defendPoint(int x, int y);
 	int attackPoint(int x, int y);
 
 };
-void drawlogoX(bool status, int x, int y);
-void drawlogoO(bool status, int x, int y);
+void drawlogoX(bool status, int x, int y, int stcolor);
+void drawlogoO(bool status, int x, int y, int ndcolor);

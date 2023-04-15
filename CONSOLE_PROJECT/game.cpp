@@ -8,7 +8,7 @@ void game::game_pvp(game& g, int stcolor, int ndcolor)
 	do {
 		clearConsole();
 		g.drawBoard(stcolor, ndcolor);
-		drawInformation(false);
+		drawInformation(false, stcolor, ndcolor);
 		common::playSound(Start);
 		g.showScore();
 		int flag = g.win();
@@ -63,7 +63,7 @@ void game::game_pvp(game& g, int stcolor, int ndcolor)
 				common::playSound(Select);
 				clearConsole();
 				g.drawBoard(stcolor, ndcolor);
-				drawInformation(true);
+				drawInformation(true, stcolor, ndcolor);
 				g.showTurn();
 				g.showScore();
 				while (false == false) {
@@ -164,10 +164,10 @@ void game::drawInstruct(bool viewMode) {
 	}
 }
 
-void game::drawInformation(bool viewMode) {
+void game::drawInformation(bool viewMode, int stcolor, int ndcolor) {
 	int xC = 0, oC = 0;
-	drawlogoX(1, setC, 3);
-	drawlogoO(0, setC + 29, 3);
+	drawlogoX(true, setC, 3, stcolor);
+	drawlogoO(false, setC + 29, 3, ndcolor);
 	drawInstruct(viewMode);
 	for (int i = 1; i <= dSizeC; ++i) {
 		for (int j = 1; j <= dSizeR; ++j) {
@@ -246,7 +246,7 @@ void game::move(int i, int stcolor, int ndcolor)
 		break;
 	case 5:
 		common::playSound(Select);
-		processBoard();
+		processBoard(stcolor, ndcolor);
 		break;
 	}
 	if (board[ty][tx] == 0) {
@@ -263,22 +263,22 @@ void game::move(int i, int stcolor, int ndcolor)
 	}
 }
 
-void game::processBoard() {
+void game::processBoard(int stcolor, int ndcolor) {
 
 	if (board[y][x]) return;
 	if (x_turn) {
 		board[y][x] = 1;
 		x_count++;
-		drawlogoX(0, setC, 3);
-		drawlogoO(1, setC + 29, 3);
 		x_turn = false;
+		drawlogoX(x_turn, setC, 3, stcolor);
+		drawlogoO(!x_turn, setC + 29, 3, ndcolor);
 	}
 	else {
 		board[y][x] = 2;
 		o_count++;
-		drawlogoO(0, setC + 29, 3);
-		drawlogoX(1, setC, 3);
 		x_turn = true;
+		drawlogoO(!x_turn, setC + 29, 3, ndcolor);
+		drawlogoX(x_turn, setC, 3, stcolor);
 	}
 }
 int game::win()
@@ -524,19 +524,19 @@ void game::player_win_effect() {
 	}
 }
 void game::player_lose_effect() {
-	common::bgmusic(0);
+	common::bgmusic(false);
 	common::playSound(Lose);
 	for (int color = 241; color < 256; color++) {
 		if (color == DarkWhite || color == Yellow || color == DarkYellow || color == Cyan || color == White) continue;
 		draw_txt("player_lose.txt", fSizeC + 4, dSizeR - 4, color);
 		Sleep(500);
 	}
-	common::bgmusic(1);
+	common::bgmusic(true);
 }
 
 void game::draw_effect()
 {
-	common::bgmusic(0);
+	common::bgmusic(false);
 	common::playSound(Draw);
 	for (int color = 241; color < 256; color++) {
 		for (int i = 0; i <= 10; i++)
@@ -581,7 +581,7 @@ void game::draw_effect()
 		draw_txt("draw.txt", fSizeC + 7, dSizeR - 3, color);
 		Sleep(400);
 	}
-	common::bgmusic(1);
+	common::bgmusic(true);
 }
 
 void game::resetData() {
@@ -663,7 +663,7 @@ void game::pveMove(int i, int stcolor, int ndcolor) {
 		break;
 	case 5:
 		common::playSound(Select);
-		processBoardPveX();
+		processBoardPveX(stcolor, ndcolor);
 		break;
 	}
 	if (board[ty][tx] == 0) {
@@ -689,7 +689,7 @@ void game::game_pve(game& g, int stcolor, int ndcolor) {
 	do {
 		clearConsole();
 		g.drawBoard(stcolor, ndcolor);
-		drawInformation(false);
+		drawInformation(false, stcolor, ndcolor);
 		common::playSound(Start);
 		g.showScore();
 		int flag = g.win();
@@ -709,7 +709,7 @@ void game::game_pve(game& g, int stcolor, int ndcolor) {
 			}
 			flag = g.win();
 			if (flag) break;
-			g.processBoardPveO();
+			g.processBoardPveO(stcolor, ndcolor);
 			flag = g.win();
 			if (flag) break;
 		}
@@ -731,7 +731,7 @@ void game::game_pve(game& g, int stcolor, int ndcolor) {
 				common::playSound(Select);
 				clearConsole();
 				g.drawBoard(stcolor, ndcolor);
-				drawInformation(true);
+				drawInformation(true, stcolor, ndcolor);
 				g.showTurn();
 				g.showScore();
 				while (false == false) {
@@ -753,18 +753,18 @@ void game::game_pve(game& g, int stcolor, int ndcolor) {
 
 }
 
-void game::processBoardPveX() {
+void game::processBoardPveX(int stcolor, int ndcolor) {
 	if (board[y][x]) return;
 	if (x_turn) {
 		board[y][x] = 1;
 		x_count++;
-		drawlogoX(0, setC, 3);
-		drawlogoO(1, setC + 29, 3);
 		x_turn = false;
+		drawlogoX(x_turn, setC, 3, stcolor);
+		drawlogoO(!x_turn, setC + 29, 3, ndcolor);
 	}
 
 }
-void game::processBoardPveO() {
+void game::processBoardPveO(int stcolor, int ndcolor) {
 	if (!x_turn) {
 		Sleep(200);
 		findBestMove();
@@ -772,9 +772,9 @@ void game::processBoardPveO() {
 		common::gotoXY(6 + 4 * pos_j, 3 + 2 * pos_i);
 		coutColored("O", 181);
 		o_count++;
-		drawlogoO(0, setC + 29, 3);
-		drawlogoX(1, setC, 3);
 		x_turn = true;
+		drawlogoO(!x_turn, setC + 29, 3, ndcolor);
+		drawlogoX(x_turn, setC, 3, stcolor);
 	}
 }
 
@@ -837,14 +837,14 @@ int game::attackPoint(int x, int y) {
 	return sumPoint;
 }
 
-void drawlogoX(bool status, int x, int y)
+void drawlogoX(bool status, int x, int y, int stcolor)
 {
 	int bgColor, pixColor, halfColor;
 	if (status == 1)
 	{
 		bgColor = Black;
-		pixColor = DarkRed;
-		halfColor = blackRed;
+		pixColor = stcolor;
+		halfColor = (stcolor - 240) * 16;
 	}
 	else 
 	{
@@ -975,14 +975,14 @@ void drawlogoX(bool status, int x, int y)
 	drawXY(pixColor, pixelUp, x + 20, y + 10);
 }
 
-void drawlogoO(bool status, int x, int y)
+void drawlogoO(bool status, int x, int y, int ndcolor)
 {
 	int bgColor, pixColor, halfColor;
 	if (status == 1)
 	{
 		bgColor = Black;
-		pixColor = Cyan;
-		halfColor = blackCyan;
+		pixColor = ndcolor;
+		halfColor = (ndcolor - 240) * 16;
 	}
 	else
 	{
