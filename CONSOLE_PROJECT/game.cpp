@@ -524,16 +524,19 @@ void game::player_win_effect() {
 	}
 }
 void game::player_lose_effect() {
+	common::bgmusic(0);
 	common::playSound(Lose);
 	for (int color = 241; color < 256; color++) {
 		if (color == DarkWhite || color == Yellow || color == DarkYellow || color == Cyan || color == White) continue;
 		draw_txt("player_lose.txt", fSizeC + 4, dSizeR - 4, color);
-		Sleep(700);
+		Sleep(500);
 	}
+	common::bgmusic(1);
 }
 
 void game::draw_effect()
 {
+	common::bgmusic(0);
 	common::playSound(Draw);
 	for (int color = 241; color < 256; color++) {
 		for (int i = 0; i <= 10; i++)
@@ -578,6 +581,7 @@ void game::draw_effect()
 		draw_txt("draw.txt", fSizeC + 7, dSizeR - 3, color);
 		Sleep(400);
 	}
+	common::bgmusic(1);
 }
 
 void game::resetData() {

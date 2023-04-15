@@ -133,11 +133,7 @@ void menu::modeSelection(menu& m) {
 			common::playSound(Select);
 			break;
 		}
-		if (a == 6) {
-			clearConsole();
-			menuSelection(m);
-			break;
-		}
+		if (a == 6) return;
 	}
 
 	game g;
@@ -176,7 +172,7 @@ void menu::menuSelection(menu& m) {
 		case 0: {
 			clearConsole();
 			menu::modeSelection(m);
-			break;
+			return;
 		}
 		case 1: {
 			game g;
@@ -184,36 +180,31 @@ void menu::menuSelection(menu& m) {
 				if (g.mode == pvp) game::game_pvp(g, m.color[m.st_color], m.color[m.nd_color]);
 				if (g.mode == pve) game::game_pve(g, m.color[m.st_color], m.color[m.nd_color]);
 			}
-			menuSelection(m);
-			break;
+			return;
 		}
 		case 2: {
 			clearConsole();
 			menu::aboutScreen();
 			while (getInput() != 6);
-			menuSelection(m);
-			break;
+			return;
 		}
 		case 3: {
 			clearConsole();
 			menu::helpScreen();
 			while (getInput() != 6);
-			menuSelection(m);
-			break;
+			return;
 		}
 		case 4: {
 			clearConsole();
 			menu::setting(m);
-			menuSelection(m);
-			break;
+			return;
 		}
 		case 5: {
 			clearConsole();
 			menu::exitSelection(m);
-			menuSelection(m);
-			break;
+			return;
 		}
-		default: break;
+		default: return;
 	}
 }
 
