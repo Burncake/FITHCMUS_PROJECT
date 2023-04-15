@@ -59,3 +59,5 @@ public:
 	int attackPoint(int x, int y);
 
 };
+void drawlogoX(bool status, int x, int y);
+void drawlogoO(bool status, int x, int y);

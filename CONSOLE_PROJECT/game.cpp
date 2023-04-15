@@ -166,8 +166,8 @@ void game::drawInstruct(bool viewMode) {
 
 void game::drawInformation(bool viewMode) {
 	int xC = 0, oC = 0;
-	draw_txt("logoX.txt", setC, 0, Red);
-	draw_txt("logoO.txt", setC + 31, 0, Grey);
+	drawlogoX(1, setC, 3);
+	drawlogoO(0, setC + 29, 3);
 	drawInstruct(viewMode);
 	for (int i = 1; i <= dSizeC; ++i) {
 		for (int j = 1; j <= dSizeR; ++j) {
@@ -269,15 +269,15 @@ void game::processBoard() {
 	if (x_turn) {
 		board[y][x] = 1;
 		x_count++;
-		draw_txt("logoX.txt", setC, 0, Grey);
-		draw_txt("logoO.txt", setC + 31, 0, Blue);
+		drawlogoX(0, setC, 3);
+		drawlogoO(1, setC + 29, 3);
 		x_turn = false;
 	}
 	else {
 		board[y][x] = 2;
 		o_count++;
-		draw_txt("logoO.txt", setC + 31, 0, Grey);
-		draw_txt("logoX.txt", setC, 0, Red);
+		drawlogoO(0, setC + 29, 3);
+		drawlogoX(1, setC, 3);
 		x_turn = true;
 	}
 }
@@ -758,8 +758,8 @@ void game::processBoardPveX() {
 	if (x_turn) {
 		board[y][x] = 1;
 		x_count++;
-		draw_txt("logoX.txt", setC, 0, Grey);
-		draw_txt("logoO.txt", setC + 31, 0, Blue);
+		drawlogoX(0, setC, 3);
+		drawlogoO(1, setC + 29, 3);
 		x_turn = false;
 	}
 
@@ -772,8 +772,8 @@ void game::processBoardPveO() {
 		common::gotoXY(6 + 4 * pos_j, 3 + 2 * pos_i);
 		coutColored("O", 181);
 		o_count++;
-		draw_txt("logoO.txt", setC + 31, 0, Grey);
-		draw_txt("logoX.txt", setC, 0, Red);
+		drawlogoO(0, setC + 29, 3);
+		drawlogoX(1, setC, 3);
 		x_turn = true;
 	}
 }
@@ -835,6 +835,278 @@ int game::attackPoint(int x, int y) {
 	}
 
 	return sumPoint;
+}
+
+void drawlogoX(bool status, int x, int y)
+{
+	int bgColor, pixColor, halfColor;
+	if (status == 1)
+	{
+		bgColor = Black;
+		pixColor = DarkRed;
+		halfColor = blackRed;
+	}
+	else 
+	{
+		bgColor = White;
+		pixColor = Black;
+		halfColor = whiteBlack;
+	}
+	//black up, red bg
+	//2
+	drawRowPixel(halfColor, pixelUp, 4, x + 4, y + 1);
+	drawRowPixel(halfColor, pixelUp, 4, x + 14, y + 1);
+	//3
+	drawXY(halfColor, pixelUp, x + 7, y + 2);
+	drawXY(halfColor, pixelUp, x + 14, y + 2);
+	//4
+	drawXY(halfColor, pixelUp, x + 9, y + 3);
+	drawXY(halfColor, pixelUp, x + 12, y + 3);
+	//5
+	drawRowPixel(halfColor, pixelUp, 2, x + 10, y + 4);
+	//7
+	drawXY(halfColor, pixelUp, x + 6, y + 6);
+	drawXY(halfColor, pixelUp, x + 13, y + 6);
+	//8
+	drawRowPixel(halfColor, pixelUp, 2, x + 5, y + 7);
+	drawRowPixel(halfColor, pixelUp, 2, x + 15, y + 7);
+	//10
+	drawXY(halfColor, pixelUp, x + 1, y + 9);
+	drawXY(halfColor, pixelUp, x + 20, y + 9);
+	//11
+	drawRowPixel(halfColor, pixelUp, 16, x + 3, y + 10);
+
+	//black down, red bg
+	//1
+	drawRowPixel(halfColor, pixelDown, 16, x + 3, y);
+	//2
+	drawXY(halfColor, pixelDown, x + 1, y + 1);
+	drawXY(halfColor, pixelDown, x + 20, y + 1);
+	//4
+	drawRowPixel(halfColor, pixelDown, 2, x + 5, y + 3);
+	drawRowPixel(halfColor, pixelDown, 2, x + 15, y + 3);
+	//7
+	drawRowPixel(halfColor, pixelDown, 2, x + 10, y + 6);
+	//8
+	drawXY(halfColor, pixelDown, x + 9, y + 7);
+	drawXY(halfColor, pixelDown, x + 12, y + 7);
+	//9
+	drawXY(halfColor, pixelDown, x + 7, y + 8);
+	drawXY(halfColor, pixelDown, x + 14, y + 8);
+	//10
+	drawRowPixel(halfColor, pixelDown, 4, x + 4, y + 9);
+	drawRowPixel(halfColor, pixelDown, 4, x + 14, y + 9);
+
+	//black
+	//2
+	drawRowPixel(bgColor, pixel, 2, x + 2, y + 1);
+	drawRowPixel(bgColor, pixel, 6, x + 8, y + 1);
+	drawRowPixel(bgColor, pixel, 2, x + 18, y + 1);
+	//3
+	drawRowPixel(bgColor, pixel, 3, x + 1, y + 2);
+	drawRowPixel(bgColor, pixel, 6, x + 8, y + 2);
+	drawRowPixel(bgColor, pixel, 3, x + 18, y + 2);
+	//4
+	drawRowPixel(bgColor, pixel, 4, x + 1, y + 3);
+	drawRowPixel(bgColor, pixel, 2, x + 10, y + 3);
+	drawRowPixel(bgColor, pixel, 4, x + 17, y + 3);
+	//5
+	drawRowPixel(bgColor, pixel, 6, x + 1, y + 4);
+	drawRowPixel(bgColor, pixel, 6, x + 15, y + 4);
+	//6
+	drawRowPixel(bgColor, pixel, 7, x + 1, y + 5);
+	drawRowPixel(bgColor, pixel, 7, x + 14, y + 5);
+	//7
+	drawRowPixel(bgColor, pixel, 6, x + 1, y + 6);
+	drawRowPixel(bgColor, pixel, 6, x + 15, y + 6);
+	//8
+	drawRowPixel(bgColor, pixel, 4, x + 1, y + 7);
+	drawRowPixel(bgColor, pixel, 2, x + 10, y + 7);
+	drawRowPixel(bgColor, pixel, 4, x + 17, y + 7);
+	//9
+	drawRowPixel(bgColor, pixel, 3, x + 1, y + 8);
+	drawRowPixel(bgColor, pixel, 6, x + 8, y + 8);
+	drawRowPixel(bgColor, pixel, 3, x + 18, y + 8);
+	//10
+	drawRowPixel(bgColor, pixel, 2, x + 2, y + 9);
+	drawRowPixel(bgColor, pixel, 6, x + 8, y + 9);
+	drawRowPixel(bgColor, pixel, 2, x + 18, y + 9);
+
+	//white
+	//1
+	drawXY(White, pixel, x, y);
+	drawXY(White, pixel, x + 21, y);
+	//11
+	drawXY(White, pixel, x, 10);
+	drawXY(White, pixel, x + 21, 10);
+
+	//red
+	common::setColor(pixColor);
+	unsigned char red[] = {
+		3,20,0,
+		0,
+		1,5,6,7,16,17,18,22,0,
+		1,8,9,14,15,22,0,
+		1,8,9,10,13,14,15,22,0,
+		1,9,10,11,12,13,14,22,0,
+		1,8,9,10,13,14,15,22,0,
+		1,8,9,14,15,22,0,
+		1,5,6,7,16,17,18,22,0,
+		0,
+		3,20,0
+	};
+	drawSymbolPixel(pixel, red, x, y);
+	common::setColor(Black);
+
+	//red down
+	//1
+	drawXY(pixColor, pixelDown, x + 1, y);
+	drawXY(pixColor, pixelDown, x + 20, y);
+	//2
+	drawXY(pixColor, pixelDown, x, y + 1);
+	drawXY(pixColor, pixelDown, x + 21, y + 1);
+
+	//red up
+	//10
+	drawXY(pixColor, pixelUp, x, y + 9);
+	drawXY(pixColor, pixelUp, x + 21, y + 9);
+	//11
+	drawXY(pixColor, pixelUp, x + 1, y + 10);
+	drawXY(pixColor, pixelUp, x + 20, y + 10);
+}
+
+void drawlogoO(bool status, int x, int y)
+{
+	int bgColor, pixColor, halfColor;
+	if (status == 1)
+	{
+		bgColor = Black;
+		pixColor = Cyan;
+		halfColor = blackCyan;
+	}
+	else
+	{
+		bgColor = White;
+		pixColor = Black;
+		halfColor = whiteBlack;
+	}
+	//black down, blue bg
+	//1
+	drawRowPixel(halfColor, pixelDown, 16, x + 3, y);
+	//2
+	drawXY(halfColor, pixelDown, x + 1, y + 1);
+	drawXY(halfColor, pixelDown, x + 20, y + 1);
+	//4
+	drawXY(halfColor, pixelDown, x + 7, y + 3);
+	drawXY(halfColor, pixelDown, x + 14, y + 3);
+	//5
+	drawXY(halfColor, pixelDown, x + 6, y + 4);
+	drawXY(halfColor, pixelDown, x + 13, y + 4);
+	drawXY(halfColor, pixelDown, x + 15, y + 4);
+	//9
+	drawXY(halfColor, pixelDown, x + 5, y + 8);
+	drawXY(halfColor, pixelDown, x + 16, y + 8);
+	//10
+	drawRowPixel(halfColor, pixelDown, 6, x + 8, y + 9);
+
+	//black up. halfColor bg
+	//2
+	drawRowPixel(halfColor, pixelUp, 6, x + 8, y + 1);
+	//3
+	drawXY(halfColor, pixelUp, x + 5, y + 2);
+	drawXY(halfColor, pixelUp, x + 16, y + 2);
+	//4
+	drawRowPixel(halfColor, pixelUp, 3, x + 10, y + 3);
+	//7
+	drawXY(halfColor, pixelUp, x + 6, y + 6);
+	drawXY(halfColor, pixelUp, x + 15, y + 6);
+	//8
+	drawXY(halfColor, pixelUp, x + 7, y + 7);
+	drawXY(halfColor, pixelUp, x + 14, y + 7);
+	//10
+	drawXY(halfColor, pixelUp, x + 1, y + 9);
+	drawXY(halfColor, pixelUp, x + 20, y + 9);
+	//11
+	drawRowPixel(halfColor, pixelUp, 16, x + 3, y + 10);
+
+	//bgColor
+	//2
+	drawRowPixel(bgColor, pixel, 6, x + 2, y + 1);
+	drawRowPixel(bgColor, pixel, 6, x + 14, y + 1);
+	//3
+	drawRowPixel(bgColor, pixel, 4, x + 1, y + 2);
+	drawRowPixel(bgColor, pixel, 4, x + 17, y + 2);
+	//4
+	drawRowPixel(bgColor, pixel, 4, x + 1, y + 3);
+	drawRowPixel(bgColor, pixel, 2, x + 8, y + 3);
+	drawXY(bgColor, pixel, x + 13, y + 3);
+	drawRowPixel(bgColor, pixel, 4, x + 17, y + 3);
+	//5
+	drawRowPixel(bgColor, pixel, 3, x + 1, y + 4);
+	drawRowPixel(bgColor, pixel, 6, x + 7, y + 4);
+	drawXY(bgColor, pixel, x + 14, y + 4);
+	drawRowPixel(bgColor, pixel, 3, x + 18, y + 4);
+	//6
+	drawRowPixel(bgColor, pixel, 3, x + 1, y + 5);
+	drawRowPixel(bgColor, pixel, 10, x + 6, y + 5);
+	drawRowPixel(bgColor, pixel, 3, x + 18, y + 5);
+	//7
+	drawRowPixel(bgColor, pixel, 3, x + 1, y + 6);
+	drawRowPixel(bgColor, pixel, 8, x + 7, y + 6);
+	drawRowPixel(bgColor, pixel, 3, x + 18, y + 6);
+	//8
+	drawRowPixel(bgColor, pixel, 4, x + 1, y + 7);
+	drawRowPixel(bgColor, pixel, 6, x + 8, y + 7);
+	drawRowPixel(bgColor, pixel, 4, x + 17, y + 7);
+	//9
+	drawRowPixel(bgColor, pixel, 4, x + 1, y + 8);
+	drawRowPixel(bgColor, pixel, 4, x + 17, y + 8);
+	//10
+	drawRowPixel(bgColor, pixel, 6, x + 2, y + 9);
+	drawRowPixel(bgColor, pixel, 6, x + 14, y + 9);
+
+	//blue
+	common::setColor(pixColor);
+	unsigned char blue[] = {
+		3,20,0,
+		0,
+		1,7,8,9,10,11,12,13,14,15,16,22,0,
+		1,6,7,16,17,22,0,
+		1,5,6,17,18,22,0,
+		1,5,6,17,18,22,0,
+		1,5,6,17,18,22,0,
+		1,6,7,16,17,22,0,
+		1,7,8,9,10,11,12,13,14,15,16,22,0,
+		0,
+		3,20,0
+	};
+	drawSymbolPixel(pixel, blue, x, y);
+
+	//white
+	//1
+	drawXY(White, pixel, x, y);
+	drawXY(White, pixel, x + 21, y);
+	//11
+	drawXY(White, pixel, x, y + 10);
+	drawXY(White, pixel, x + 21, y + 10);
+
+	//blue up
+	//10
+	drawXY(pixColor, pixelUp, x, y + 9);
+	drawXY(pixColor, pixelUp, x + 21, y + 9);
+	//11
+	drawXY(pixColor, pixelUp, x + 1, y + 10);
+	drawXY(pixColor, pixelUp, x + 20, y + 10);
+
+
+	//blue down
+	//1
+	drawXY(pixColor, pixelDown, x + 1, y);
+	drawXY(pixColor, pixelDown, x + 20, y);
+	//2
+	drawXY(pixColor, pixelDown, x, y + 1);
+	drawXY(pixColor, pixelDown, x + 21, y + 1);
+
 }
 
 
