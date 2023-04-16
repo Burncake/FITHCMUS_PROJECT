@@ -1,7 +1,7 @@
 #include "game.h"
 #include "file.h"
 int attackEvaluate[10] = { 0, 3, 24, 192, 1536, 12288, 98304, 531441, 4782969, 1000000000 };
-int defendEvaluate[10] = { 0, 2, 18, 140, 800, 8000, 70569, 350000, 3000000, 300000000 };
+int defendEvaluate[10] = { 0, 2, 18, 100000000, 800, 8000, 70569, 350000, 3000000, 300000000 };
 
 void game::bootGame(game& g, int stcolor, int ndcolor, bool music)
 {
