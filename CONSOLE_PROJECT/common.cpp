@@ -57,7 +57,7 @@ void common::showCursor(bool showFlag)
 
 void common::setTitle()
 {
-    SetConsoleTitle(L"CARO GAME");
+    SetConsoleTitle(L"CARO GAME by Group 3 - 22CLC01");
 }
 
 void common::gotoXY(int x, int y)
