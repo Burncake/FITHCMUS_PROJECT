@@ -1,87 +1,97 @@
 #include "game.h"
 #include "file.h"
 int attackEvaluate[10] = { 0, 3, 24, 192, 1536, 12288, 98304, 531441, 4782969, 500000000 };
-int defendEvaluate[10] = { 0, 2, 18, 140, 800, 8000, 70569, 350000, 30000000,	300000000 };
-void game::game_pvp(game& g, int stcolor, int ndcolor)
+int defendEvaluate[10] = { 0, 2, 18, 140, 800, 8000, 70569, 350000, 30000000, 300000000 };
+
+void game::bootGame(game& g, int stcolor, int ndcolor, bool music)
+{
+	int key = 0;
+	while (!key) {
+		if (g.mode == pvp) key = game::game_pvp(g, stcolor, ndcolor);
+		if (g.mode == pvc) key = game::game_pve(g, stcolor, ndcolor);
+	}
+	if (key == -1) return;
+	g.score();
+	g.showScore();
+	if (g.mode == pvp) g.endEffect(key, music);
+	if (g.mode == pvc) g.botMode_end_effect(key, music);
+	do {
+		g.askContinuePlay(key);
+		if (key == 6) {
+			common::playSound(Select);
+			return;
+		}
+		if (key == 9) {
+			g.resetData();
+			key = -1;
+			break;
+		}
+		if (key == 10) {
+			common::playSound(Select);
+			clearConsole();
+			g.drawBoard(stcolor, ndcolor);
+			drawInformation(true, stcolor, ndcolor);
+			g.showTurn();
+			g.showScore();
+			while (false == false) {
+				key = getInput();
+				if (key == 6) {
+					common::playSound(Select);
+					return;
+				}
+				if (key == 9) {
+					g.resetData();
+					key = -1;
+					break;
+				}
+			}
+			break;
+		}
+	} while (key != 6 && key != 9 && key != 10);
+}
+
+int game::game_pvp(game& g, int stcolor, int ndcolor)
 {
 	int key = -1;
-	do {
-		clearConsole();
-		g.drawBoard(stcolor, ndcolor);
-		drawInformation(false, stcolor, ndcolor);
-		common::playSound(Start);
-		g.showScore();
-		int flag = g.win();
-		while (!flag && !g.draw()) {
-			g.showTurn();
-			g.drawCursor();
-			key = getInput();
-			g.move(key, stcolor, ndcolor);
-			if (key == 6) {
-				common::playSound(Select);
-				clearConsole();
-				printRectangle(40, 12, 34, 2);
-				printText("Do you want to save? (Y/N)", 45, 13);
-				while (false == false) {
-					key = getInput();
-					if (key == 9) {
-						file::saveScreen(g);
-						game_pvp(g, stcolor, ndcolor);
-					}
-					if (key == 10) {
-						common::playSound(Select);
-						return;
-					}
+	clearConsole();
+	g.drawBoard(stcolor, ndcolor);
+	drawInformation(false, stcolor, ndcolor);
+	common::playSound(Start);
+	g.showScore();
+	int flag = g.win();
+	while (!flag && !g.draw()) {
+		g.showTurn();
+		g.drawCursor();
+		key = getInput();
+		g.move(key, stcolor, ndcolor);
+		if (key == 6) {
+			common::playSound(Select);
+			clearConsole();
+			printRectangle(40, 12, 34, 2);
+			printText("Do you want to save? (Y/N)", 45, 13);
+			while (false == false) {
+				key = getInput();
+				if (key == 9) {
+					file::saveScreen(g);
+					return 0;
+				}
+				if (key == 10) {
+					common::playSound(Select);
+					return -1;
 				}
 			}
-			if (key == 7) {
-				file::saveScreen(g);
-				game_pvp(g, stcolor, ndcolor);
-			}
-			if (key == 8) {
-				file::loadScreen(g);
-				if (g.mode == pvp) game_pvp(g, stcolor, ndcolor);
-				if (g.mode == pve) game_pve(g, stcolor, ndcolor);
-			}
-			flag = g.win();
 		}
-		g.score();
-		g.showScore();
-		g.endEffect(flag);
-		do {
-			g.askContinuePlay(key);
-			if (key == 6) {
-				common::playSound(Select);
-				return;
-			}
-			if (key == 9) {
-				g.resetData();
-				key = -1;
-				break;
-			}
-			if (key == 10) {
-				common::playSound(Select);
-				clearConsole();
-				g.drawBoard(stcolor, ndcolor);
-				drawInformation(true, stcolor, ndcolor);
-				g.showTurn();
-				g.showScore();
-				while (false == false) {
-					key = getInput();
-					if (key == 6) {
-						common::playSound(Select);
-						return;
-					}
-					if (key == 9) {
-						g.resetData();
-						key = -1;
-						break;
-					}
-				}
-				break;
-			}
-		} while (key != 6 && key != 9 && key != 10);
-	} while (false == false);
+		if (key == 7) {
+			file::saveScreen(g);
+			return 0;
+		}
+		if (key == 8) {
+			file::loadScreen(g);
+			return 0;
+		}
+		flag = g.win();
+	}
+	return flag;
 }
 
 void game::drawBoard(int stcolor, int ndcolor)
@@ -350,7 +360,7 @@ void game::showScore() {
 	coutColored(to_string(o_score), Blue);
 }
 
-void game::endEffect(int flag) {
+void game::endEffect(int flag, bool bgmusic) {
 	int fix_x = 0, fix_y = 0;
 	if (flag == 1) {
 		fix_x = -1;
@@ -388,7 +398,7 @@ void game::endEffect(int flag) {
 			x_win_effect();
 		}
 	}
-	else draw_effect();
+	else draw_effect(bgmusic);
 }
 
 void game::x_win_effect()
@@ -453,7 +463,7 @@ void game::o_win_effect()
 	}
 }
 
-void game::botMode_end_effect(int flag)
+void game::botMode_end_effect(int flag, bool bgmusic)
 {
 	int fix_x = 0, fix_y = 0;
 	if (flag == 1) {
@@ -486,13 +496,13 @@ void game::botMode_end_effect(int flag)
 	clearConsole();
 	if (win()) {
 		if (x_turn) {
-			player_lose_effect();
+			player_lose_effect(bgmusic);
 		}
 		else {
 			player_win_effect();
 		}
 	}
-	else draw_effect();
+	else draw_effect(bgmusic);
 }
 void game::player_win_effect() {
 	common::playSound(Win);
@@ -523,7 +533,7 @@ void game::player_win_effect() {
 		Sleep(400);
 	}
 }
-void game::player_lose_effect() {
+void game::player_lose_effect(bool bgmusic) {
 	common::bgmusic(false);
 	common::playSound(Lose);
 	for (int color = 241; color < 256; color++) {
@@ -531,10 +541,10 @@ void game::player_lose_effect() {
 		draw_txt("player_lose.txt", fSizeC + 4, dSizeR - 4, color);
 		Sleep(500);
 	}
-	common::bgmusic(true);
+	common::bgmusic(bgmusic);
 }
 
-void game::draw_effect()
+void game::draw_effect(bool bgmusic)
 {
 	common::bgmusic(false);
 	common::playSound(Draw);
@@ -581,7 +591,7 @@ void game::draw_effect()
 		draw_txt("draw.txt", fSizeC + 7, dSizeR - 3, color);
 		Sleep(400);
 	}
-	common::bgmusic(true);
+	common::bgmusic(bgmusic);
 }
 
 void game::resetData() {
@@ -684,73 +694,50 @@ void game::pveMove(int i, int stcolor, int ndcolor) {
 	}
 }
 
-void game::game_pve(game& g, int stcolor, int ndcolor) {
+int game::game_pve(game& g, int stcolor, int ndcolor) {
 	int key = -1;
-	do {
-		clearConsole();
-		g.drawBoard(stcolor, ndcolor);
-		drawInformation(false, stcolor, ndcolor);
-		common::playSound(Start);
-		g.showScore();
-		int flag = g.win();
-		while (!g.draw()) {
-			g.showTurn();
-			g.drawCursor();
-			key = getInput();
-			g.pveMove(key, stcolor, ndcolor);
-			if (key == 7) {
-				file::saveScreen(g);
-				game_pve(g, stcolor, ndcolor);
-			}
-			if (key == 8) {
-				file::loadScreen(g);
-				if (g.mode == pvp) game_pvp(g, stcolor, ndcolor);
-				if (g.mode == pve) game_pve(g, stcolor, ndcolor);
-			}
-			flag = g.win();
-			if (flag) break;
-			g.processBoardPveO(stcolor, ndcolor);
-			flag = g.win();
-			if (flag) break;
-		}
-		g.score();
-		g.showScore();
-		g.botMode_end_effect(flag);
-		do {
-			g.askContinuePlay(key);
-			if (key == 6) {
-				common::playSound(Select);
-				return;
-			}
-			if (key == 9) {
-				g.resetData();
-				key = -1;
-				break;
-			}
-			if (key == 10) {
-				common::playSound(Select);
-				clearConsole();
-				g.drawBoard(stcolor, ndcolor);
-				drawInformation(true, stcolor, ndcolor);
-				g.showTurn();
-				g.showScore();
-				while (false == false) {
-					key = getInput();
-					if (key == 6) {
-						common::playSound(Select);
-						return;
-					}
-					if (key == 9) {
-						g.resetData();
-						key = -1;
-						break;
-					}
+	clearConsole();
+	g.drawBoard(stcolor, ndcolor);
+	drawInformation(false, stcolor, ndcolor);
+	common::playSound(Start);
+	g.showScore();
+	int flag = g.win();
+	while (!flag && !g.draw()) {
+		g.showTurn();
+		g.drawCursor();
+		key = getInput();
+		g.pveMove(key, stcolor, ndcolor);
+		if (key == 6) {
+			common::playSound(Select);
+			clearConsole();
+			printRectangle(40, 12, 34, 2);
+			printText("Do you want to save? (Y/N)", 45, 13);
+			while (false == false) {
+				key = getInput();
+				if (key == 9) {
+					file::saveScreen(g);
+					return 0;
 				}
-				break;
+				if (key == 10) {
+					common::playSound(Select);
+					return -1;
+				}
 			}
-		} while (key != 6 && key != 9 && key != 10);
-	} while (false == false);
-
+		}
+		if (key == 7) {
+			file::saveScreen(g);
+			return 0;
+		}
+		if (key == 8) {
+			file::loadScreen(g);
+			return 0;
+		}
+		flag = g.win();
+		if (flag) break;
+		g.processBoardPveO(stcolor, ndcolor);
+		flag = g.win();
+	}
+	return flag;
 }
 
 void game::processBoardPveX(int stcolor, int ndcolor) {

@@ -137,14 +137,9 @@ void menu::modeSelection(menu& m) {
 	}
 
 	game g;
-	if (selectedMode) {
-		g.mode = pve;
-		game::game_pve(g, m.color[m.st_color], m.color[m.nd_color]);
-	}
-	else {
-		g.mode = pvp;
-		game::game_pvp(g, m.color[m.st_color], m.color[m.nd_color]);
-	}
+	if (selectedMode) g.mode = pvc;
+	else g.mode = pvp;
+	game::bootGame(g, m.color[m.st_color], m.color[m.nd_color], m.music);
 }
 
 void menu::menuSelection(menu& m) {
@@ -176,10 +171,7 @@ void menu::menuSelection(menu& m) {
 		}
 		case 1: {
 			game g;
-			if (file::loadScreen(g)) {
-				if (g.mode == pvp) game::game_pvp(g, m.color[m.st_color], m.color[m.nd_color]);
-				if (g.mode == pve) game::game_pve(g, m.color[m.st_color], m.color[m.nd_color]);
-			}
+			if (file::loadScreen(g)) game::bootGame(g, m.color[m.st_color], m.color[m.nd_color], m.music);
 			return;
 		}
 		case 2: {
