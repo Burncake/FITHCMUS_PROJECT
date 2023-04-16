@@ -29,6 +29,7 @@ using namespace std;
 #define blackRed		64
 #define blackCyan		176
 #define redCyan			180
+#define whiteBlack		7
 
 // Sounds
 #define Start			0
@@ -74,6 +75,7 @@ void printRectangle(int left, int top, int width, int height);
 void putcharXY(int ch, int x, int y);
 void drawLogoPixelXY(int ch, int x, int y);
 void drawLogoPixel(int ch, unsigned char pix[]);
+void drawSymbolPixel(int ch, unsigned char pix[], int x, int y);
 void drawXY(int color, int ch, int x, int y);
 void drawRowPixel(int color, int ch, int num, int x, int y);
 

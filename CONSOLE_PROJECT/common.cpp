@@ -196,6 +196,19 @@ void drawLogoPixel(int ch, unsigned char pix[])
     }
 }
 
+void drawSymbolPixel(int ch, unsigned char pix[], int x, int y)
+{
+	int num, temp = 0;
+	for (int i = 0; i < 11; i++) {
+		num = temp;
+		while (pix[num] != 0) {
+			putcharXY(ch, x - 1 + pix[num], y + i);
+			num++;
+		}
+		temp = ++num;
+	}
+}
+
 void drawXY(int color, int ch, int x, int y)
 {
     common::setColor(color);

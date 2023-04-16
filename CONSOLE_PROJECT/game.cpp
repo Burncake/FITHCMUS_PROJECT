@@ -1,53 +1,21 @@
 #include "game.h"
 #include "file.h"
 int attackEvaluate[10] = { 0, 3, 24, 192, 1536, 12288, 98304, 531441, 4782969, 500000000 };
-int defendEvaluate[10] = { 0, 2, 18, 140, 800, 8000, 70569, 350000, 30000000,	300000000 };
-void game::game_pvp(game& g, int stcolor, int ndcolor)
+int defendEvaluate[10] = { 0, 2, 18, 140, 800, 8000, 70569, 350000, 30000000, 300000000 };
+
+void game::bootGame(game& g, int stcolor, int ndcolor, bool music)
 {
-	int key = -1;
-	do {
-		clearConsole();
-		g.drawBoard(stcolor, ndcolor);
-		drawInformation(false);
-		common::playSound(Start);
-		g.showScore();
-		int flag = g.win();
-		while (!flag && !g.draw()) {
-			g.showTurn();
-			g.drawCursor();
-			key = getInput();
-			g.move(key, stcolor, ndcolor);
-			if (key == 6) {
-				common::playSound(Select);
-				clearConsole();
-				printRectangle(40, 12, 34, 2);
-				printText("Do you want to save? (Y/N)", 45, 13);
-				while (false == false) {
-					key = getInput();
-					if (key == 9) {
-						file::saveScreen(g);
-						game_pvp(g, stcolor, ndcolor);
-					}
-					if (key == 10) {
-						common::playSound(Select);
-						return;
-					}
-				}
-			}
-			if (key == 7) {
-				file::saveScreen(g);
-				game_pvp(g, stcolor, ndcolor);
-			}
-			if (key == 8) {
-				file::loadScreen(g);
-				if (g.mode == pvp) game_pvp(g, stcolor, ndcolor);
-				if (g.mode == pve) game_pve(g, stcolor, ndcolor);
-			}
-			flag = g.win();
+	int key = 0;
+	while (false == false) {
+		while (!key) {
+			if (g.mode == pvp) key = game::game_pvp(g, stcolor, ndcolor);
+			if (g.mode == pvc) key = game::game_pve(g, stcolor, ndcolor);
 		}
+		if (key == -1) return;
 		g.score();
 		g.showScore();
-		g.endEffect(flag);
+		if (g.mode == pvp) g.endEffect(key, music);
+		if (g.mode == pvc) g.botMode_end_effect(key, music);
 		do {
 			g.askContinuePlay(key);
 			if (key == 6) {
@@ -63,7 +31,7 @@ void game::game_pvp(game& g, int stcolor, int ndcolor)
 				common::playSound(Select);
 				clearConsole();
 				g.drawBoard(stcolor, ndcolor);
-				drawInformation(true);
+				drawInformation(true, stcolor, ndcolor);
 				g.showTurn();
 				g.showScore();
 				while (false == false) {
@@ -81,7 +49,52 @@ void game::game_pvp(game& g, int stcolor, int ndcolor)
 				break;
 			}
 		} while (key != 6 && key != 9 && key != 10);
-	} while (false == false);
+		key = 0;
+	}
+}
+
+int game::game_pvp(game& g, int stcolor, int ndcolor)
+{
+	int key = -1;
+	clearConsole();
+	g.drawBoard(stcolor, ndcolor);
+	drawInformation(false, stcolor, ndcolor);
+	common::playSound(Start);
+	g.showScore();
+	int flag = g.win();
+	while (!flag && !g.draw()) {
+		g.showTurn();
+		g.drawCursor();
+		key = getInput();
+		g.move(key, stcolor, ndcolor);
+		if (key == 6) {
+			common::playSound(Select);
+			clearConsole();
+			printRectangle(40, 12, 34, 2);
+			printText("Do you want to save? (Y/N)", 45, 13);
+			while (false == false) {
+				key = getInput();
+				if (key == 9) {
+					file::saveScreen(g);
+					return 0;
+				}
+				if (key == 10) {
+					common::playSound(Select);
+					return -1;
+				}
+			}
+		}
+		if (key == 7) {
+			file::saveScreen(g);
+			return 0;
+		}
+		if (key == 8) {
+			file::loadScreen(g);
+			return 0;
+		}
+		flag = g.win();
+	}
+	return flag;
 }
 
 	void game::drawBoard(int stcolor, int ndcolor)
@@ -164,10 +177,10 @@ void game::drawInstruct(bool viewMode) {
 	}
 }
 
-void game::drawInformation(bool viewMode) {
+void game::drawInformation(bool viewMode, int stcolor, int ndcolor) {
 	int xC = 0, oC = 0;
-	draw_txt("logoX.txt", setC, 0, Red);
-	draw_txt("logoO.txt", setC + 31, 0, Grey);
+	drawlogoX(true, setC, 3, stcolor);
+	drawlogoO(false, setC + 29, 3, ndcolor);
 	drawInstruct(viewMode);
 	for (int i = 1; i <= dSizeC; ++i) {
 		for (int j = 1; j <= dSizeR; ++j) {
@@ -246,7 +259,7 @@ void game::move(int i, int stcolor, int ndcolor)
 		break;
 	case 5:
 		common::playSound(Select);
-		processBoard();
+		processBoard(stcolor, ndcolor);
 		break;
 	}
 	if (board[ty][tx] == 0) {
@@ -263,22 +276,22 @@ void game::move(int i, int stcolor, int ndcolor)
 	}
 }
 
-void game::processBoard() {
+void game::processBoard(int stcolor, int ndcolor) {
 
 	if (board[y][x]) return;
 	if (x_turn) {
 		board[y][x] = 1;
 		x_count++;
-		draw_txt("logoX.txt", setC, 0, Grey);
-		draw_txt("logoO.txt", setC + 31, 0, Blue);
 		x_turn = false;
+		drawlogoX(x_turn, setC, 3, stcolor);
+		drawlogoO(!x_turn, setC + 29, 3, ndcolor);
 	}
 	else {
 		board[y][x] = 2;
 		o_count++;
-		draw_txt("logoO.txt", setC + 31, 0, Grey);
-		draw_txt("logoX.txt", setC, 0, Red);
 		x_turn = true;
+		drawlogoO(!x_turn, setC + 29, 3, ndcolor);
+		drawlogoX(x_turn, setC, 3, stcolor);
 	}
 }
 int game::win()
@@ -350,7 +363,7 @@ void game::showScore() {
 	coutColored(to_string(o_score), Blue);
 }
 
-void game::endEffect(int flag) {
+void game::endEffect(int flag, bool bgmusic) {
 	int fix_x = 0, fix_y = 0;
 	if (flag == 1) {
 		fix_x = -1;
@@ -388,7 +401,7 @@ void game::endEffect(int flag) {
 			x_win_effect();
 		}
 	}
-	else draw_effect();
+	else draw_effect(bgmusic);
 }
 
 void game::x_win_effect()
@@ -453,7 +466,7 @@ void game::o_win_effect()
 	}
 }
 
-void game::botMode_end_effect(int flag)
+void game::botMode_end_effect(int flag, bool bgmusic)
 {
 	int fix_x = 0, fix_y = 0;
 	if (flag == 1) {
@@ -486,13 +499,13 @@ void game::botMode_end_effect(int flag)
 	clearConsole();
 	if (win()) {
 		if (x_turn) {
-			player_lose_effect();
+			player_lose_effect(bgmusic);
 		}
 		else {
 			player_win_effect();
 		}
 	}
-	else draw_effect();
+	else draw_effect(bgmusic);
 }
 void game::player_win_effect() {
 	common::playSound(Win);
@@ -523,17 +536,20 @@ void game::player_win_effect() {
 		Sleep(400);
 	}
 }
-void game::player_lose_effect() {
+void game::player_lose_effect(bool bgmusic) {
+	common::bgmusic(false);
 	common::playSound(Lose);
 	for (int color = 241; color < 256; color++) {
 		if (color == DarkWhite || color == Yellow || color == DarkYellow || color == Cyan || color == White) continue;
 		draw_txt("player_lose.txt", fSizeC + 4, dSizeR - 4, color);
-		Sleep(700);
+		Sleep(500);
 	}
+	common::bgmusic(bgmusic);
 }
 
-void game::draw_effect()
+void game::draw_effect(bool bgmusic)
 {
+	common::bgmusic(false);
 	common::playSound(Draw);
 	for (int color = 241; color < 256; color++) {
 		for (int i = 0; i <= 10; i++)
@@ -578,6 +594,7 @@ void game::draw_effect()
 		draw_txt("draw.txt", fSizeC + 7, dSizeR - 3, color);
 		Sleep(400);
 	}
+	common::bgmusic(bgmusic);
 }
 
 void game::resetData() {
@@ -659,7 +676,7 @@ void game::pveMove(int i, int stcolor, int ndcolor) {
 		break;
 	case 5:
 		common::playSound(Select);
-		processBoardPveX();
+		processBoardPveX(stcolor, ndcolor);
 		break;
 	}
 	if (board[ty][tx] == 0) {
@@ -680,87 +697,64 @@ void game::pveMove(int i, int stcolor, int ndcolor) {
 	}
 }
 
-void game::game_pve(game& g, int stcolor, int ndcolor) {
+int game::game_pve(game& g, int stcolor, int ndcolor) {
 	int key = -1;
-	do {
-		clearConsole();
-		g.drawBoard(stcolor, ndcolor);
-		drawInformation(false);
-		common::playSound(Start);
-		g.showScore();
-		int flag = g.win();
-		while (!g.draw()) {
-			g.showTurn();
-			g.drawCursor();
-			key = getInput();
-			g.pveMove(key, stcolor, ndcolor);
-			if (key == 7) {
-				file::saveScreen(g);
-				game_pve(g, stcolor, ndcolor);
-			}
-			if (key == 8) {
-				file::loadScreen(g);
-				if (g.mode == pvp) game_pvp(g, stcolor, ndcolor);
-				if (g.mode == pve) game_pve(g, stcolor, ndcolor);
-			}
-			flag = g.win();
-			if (flag) break;
-			g.processBoardPveO();
-			flag = g.win();
-			if (flag) break;
-		}
-		g.score();
-		g.showScore();
-		g.botMode_end_effect(flag);
-		do {
-			g.askContinuePlay(key);
-			if (key == 6) {
-				common::playSound(Select);
-				return;
-			}
-			if (key == 9) {
-				g.resetData();
-				key = -1;
-				break;
-			}
-			if (key == 10) {
-				common::playSound(Select);
-				clearConsole();
-				g.drawBoard(stcolor, ndcolor);
-				drawInformation(true);
-				g.showTurn();
-				g.showScore();
-				while (false == false) {
-					key = getInput();
-					if (key == 6) {
-						common::playSound(Select);
-						return;
-					}
-					if (key == 9) {
-						g.resetData();
-						key = -1;
-						break;
-					}
+	clearConsole();
+	g.drawBoard(stcolor, ndcolor);
+	drawInformation(false, stcolor, ndcolor);
+	common::playSound(Start);
+	g.showScore();
+	int flag = g.win();
+	while (!flag && !g.draw()) {
+		g.showTurn();
+		g.drawCursor();
+		key = getInput();
+		g.pveMove(key, stcolor, ndcolor);
+		if (key == 6) {
+			common::playSound(Select);
+			clearConsole();
+			printRectangle(40, 12, 34, 2);
+			printText("Do you want to save? (Y/N)", 45, 13);
+			while (false == false) {
+				key = getInput();
+				if (key == 9) {
+					file::saveScreen(g);
+					return 0;
 				}
-				break;
+				if (key == 10) {
+					common::playSound(Select);
+					return -1;
+				}
 			}
-		} while (key != 6 && key != 9 && key != 10);
-	} while (false == false);
-
+		}
+		if (key == 7) {
+			file::saveScreen(g);
+			return 0;
+		}
+		if (key == 8) {
+			file::loadScreen(g);
+			return 0;
+		}
+		flag = g.win();
+		if (flag) break;
+		g.processBoardPveO(stcolor, ndcolor);
+		flag = g.win();
+	}
+	return flag;
 }
 
-void game::processBoardPveX() {
+void game::processBoardPveX(int stcolor, int ndcolor) {
 	if (board[y][x]) return;
 	if (x_turn) {
 		board[y][x] = 1;
 		x_count++;
-		draw_txt("logoX.txt", setC, 0, Grey);
-		draw_txt("logoO.txt", setC + 31, 0, Blue);
 		x_turn = false;
+		drawlogoX(x_turn, setC, 3, stcolor);
+		drawlogoO(!x_turn, setC + 29, 3, ndcolor);
 	}
 
 }
-void game::processBoardPveO() {
+void game::processBoardPveO(int stcolor, int ndcolor) {
 	if (!x_turn) {
 		Sleep(200);
 		findBestMove();
@@ -768,9 +762,9 @@ void game::processBoardPveO() {
 		common::gotoXY(6 + 4 * pos_j, 3 + 2 * pos_i);
 		coutColored("O", 181);
 		o_count++;
-		draw_txt("logoO.txt", setC + 31, 0, Grey);
-		draw_txt("logoX.txt", setC, 0, Red);
 		x_turn = true;
+		drawlogoO(!x_turn, setC + 29, 3, ndcolor);
+		drawlogoX(x_turn, setC, 3, stcolor);
 	}
 }
 
@@ -831,6 +825,278 @@ int game::attackPoint(int x, int y) {
 	}
 
 	return sumPoint;
+}
+
+void drawlogoX(bool status, int x, int y, int stcolor)
+{
+	int bgColor, pixColor, halfColor;
+	if (status == 1)
+	{
+		bgColor = Black;
+		pixColor = stcolor;
+		halfColor = (stcolor - 240) * 16;
+	}
+	else 
+	{
+		bgColor = White;
+		pixColor = Black;
+		halfColor = whiteBlack;
+	}
+	//black up, red bg
+	//2
+	drawRowPixel(halfColor, pixelUp, 4, x + 4, y + 1);
+	drawRowPixel(halfColor, pixelUp, 4, x + 14, y + 1);
+	//3
+	drawXY(halfColor, pixelUp, x + 7, y + 2);
+	drawXY(halfColor, pixelUp, x + 14, y + 2);
+	//4
+	drawXY(halfColor, pixelUp, x + 9, y + 3);
+	drawXY(halfColor, pixelUp, x + 12, y + 3);
+	//5
+	drawRowPixel(halfColor, pixelUp, 2, x + 10, y + 4);
+	//7
+	drawXY(halfColor, pixelUp, x + 6, y + 6);
+	drawXY(halfColor, pixelUp, x + 13, y + 6);
+	//8
+	drawRowPixel(halfColor, pixelUp, 2, x + 5, y + 7);
+	drawRowPixel(halfColor, pixelUp, 2, x + 15, y + 7);
+	//10
+	drawXY(halfColor, pixelUp, x + 1, y + 9);
+	drawXY(halfColor, pixelUp, x + 20, y + 9);
+	//11
+	drawRowPixel(halfColor, pixelUp, 16, x + 3, y + 10);
+
+	//black down, red bg
+	//1
+	drawRowPixel(halfColor, pixelDown, 16, x + 3, y);
+	//2
+	drawXY(halfColor, pixelDown, x + 1, y + 1);
+	drawXY(halfColor, pixelDown, x + 20, y + 1);
+	//4
+	drawRowPixel(halfColor, pixelDown, 2, x + 5, y + 3);
+	drawRowPixel(halfColor, pixelDown, 2, x + 15, y + 3);
+	//7
+	drawRowPixel(halfColor, pixelDown, 2, x + 10, y + 6);
+	//8
+	drawXY(halfColor, pixelDown, x + 9, y + 7);
+	drawXY(halfColor, pixelDown, x + 12, y + 7);
+	//9
+	drawXY(halfColor, pixelDown, x + 7, y + 8);
+	drawXY(halfColor, pixelDown, x + 14, y + 8);
+	//10
+	drawRowPixel(halfColor, pixelDown, 4, x + 4, y + 9);
+	drawRowPixel(halfColor, pixelDown, 4, x + 14, y + 9);
+
+	//black
+	//2
+	drawRowPixel(bgColor, pixel, 2, x + 2, y + 1);
+	drawRowPixel(bgColor, pixel, 6, x + 8, y + 1);
+	drawRowPixel(bgColor, pixel, 2, x + 18, y + 1);
+	//3
+	drawRowPixel(bgColor, pixel, 3, x + 1, y + 2);
+	drawRowPixel(bgColor, pixel, 6, x + 8, y + 2);
+	drawRowPixel(bgColor, pixel, 3, x + 18, y + 2);
+	//4
+	drawRowPixel(bgColor, pixel, 4, x + 1, y + 3);
+	drawRowPixel(bgColor, pixel, 2, x + 10, y + 3);
+	drawRowPixel(bgColor, pixel, 4, x + 17, y + 3);
+	//5
+	drawRowPixel(bgColor, pixel, 6, x + 1, y + 4);
+	drawRowPixel(bgColor, pixel, 6, x + 15, y + 4);
+	//6
+	drawRowPixel(bgColor, pixel, 7, x + 1, y + 5);
+	drawRowPixel(bgColor, pixel, 7, x + 14, y + 5);
+	//7
+	drawRowPixel(bgColor, pixel, 6, x + 1, y + 6);
+	drawRowPixel(bgColor, pixel, 6, x + 15, y + 6);
+	//8
+	drawRowPixel(bgColor, pixel, 4, x + 1, y + 7);
+	drawRowPixel(bgColor, pixel, 2, x + 10, y + 7);
+	drawRowPixel(bgColor, pixel, 4, x + 17, y + 7);
+	//9
+	drawRowPixel(bgColor, pixel, 3, x + 1, y + 8);
+	drawRowPixel(bgColor, pixel, 6, x + 8, y + 8);
+	drawRowPixel(bgColor, pixel, 3, x + 18, y + 8);
+	//10
+	drawRowPixel(bgColor, pixel, 2, x + 2, y + 9);
+	drawRowPixel(bgColor, pixel, 6, x + 8, y + 9);
+	drawRowPixel(bgColor, pixel, 2, x + 18, y + 9);
+
+	//white
+	//1
+	drawXY(White, pixel, x, y);
+	drawXY(White, pixel, x + 21, y);
+	//11
+	drawXY(White, pixel, x, 10);
+	drawXY(White, pixel, x + 21, 10);
+
+	//red
+	common::setColor(pixColor);
+	unsigned char red[] = {
+		3,20,0,
+		0,
+		1,5,6,7,16,17,18,22,0,
+		1,8,9,14,15,22,0,
+		1,8,9,10,13,14,15,22,0,
+		1,9,10,11,12,13,14,22,0,
+		1,8,9,10,13,14,15,22,0,
+		1,8,9,14,15,22,0,
+		1,5,6,7,16,17,18,22,0,
+		0,
+		3,20,0
+	};
+	drawSymbolPixel(pixel, red, x, y);
+	common::setColor(Black);
+
+	//red down
+	//1
+	drawXY(pixColor, pixelDown, x + 1, y);
+	drawXY(pixColor, pixelDown, x + 20, y);
+	//2
+	drawXY(pixColor, pixelDown, x, y + 1);
+	drawXY(pixColor, pixelDown, x + 21, y + 1);
+
+	//red up
+	//10
+	drawXY(pixColor, pixelUp, x, y + 9);
+	drawXY(pixColor, pixelUp, x + 21, y + 9);
+	//11
+	drawXY(pixColor, pixelUp, x + 1, y + 10);
+	drawXY(pixColor, pixelUp, x + 20, y + 10);
+}
+
+void drawlogoO(bool status, int x, int y, int ndcolor)
+{
+	int bgColor, pixColor, halfColor;
+	if (status == 1)
+	{
+		bgColor = Black;
+		pixColor = ndcolor;
+		halfColor = (ndcolor - 240) * 16;
+	}
+	else
+	{
+		bgColor = White;
+		pixColor = Black;
+		halfColor = whiteBlack;
+	}
+	//black down, blue bg
+	//1
+	drawRowPixel(halfColor, pixelDown, 16, x + 3, y);
+	//2
+	drawXY(halfColor, pixelDown, x + 1, y + 1);
+	drawXY(halfColor, pixelDown, x + 20, y + 1);
+	//4
+	drawXY(halfColor, pixelDown, x + 7, y + 3);
+	drawXY(halfColor, pixelDown, x + 14, y + 3);
+	//5
+	drawXY(halfColor, pixelDown, x + 6, y + 4);
+	drawXY(halfColor, pixelDown, x + 13, y + 4);
+	drawXY(halfColor, pixelDown, x + 15, y + 4);
+	//9
+	drawXY(halfColor, pixelDown, x + 5, y + 8);
+	drawXY(halfColor, pixelDown, x + 16, y + 8);
+	//10
+	drawRowPixel(halfColor, pixelDown, 6, x + 8, y + 9);
+
+	//black up. halfColor bg
+	//2
+	drawRowPixel(halfColor, pixelUp, 6, x + 8, y + 1);
+	//3
+	drawXY(halfColor, pixelUp, x + 5, y + 2);
+	drawXY(halfColor, pixelUp, x + 16, y + 2);
+	//4
+	drawRowPixel(halfColor, pixelUp, 3, x + 10, y + 3);
+	//7
+	drawXY(halfColor, pixelUp, x + 6, y + 6);
+	drawXY(halfColor, pixelUp, x + 15, y + 6);
+	//8
+	drawXY(halfColor, pixelUp, x + 7, y + 7);
+	drawXY(halfColor, pixelUp, x + 14, y + 7);
+	//10
+	drawXY(halfColor, pixelUp, x + 1, y + 9);
+	drawXY(halfColor, pixelUp, x + 20, y + 9);
+	//11
+	drawRowPixel(halfColor, pixelUp, 16, x + 3, y + 10);
+
+	//bgColor
+	//2
+	drawRowPixel(bgColor, pixel, 6, x + 2, y + 1);
+	drawRowPixel(bgColor, pixel, 6, x + 14, y + 1);
+	//3
+	drawRowPixel(bgColor, pixel, 4, x + 1, y + 2);
+	drawRowPixel(bgColor, pixel, 4, x + 17, y + 2);
+	//4
+	drawRowPixel(bgColor, pixel, 4, x + 1, y + 3);
+	drawRowPixel(bgColor, pixel, 2, x + 8, y + 3);
+	drawXY(bgColor, pixel, x + 13, y + 3);
+	drawRowPixel(bgColor, pixel, 4, x + 17, y + 3);
+	//5
+	drawRowPixel(bgColor, pixel, 3, x + 1, y + 4);
+	drawRowPixel(bgColor, pixel, 6, x + 7, y + 4);
+	drawXY(bgColor, pixel, x + 14, y + 4);
+	drawRowPixel(bgColor, pixel, 3, x + 18, y + 4);
+	//6
+	drawRowPixel(bgColor, pixel, 3, x + 1, y + 5);
+	drawRowPixel(bgColor, pixel, 10, x + 6, y + 5);
+	drawRowPixel(bgColor, pixel, 3, x + 18, y + 5);
+	//7
+	drawRowPixel(bgColor, pixel, 3, x + 1, y + 6);
+	drawRowPixel(bgColor, pixel, 8, x + 7, y + 6);
+	drawRowPixel(bgColor, pixel, 3, x + 18, y + 6);
+	//8
+	drawRowPixel(bgColor, pixel, 4, x + 1, y + 7);
+	drawRowPixel(bgColor, pixel, 6, x + 8, y + 7);
+	drawRowPixel(bgColor, pixel, 4, x + 17, y + 7);
+	//9
+	drawRowPixel(bgColor, pixel, 4, x + 1, y + 8);
+	drawRowPixel(bgColor, pixel, 4, x + 17, y + 8);
+	//10
+	drawRowPixel(bgColor, pixel, 6, x + 2, y + 9);
+	drawRowPixel(bgColor, pixel, 6, x + 14, y + 9);
+
+	//blue
+	common::setColor(pixColor);
+	unsigned char blue[] = {
+		3,20,0,
+		0,
+		1,7,8,9,10,11,12,13,14,15,16,22,0,
+		1,6,7,16,17,22,0,
+		1,5,6,17,18,22,0,
+		1,5,6,17,18,22,0,
+		1,5,6,17,18,22,0,
+		1,6,7,16,17,22,0,
+		1,7,8,9,10,11,12,13,14,15,16,22,0,
+		0,
+		3,20,0
+	};
+	drawSymbolPixel(pixel, blue, x, y);
+
+	//white
+	//1
+	drawXY(White, pixel, x, y);
+	drawXY(White, pixel, x + 21, y);
+	//11
+	drawXY(White, pixel, x, y + 10);
+	drawXY(White, pixel, x + 21, y + 10);
+
+	//blue up
+	//10
+	drawXY(pixColor, pixelUp, x, y + 9);
+	drawXY(pixColor, pixelUp, x + 21, y + 9);
+	//11
+	drawXY(pixColor, pixelUp, x + 1, y + 10);
+	drawXY(pixColor, pixelUp, x + 20, y + 10);
+
+
+	//blue down
+	//1
+	drawXY(pixColor, pixelDown, x + 1, y);
+	drawXY(pixColor, pixelDown, x + 20, y);
+	//2
+	drawXY(pixColor, pixelDown, x, y + 1);
+	drawXY(pixColor, pixelDown, x + 21, y + 1);
+
 }
 
 
