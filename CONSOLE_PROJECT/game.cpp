@@ -1,7 +1,7 @@
 #include "game.h"
 #include "file.h"
-int attackEvaluate[10] = { 0, 3, 24, 192, 1536, 12288, 98304, 531441, 4782969, 500000000 };
-int defendEvaluate[10] = { 0, 2, 18, 140, 800, 8000, 70569, 350000, 30000000, 300000000 };
+int attackEvaluate[10] = { 0, 3, 24, 192, 1536, 12288, 98304, 531441, 4782969, 1000000000 };
+int defendEvaluate[10] = { 0, 2, 18, 140, 800, 8000, 70569, 350000, 3000000, 300000000 };
 
 void game::bootGame(game& g, int stcolor, int ndcolor, bool music)
 {
@@ -820,7 +820,6 @@ int game::attackPoint(int x, int y) {
 		if (mate[i] == 4) point = attackEvaluate[9];
 		if (enemy[i] == 1 || block[i] == 1) point /= 2;
 		if (enemy[i] == 1 && mate[i] < 4 && block[i] == 1) point = 0;
-		if (enemy[i] == 2) point = 0;
 		sumPoint += point;
 	}
 
@@ -1131,7 +1130,6 @@ int game::defendPoint(int x, int y) {
 		if (enemy[i] == 4) point = defendEvaluate[9];
 		if ((mate[i] == 1) || (block[i] == 1)) point /= 2;
 		if (mate[i] == 1 && enemy[i] < 4 && block[i] == 1) point = 0;
-		if (mate[i] == 2) point = 0;
 		sumPoint += point;
 	}
 
