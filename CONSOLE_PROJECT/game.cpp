@@ -795,7 +795,7 @@ int game::attackPoint(int x, int y) {
 	int mate[4]{}, enemy[4]{}, block[4]{};
 	int sumPoint = 0, point = 0;
 	for (int k = 0; k < 8; k++) {
-		for (int i = 1; i <= 5; i++) {
+		for (int i = 1; i <= 4; i++) {
 
 			if (!checkBorder(x + i * cX[k], y + i * cY[k])) {
 				block[k % 4]++;
@@ -832,7 +832,7 @@ int game::defendPoint(int x, int y) {
 	int mate[4]{}, enemy[4]{}, block[4]{};
 	int sumPoint = 0, point = 0;
 	for (int k = 0; k < 8; k++) {
-		for (int i = 1; i <= 5; i++) {
+		for (int i = 1; i <= 4; i++) {
 			if (!checkBorder(x + i * cX[k], y + i * cY[k])) {
 				block[k % 4]++;
 				break;
