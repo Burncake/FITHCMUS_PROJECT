@@ -1,7 +1,7 @@
 #include "game.h"
 #include "file.h"
-int attackEvaluate[10] = { 0, 3, 24, 192, 1536, 12288, 98304, 531441, 4782969, 1000000000 };
-int defendEvaluate[10] = { 0, 2, 18, 100000000, 800, 8000, 70569, 350000, 3000000, 300000000 };
+int attackEvaluate[5] = { 0, 800, 100000, 1000000, 1000000000 };
+int defendEvaluate[5] = { 0, 800, 100000, 1000000,400000000 };
 
 void game::bootGame(game& g, int stcolor, int ndcolor, bool music)
 {
@@ -598,8 +598,7 @@ void game::draw_effect(bool bgmusic)
 }
 
 void game::resetData() {
-	x_count = o_count = x = y = 0;
-	pos_i = pos_j = -1;
+	x_count = 0; o_count = 0; x = 0; y = 0;
 	for (int i = 0; i < size; ++i) {
 		for (int j = 0; j < size; ++j) {
 			board[i][j] = 0;
@@ -818,15 +817,50 @@ int game::attackPoint(int x, int y) {
 
 	for (int i = 0; i < 4; i++) {
 		point = attackEvaluate[mate[i]];
-		if (mate[i] == 4) point = attackEvaluate[9];
-		if (enemy[i] == 1 || block[i] == 1) point /= 2;
-		if (enemy[i] == 1 && mate[i] < 4 && block[i] == 1) point = 0;
+		if (mate[i] >= 4) point = attackEvaluate[4];
+		if (enemy[i] >= 1 || block[i] >= 1) point /= 2;
+		if (enemy[i] >= 1 && mate[i] < 4 && block[i] >= 1) point = 0;
 		sumPoint += point;
 	}
 
 	return sumPoint;
 }
 
+int game::defendPoint(int x, int y) {
+	int cX[8] = { 1,0,1,1,-1,0,-1,-1 };
+	int cY[8] = { 0,1,1,-1,0,-1,-1,1 };
+	int mate[4]{}, enemy[4]{}, block[4]{};
+	int sumPoint = 0, point = 0;
+	for (int k = 0; k < 8; k++) {
+		for (int i = 1; i <= 5; i++) {
+			if (!checkBorder(x + i * cX[k], y + i * cY[k])) {
+				block[k % 4]++;
+				break;
+			}
+
+			if (board[x + i * cX[k]][y + i * cY[k]] == 0) break;
+
+			if (board[x + i * cX[k]][y + i * cY[k]] == 1) {
+				enemy[k % 4]++;
+			}
+
+			if (board[x + i * cX[k]][y + i * cY[k]] == 2) {
+				mate[k % 4]++;
+				break;
+			}
+		}
+	}
+
+	for (int i = 0; i < 4; i++) {
+		point = defendEvaluate[enemy[i]];
+		if (enemy[i] >= 4) point = defendEvaluate[4];
+		if ((mate[i] >= 1) || (block[i] >= 1)) point /= 2;
+		if (mate[i] >= 1 && enemy[i] < 4 && block[i] >= 1) point = 0;
+		sumPoint += point;
+	}
+
+	return sumPoint;
+}
 void drawlogoX(bool status, int x, int y, int stcolor)
 {
 	int bgColor, pixColor, halfColor;
@@ -1100,39 +1134,3 @@ void drawlogoO(bool status, int x, int y, int ndcolor)
 }
 
 
-
-int game::defendPoint(int x, int y) {
-	int cX[8] = { 1,0,1,1,-1,0,-1,-1 };
-	int cY[8] = { 0,1,1,-1,0,-1,-1,1 };
-	int mate[4]{}, enemy[4]{}, block[4]{};
-	int sumPoint = 0, point = 0;
-	for (int k = 0; k < 8; k++) {
-		for (int i = 1; i <= 5; i++) {
-			if (!checkBorder(x + i * cX[k], y + i * cY[k])) {
-				block[k % 4]++;
-				break;
-			}
-
-			if (board[x + i * cX[k]][y + i * cY[k]] == 0) break;
-
-			if (board[x + i * cX[k]][y + i * cY[k]] == 1) {
-				enemy[k % 4]++;
-			}
-
-			if (board[x + i * cX[k]][y + i * cY[k]] == 2) {
-				mate[k % 4]++;
-				break;
-			}
-		}
-	}
-
-	for (int i = 0; i < 4; i++) {
-		point = defendEvaluate[enemy[i]];
-		if (enemy[i] == 4) point = defendEvaluate[9];
-		if ((mate[i] == 1) || (block[i] == 1)) point /= 2;
-		if (mate[i] == 1 && enemy[i] < 4 && block[i] == 1) point = 0;
-		sumPoint += point;
-	}
-
-	return sumPoint;
-}
