@@ -95,24 +95,21 @@ bool file::loadScreen(game& g)
 			temp.displaySave(posx, posy, pos, select);
 			key = getInput();
 			common::playSound(Move);
-
-		} while (key != 5 && key != 6);
-		if (key == 5) {
-			for (int i = 0; i < display; i++) printText("                                ", posx, posy + i);
-			printText("The following save will be load: \"" + temp.save[select] + "\"", posx, posy + 2);
-			printText("Continue? (Y/N)", posx, posy + 4);
-			printText("                    ", 48, 28);
-			common::gotoXY(posx, posy + 5);
-			while (key != 9 && key != 10) key = getInput();
-			if (key == 9) {
-				g.loadGame("saves/" + temp.save[select] + ".txt");
-				return true;
-			}
-			printText("Cancelled. Press ESC to get back to menu.", posx, posy + 6);
-			common::gotoXY(posx, posy + 7);
-			while (getInput() != 6);
-			return false;
+		} while (key != 5);
+		for (int i = 0; i < display; i++) printText("                                ", posx, posy + i);
+		printText("The following save will be load: \"" + temp.save[select] + "\"", posx, posy + 2);
+		printText("Continue? (Y/N)", posx, posy + 4);
+		printText("                    ", 48, 28);
+		common::gotoXY(posx, posy + 5);
+		while (key != 9 && key != 10) key = getInput();
+		if (key == 9) {
+			g.loadGame("saves/" + temp.save[select] + ".txt");
+			return true;
 		}
+		printText("Cancelled. Press ESC to get back to menu.", posx, posy + 6);
+		common::gotoXY(posx, posy + 7);
+		while (getInput() != 6);
+		return false;
 	}
 }
 
