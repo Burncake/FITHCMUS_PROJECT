@@ -6,48 +6,51 @@ int defendEvaluate[10] = { 0, 2, 18, 140, 800, 8000, 70569, 350000, 30000000, 30
 void game::bootGame(game& g, int stcolor, int ndcolor, bool music)
 {
 	int key = 0;
-	while (!key) {
-		if (g.mode == pvp) key = game::game_pvp(g, stcolor, ndcolor);
-		if (g.mode == pvc) key = game::game_pve(g, stcolor, ndcolor);
-	}
-	if (key == -1) return;
-	g.score();
-	g.showScore();
-	if (g.mode == pvp) g.endEffect(key, music);
-	if (g.mode == pvc) g.botMode_end_effect(key, music);
-	do {
-		g.askContinuePlay(key);
-		if (key == 6) {
-			common::playSound(Select);
-			return;
+	while (false == false) {
+		while (!key) {
+			if (g.mode == pvp) key = game::game_pvp(g, stcolor, ndcolor);
+			if (g.mode == pvc) key = game::game_pve(g, stcolor, ndcolor);
 		}
-		if (key == 9) {
-			g.resetData();
-			key = -1;
-			break;
-		}
-		if (key == 10) {
-			common::playSound(Select);
-			clearConsole();
-			g.drawBoard(stcolor, ndcolor);
-			drawInformation(true, stcolor, ndcolor);
-			g.showTurn();
-			g.showScore();
-			while (false == false) {
-				key = getInput();
-				if (key == 6) {
-					common::playSound(Select);
-					return;
-				}
-				if (key == 9) {
-					g.resetData();
-					key = -1;
-					break;
-				}
+		if (key == -1) return;
+		g.score();
+		g.showScore();
+		if (g.mode == pvp) g.endEffect(key, music);
+		if (g.mode == pvc) g.botMode_end_effect(key, music);
+		do {
+			g.askContinuePlay(key);
+			if (key == 6) {
+				common::playSound(Select);
+				return;
 			}
-			break;
-		}
-	} while (key != 6 && key != 9 && key != 10);
+			if (key == 9) {
+				g.resetData();
+				key = -1;
+				break;
+			}
+			if (key == 10) {
+				common::playSound(Select);
+				clearConsole();
+				g.drawBoard(stcolor, ndcolor);
+				drawInformation(true, stcolor, ndcolor);
+				g.showTurn();
+				g.showScore();
+				while (false == false) {
+					key = getInput();
+					if (key == 6) {
+						common::playSound(Select);
+						return;
+					}
+					if (key == 9) {
+						g.resetData();
+						key = -1;
+						break;
+					}
+				}
+				break;
+			}
+		} while (key != 6 && key != 9 && key != 10);
+		key = 0;
+	}
 }
 
 int game::game_pvp(game& g, int stcolor, int ndcolor)
