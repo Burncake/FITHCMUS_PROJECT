@@ -58,7 +58,7 @@ public:
 	static void disableScroll();
 	static void disableMouseSelect();
 	static void showCursor(bool showFlag);
-	static void setTitle();
+	static void setTitle();                      
 	static void gotoXY(int x, int y);
 	static void setColor(int color);
 	static void bgmusic(bool n);

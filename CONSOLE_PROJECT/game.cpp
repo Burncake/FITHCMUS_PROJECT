@@ -84,20 +84,20 @@ void game::game_pvp(game& g, int stcolor, int ndcolor)
 	} while (false == false);
 }
 
-void game::drawBoard(int stcolor, int ndcolor)
-{
-	const int endRow = 4 * size + 1, endColumn = 2 * size + 1;
-	for (int i = 1; i <= endColumn; i++)
-		for (int j = 1; j <= endRow; j++) {
-			common::gotoXY(j + 3, i + 1);
-			switch (j) {
-			case 1:
-				// Left column //
-				if (i == 1)                 cout << char(218);
-				else if (i == endColumn)    cout << char(192);
-				else if ((i - 1) % 2 == 0)  cout << char(195);
-				else                        cout << char(179);
-				break;
+	void game::drawBoard(int stcolor, int ndcolor)
+	{
+		const int endRow = 4 * size + 1, endColumn = 2 * size + 1;
+		for (int i = 1; i <= endColumn; i++)
+			for (int j = 1; j <= endRow; j++) {
+				common::gotoXY(j + 3, i + 1);
+				switch (j) {
+				case 1:
+					// Left column //
+					if (i == 1)                 cout << char(218);
+					else if (i == endColumn)    cout << char(192);
+					else if ((i - 1) % 2 == 0)  cout << char(195);
+					else                        cout << char(179);
+					break;
 			case endRow:
 				// Right column //
 				if (i == 1)                 cout << char(191);
