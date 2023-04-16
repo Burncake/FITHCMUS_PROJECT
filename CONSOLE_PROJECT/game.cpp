@@ -598,7 +598,8 @@ void game::draw_effect(bool bgmusic)
 }
 
 void game::resetData() {
-	x_count = 0; o_count = 0; x = 0; y = 0;
+	x_count = o_count = x = y = 0;
+	pos_i = pos_j = -1;
 	for (int i = 0; i < size; ++i) {
 		for (int j = 0; j < size; ++j) {
 			board[i][j] = 0;
