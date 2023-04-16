@@ -5,8 +5,6 @@
 int main()
 {
 	startMenu();
-	//system("color f0");
-	//bigOScreen();
 	return 0;
 }
 
