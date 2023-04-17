@@ -471,36 +471,38 @@ void game::o_win_effect()
 
 void game::botMode_end_effect(int flag, bool bgmusic)
 {
-	int fix_x = 0, fix_y = 0;
-	if (flag == 1) {
-		fix_x = -1;
-		fix_y = 0;
-	}
-	if (flag == 2) {
-		fix_x = 0;
-		fix_y = -1;
-	}
-	if (flag == 3) {
-		fix_x = -1;
-		fix_y = -1;
-	}
-	if (flag == 4) {
-		fix_x = -1;
-		fix_y = 1;
-	}
-	for (int time = 1; time < 3; time++) {
-		for (int color = 241; color < 256; color++) {
-			if (color == DarkWhite || color == Yellow || color == DarkYellow || color == Cyan || color == White) continue;
-			for (int i = 0; i < 5; i++) {
-				common::gotoXY(6 + 4 * (x + fix_x * i), 3 + 2 * (y + fix_y * i));
-				if (board[y + fix_y * i][x + fix_x * i] == 1) coutColored("X", color);
-				if (board[y + fix_y * i][x + fix_x * i] == 2) coutColored("O", color);
-				Sleep(50);
+	if (flag > 0 && flag < 5) {
+		int fix_x = 0, fix_y = 0;
+		if (flag == 1) {
+			fix_x = -1;
+			fix_y = 0;
+		}
+		if (flag == 2) {
+			fix_x = 0;
+			fix_y = -1;
+		}
+		if (flag == 3) {
+			fix_x = -1;
+			fix_y = -1;
+		}
+		if (flag == 4) {
+			fix_x = -1;
+			fix_y = 1;
+		}
+		for (int time = 1; time < 3; time++) {
+			for (int color = 241; color < 256; color++) {
+				if (color == DarkWhite || color == Yellow || color == DarkYellow || color == Cyan || color == White) continue;
+				for (int i = 0; i < 5; i++) {
+					common::gotoXY(6 + 4 * (x + fix_x * i), 3 + 2 * (y + fix_y * i));
+					if (board[y + fix_y * i][x + fix_x * i] == 1) coutColored("X", color);
+					if (board[y + fix_y * i][x + fix_x * i] == 2) coutColored("O", color);
+					Sleep(50);
+				}
 			}
 		}
 	}
 	clearConsole();
-	if (win()) {
+	if (flag > 0 && flag < 5) {
 		if (x_turn) {
 			player_lose_effect(bgmusic);
 		}
