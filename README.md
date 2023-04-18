@@ -18,6 +18,5 @@ https://codelearn.io/sharing/windowsh-va-ham-dinh-dang-console-p1
 https://codelearn.io/sharing/windowsh-ham-dinh-dang-noi-dung-console
 8. Class functions (methods):
 https://www.w3schools.com/cpp/cpp_class_methods.asp
-
 9. Bot:
 https://github.com/quanguefa23/Caro-CPlusPlus
