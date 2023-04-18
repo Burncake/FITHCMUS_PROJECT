@@ -1,6 +1,5 @@
 # FITHCMUS_PROJECT
 A Caro game project by Group 3 - Class 22CLC01 - HCMUS.
-
 Reference:
 1. Changing background color: 
 https://stackoverflow.com/questions/6460932/change-entire-console-background-color-win32-c
